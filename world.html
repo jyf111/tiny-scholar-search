@@ -1,0 +1,87 @@
+// html 文件
+<div id="worldMap" style="width: 1000px;height: 500px;border: 1px solid #ddd;"></div>
+
+// 引入script 文件
+<script src="../assets/plugins/echarts/echarts3.min.js"></script>
+<script src="../assets/plugins/js/world.js"></script>
+
+<script>
+   // 绘制图表
+   let worldChart = echarts.init(document.getElementById('worldMap'));
+   // 国家名英文中文对比
+   let  nameComparison = {
+       'Canada':'加拿大',
+       'Russia':'俄罗斯',
+       'China':'中国',
+       'United States':'美国',
+          // ....其他省略 ，见文章末
+   };
+   // 数据
+   let dataMap = [
+       {"name": "俄罗斯","value": 10},
+       {"name": "加拿大","value": 0},
+       {"name": "中国","value": 5},
+       {"name": "美国","value": 7}
+   ]
+   let option = {
+       backgroundColor: "#02AFDB",
+       title: {    //地图显示标题
+           show: false,
+           text: '',
+           top:"30px",
+           left: 'center',
+           textStyle: {color: '#000'}
+       },
+       visualMap: {   //图列显示柱
+           type: 'piecewise',
+           left:30,
+           realtime: false,
+           calculable : true,
+           color: ['green', 'lightgreen','red'],
+           pieces: [
+               {gte: 10, label: '大于等于10'},            // (10, Infinity]
+               {gte: 1, lte: 9, label: '小于10'},       // (1, 9]
+               {lt: 1,  label: '未满足'}                 // (-Infinity, 1)
+           ]
+       },
+       toolbox: {  //工具栏
+           show: false,
+           orient: 'vertical',
+           top:50,
+           itemGap:20,
+           left:30,
+           feature: {
+               dataView: {readOnly: false},
+               restore: {},
+               saveAsImage: {}
+           }
+       },
+       tooltip: {  //提示框组件
+           show: true,
+           trigger: 'item',
+           formatter: ''
+       },
+       series: [{
+           name:"使用情况",
+           type: 'map',
+           mapType: 'world',
+           roam: true,
+           zoom: 1,
+           mapLocation: {y: 100},
+           data: dataMap,   //绑定数据
+           nameMap: nameComparison,
+           symbolSize: 12,
+           label: {
+               normal: {show: false},
+               emphasis: {show: true}
+           },
+           itemStyle: {
+               emphasis: {
+                   borderColor: 'transparent',
+                   borderWidth: 1
+               }
+           }
+       }],
+   };
+   worldChart.setOption(option);
+</script>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>author infomation</title>
+</head>
+<body>
+    <h3>{{ author.name }}</h3>
+    <p>total papars: {{ author.papers }}</p>
+    {% for affiliation in author.affiliations %}
+        {% if forloop.first %}
+        <p>affiliation:{{ affiliation }}</p>
+        {% else %}
+        <p>affiliation(former):{{ affiliation }}</p>
+        {% endif %}
+    {% endfor %}
+    {% load static %}
+    <p><iframe src="{% static '/tmp.html' %}"" width="1000" height="600"></iframe></p>
+    {% for pub in author.publications %}
+        {{ pub.url|safe }}
+        <p>{{ pub.year }}</p>
+        <p>{{ pub.kind }}</p>
+        <p>
+            {% for author in pub.author %}
+                {% if forloop.last %}
+                    {{ author|safe }}
+                {% else %}
+                    {{ author|safe }},
+                {% endif %}
+            {% endfor %}
+        </p>
+    {% endfor %}
+</body>
+</html>

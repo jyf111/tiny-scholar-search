@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>search result</title>
+</head>
+<body>
+    {% for author in authors %}
+        <h3><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h3>
+    {% endfor %}
+</body>
+</html>
