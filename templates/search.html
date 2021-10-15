@@ -3,12 +3,36 @@
 <head>
 <meta charset="utf-8">
 <title>scholar search</title>
+<style>
+    div {
+        text-align: center; 
+        background-color: #fff;
+        width: 1200px;
+        height: 350px;
+        margin: auto;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+    .name {
+        width: 540px;
+        height: 38px;
+    }
+    .search {
+        width: 100px;
+        height: 30px
+    }
+</style>
 </head>
 <body>
-    <h1>scholar search</h1>
-    <form action="/search/" autocomplete="off" method="get">
-        <input type="text" name="name">
-        <input type="submit" value="search">
-    </form>
+    <div>
+        <h1>scholar search</h1>
+        <form action="/search/" autocomplete="off" method="get">
+            <input class="name" type="text" name="name">
+            <input class="search" type="submit" value="search">
+        </form>
+    </div>
 </body>
 </html>

@@ -19,6 +19,8 @@ def author(request, pid):
     mxyear, mnyear = 0, 0
     pubcnt = {}
     for i, pub in enumerate(author.publications):
+        if not ('ee' in pub):
+            pub['ee'] = ""
         author.publications[i]['url'] = '<a href=\'' + pub['ee'] + '\'>' + pub['title'] + '</a>'
         year = int(pub['year'])
         if i==0: 
@@ -28,7 +30,9 @@ def author(request, pid):
             pubcnt[year] += 1
         else:
             pubcnt[year] = 1
-
+    for i in range(mnyear, mxyear+1):
+        if not (i in pubcnt):
+            pubcnt[i] = 0
     from pyecharts import options as opts
     from pyecharts.charts import Bar
     bar=(
