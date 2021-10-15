@@ -16,11 +16,9 @@ Including another URLconf
 from django.urls import path
 from django.conf.urls import url
 from . import views
-from . import testdb
 
 urlpatterns = [
     path('', views.page),
     path('search/', views.search),
     url(r'^author-pid=([\w\-]+/[\w\-]+)/$', views.author, name='author'),
-    path('testdb/', testdb.testdb),
 ]
