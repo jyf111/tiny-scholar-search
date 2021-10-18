@@ -4,35 +4,48 @@
 <meta charset="utf-8">
 <title>scholar search</title>
 <style>
-    div {
-        text-align: center; 
-        background-color: #fff;
-        width: 1200px;
-        height: 350px;
-        margin: auto;
+    #block {
+        width: 50%;
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
+        top: 25%;
+        left: 25%;
     }
-    .name {
-        width: 540px;
-        height: 38px;
+    input {
+        display: block;
+        float: left;
+        margin: 20px 0;
+        padding: 0;
     }
-    .search {
-        width: 100px;
-        height: 30px
+    #search_bar {
+        height: 40px;
+        width: 83%;
+        border: 2px solid #b9b9b9;
+        border-right: 0;
+        border-radius: 20px 0 0 20px;
+        padding-left: 10px;
+        font-size: 20px;
+    }
+    #search_btn {
+        height: 44px;
+        width: 15%;
+        border: #f9b31f solid;
+        border-left: 0;
+        border-radius: 0 20px 20px 0;
+        background-color: #f9b31f;
+        color: #ffffff;
+        font-size: 20px;
     }
 </style>
 </head>
-<body>
-    <div>
-        <h1>scholar search</h1>
-        <form action="/search/" autocomplete="off" method="get">
-            <input class="name" type="text" name="name">
-            <input class="search" type="submit" value="search">
-        </form>
+<body style="width: 100%;">
+    <div id="block">
+        <div style="width: 300px; margin: 0 auto;"><img src="https://image.baidu.com/search/down?tn=download&ipn=dwnl&word=download&ie=utf8&fr=result&url=https%3A%2F%2Fgimg2.baidu.com%2Fimage_search%2Fsrc%3Dhttp%253A%252F%252Fphoto.orsoon.com%252F180719%252FEPS-180719_147%252FHFhiL0jxdT_small.jpg%26refer%3Dhttp%253A%252F%252Fphoto.orsoon.com%26app%3D2002%26size%3Df9999%2C10000%26q%3Da80%26n%3D0%26g%3D0n%26fmt%3Djpeg%3Fsec%3D1637118008%26t%3Db18f9c2c0529c007414dea8319767823&thumburl=https%3A%2F%2Fimg0.baidu.com%2Fit%2Fu%3D3307663651%2C2868687601%26fm%3D26%26fmt%3Dauto" title="Scholar Search" style="width: 300px;height: 250px;"></div>
+        <div>
+            <form action="/search/" autocomplete="off" method="get">
+                <input type="text" name="name" id="search_bar">
+                <input type="submit" value="search" id="search_btn">
+            </form>
+        </div>
     </div>
 </body>
 </html>
