@@ -3,9 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>article infomation</title>
 </head>
 <body>
-    
+    <a href="//doi.org/{{ article.url }}">{{ article.title }}</a>
+    <div>
+        {% for topic in article.fields %}
+            {% if forloop.last %}
+                <span>{{ topic }}</span>
+            {% else %}
+                <span>{{ topic }},</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div>
+        {% for author in article.authors %}
+            {% if forloop.last %}
+                <span>{{ author }}</span>
+            {% else %}
+                <span>{{ author }},</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div>{{ article.year }}</div>
+    <div>{{ article.venue }}</div>
+    <p>{{ article.abstract }}</p>
+    <div>citations: {{ article.citations|length }}</div>
+    <ol>
+        {% for paper in article.citations %}
+            <li>
+                <a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a>
+                <div>
+                    {% for author in paper.authors %}
+                        {% if forloop.last %}
+                            <span>{{ author }}</span>
+                        {% else %}
+                            <span>{{ author }},</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>{{ paper.year }}</div>
+                <div>{{ paper.venue }}</div>
+            </li>
+        {% endfor %}
+    </ol>
+    <div>references {{ article.references|length }}</div>
+    <ol>
+        {% for paper in article.references %}
+            <li>
+                <a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a>
+                <div>
+                    {% for author in paper.authors %}
+                        {% if forloop.last %}
+                            <span>{{ author }}</span>
+                        {% else %}
+                            <span>{{ author }},</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div>{{ paper.year }}</div>
+                <div>{{ paper.venue }}</div>
+            </li>
+        {% endfor %}
+    </ol>
 </body>
 </html>

@@ -21,5 +21,5 @@ urlpatterns = [
     path('', views.page),
     path('search/', views.search),
     url(r'^author=([\w\-]+/[\w\-]+)/$', views.author, name='author'),
-    url(r'^article=([\w/\-]+)/$', views.article, name='article')
+    url(r'^article=([\S]+)/$', views.article, name='article')
 ]

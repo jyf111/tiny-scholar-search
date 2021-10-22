@@ -3,7 +3,9 @@ from django.shortcuts import render, redirect
 from pyecharts import options as opts
 from pyecharts.charts import Bar
 import utils.dblp
+import utils.semantic
 import time
+
 def page(request):
     return render(request, 'search.html')
 
@@ -13,7 +15,8 @@ def search(request):
         message = request.GET['name']
     else:
         message = ''
-    return render(request, 'result.html', {'authors': utils.dblp.search(message)})
+    exact_authors, likely_authors = utils.dblp.search(message)
+    return render(request, 'result.html', {'exact_authors': exact_authors, 'likely_authors': likely_authors})
     
 def author(request, pid):
     author = utils.dblp.gen_author(pid)
@@ -25,6 +28,7 @@ def author(request, pid):
         if 'key' not in pub:
             pub['key'] = ""
         author.publications[i]['url'] = '<a href=\'' + pub['ee'] + '\'>' + pub['title'] + '</a>'
+        author.publications[i]['doi'] = pub['ee'].split('/')[-2] + '/' + pub['ee'].split('/')[-1]
         year = int(pub['year'])
         mnyear = year
         if year>mxyear:
@@ -77,5 +81,5 @@ def author(request, pid):
     )
     return render(request, 'author.html', {'author': author})
 
-def article(request, key):
-    return HttpResponse(key)
+def article(request, doi):
+    return render(request, 'article.html', {'article': utils.semantic.Article(doi)})

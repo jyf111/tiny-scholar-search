@@ -66,13 +66,22 @@ class Author():
                     pub['rank'] = get_rank(tmp[0]+'/'+tmp[1])
             self.publications[i] = pub
 
+def like(a, b):
+    i = len(a) - 1
+    while i>=0 and a[i].isdigit():
+        i -= 1
+    return a[:i+1].lower().strip()==b.lower().strip()
+
 def search(author_str):
     resp = requests.get(DBLP_AUTHOR_SEARCH_URL, params={'xauthor':author_str})
     root = etree.fromstring(resp.content)
-    authors = []
+    exact_authors, likely_authors = [], []
     for author in root.xpath('/authors/author'):
-        authors.append({'pid': author.attrib['pid'], 'name': author.text})
-    return authors
+        if like(author.text, author_str):
+            exact_authors.append({'pid': author.attrib['pid'], 'name': author.text})
+        else:
+            likely_authors.append({'pid': author.attrib['pid'], 'name': author.text})
+    return exact_authors, likely_authors
 
 if __name__ == '__main__':
     Author('l/XuelongLi')
