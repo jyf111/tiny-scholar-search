@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>article infomation</title>
+    <style>
+        #frame1 {
+            position: relative;
+            left: 0px;
+            top: 0px;
+        }
+    </style>
 </head>
 <body>
     <a href="//doi.org/{{ article.url }}">{{ article.title }}</a>
@@ -28,6 +35,10 @@
     <div>{{ article.year }}</div>
     <div>{{ article.venue }}</div>
     <p>{{ article.abstract }}</p>
+    {% if article.citations|length %}
+    {% load static %}
+    <iframe id="frame1" src="{% static '/citation.html' %}" width="320px"" height="320px" frameborder="auto" scrolling="false"></iframe>
+    {% endif %}
     <div>citations: {{ article.citations|length }}</div>
     <ol>
         {% for paper in article.citations %}
@@ -47,7 +58,7 @@
             </li>
         {% endfor %}
     </ol>
-    <div>references {{ article.references|length }}</div>
+    <div>references: {{ article.references|length }}</div>
     <ol>
         {% for paper in article.references %}
             <li>
