@@ -3,6 +3,7 @@ import json
 
 SEMANTIC_BASE_URL = 'https://api.semanticscholar.org/'
 SEMANTIC_PAPER_SEARCH_URL = SEMANTIC_BASE_URL + 'v1/paper/'
+SEMANTIC_PAPER_KEYSEARCH_URL = SEMANTIC_BASE_URL + 'graph/v1/paper/search'
 
 def gen(paper):
     result = {}
@@ -27,5 +28,12 @@ class Article():
         self.abstract = article['abstract']
         self.year = article['year']
 
+def search(key):
+    resp = requests.get(SEMANTIC_PAPER_KEYSEARCH_URL, params={'query':key, 'offset':0, 'limit':10, 'fields':'title,authors,year,externalIds,abstract,venue,citationCount,fieldsOfStudy'}).content
+    papers = json.loads(resp)['data']
+    #for paper in papers:
+
+
 if __name__ == '__main__':
-    Article('10.1016/j.neucom.2021.01.130')
+    # Article('10.1016/j.neucom.2021.01.130')
+    search('graph')

@@ -6,6 +6,25 @@
     <title>author infomation</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static '/ccfrank.css' %}">
+    <script>
+        window.onload = function() {
+            let ccfcheck = document.getElementsByClassName('ccf');
+            for(let i=0; i<ccfcheck.length; i++) {
+                checkbox = ccfcheck[i];
+                checkbox.addEventListener('change', function() {
+                    if(this.checked) {
+                        pubs = document.getElementsByClassName(this.value);
+                        for(let j=0; j<pubs.length; j++)
+                            pubs[j].style.display = "inline-block";
+                    } else {
+                        pubs = document.getElementsByClassName(this.value);
+                        for(let j=0; j<pubs.length; j++)
+                            pubs[j].style.display = "none";
+                    }
+                });
+            }
+        }
+    </script>
     <style>
         body {
             width: 70%;
@@ -83,6 +102,13 @@
             font-size: 19px;
             text-decoration: underline;
         }
+        .CCF-a .CCF-b .CCF-c .CCF-none {
+            display: inline-block;
+        }
+        #ccfcheck {
+            position: relative;
+            bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -109,10 +135,16 @@
         </div>
     </div>
     <hr>
+    <div id="ccfcheck">
+        <input type="checkbox" class="ccf" value="CCF-a" checked>CCF-A({{ author.ccfa }})
+        <input type="checkbox" class="ccf" value="CCF-b" checked>CCF-B({{ author.ccfb }})
+        <input type="checkbox" class="ccf" value="CCF-c" checked>CCF-C({{ author.ccfc }})
+        <input type="checkbox" class="ccf" value="CCF-none" checked>CCF-None({{ author.ccfnone }})
+    </div>
     <div>
         <ul>
             {% for pub in author.publications %}
-            <li>
+            <li class="CCF-{{pub.rank}}">
                 <div>
                     {{ pub.url|safe }} 
                     <form action="{% url 'article' pub.doi %}">

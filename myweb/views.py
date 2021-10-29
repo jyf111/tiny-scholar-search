@@ -17,7 +17,7 @@ def search(request):
         message = ''
     exact_authors, likely_authors = utils.dblp.search(message)
     return render(request, 'result.html', {'exact_authors': exact_authors, 'likely_authors': likely_authors})
-    
+
 def author(request, pid):
     author = utils.dblp.gen_author(pid)
     mxyear, mnyear = time.localtime(time.time()).tm_year, 0
@@ -28,7 +28,10 @@ def author(request, pid):
         if 'key' not in pub:
             pub['key'] = ""
         author.publications[i]['url'] = '<a href=\'' + pub['ee'] + '\'>' + pub['title'] + '</a>'
-        author.publications[i]['doi'] = pub['ee'].split('/')[-2] + '/' + pub['ee'].split('/')[-1]
+        if pub['ee']!="":
+            author.publications[i]['doi'] = pub['ee'].split('/')[-2] + '/' + pub['ee'].split('/')[-1]
+        else:
+            author.publications[i]['doi'] = ""
         year = int(pub['year'])
         mnyear = year
         if year>mxyear:
@@ -61,12 +64,17 @@ def author(request, pid):
     )
 
     from pyecharts.charts import Graph
+    from math import log, ceil
     nodes = []
     for key, value in node.items():
-        nodes.append(opts.GraphNode(name=key, symbol_size=value, value=value, category=int(key==author.name)))
+        size = ceil(log(value/int(author.papers)*100))
+        node[key] = size
+        if size>=1:
+            nodes.append(opts.GraphNode(name=key, symbol_size=size*6, value=value, category=int(key==author.name)))
     links = []
     for edge in link:
-        links.append(opts.GraphLink(source=edge[0], target=edge[1]))
+        if node[edge[0]]>=1 and node[edge[1]]>=1:
+            links.append(opts.GraphLink(source=edge[0], target=edge[1]))
     # TODO kmeans ?
     categories = [
         {"symbol":"circle"},
@@ -107,4 +115,11 @@ def article(request, doi):
         .set_global_opts(title_opts=opts.TitleOpts(title="citations"))
         .render('static/citation.html')
     )
+
+    from wordcloud import WordCloud
+    WordCloud(background_color='white',  
+        width=300,
+        height=300,
+        collocations=True,
+        ).generate(article.abstract).to_file('static/word.png')
     return render(request, 'article.html', {'article': article})

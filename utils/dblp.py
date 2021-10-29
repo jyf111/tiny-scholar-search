@@ -39,11 +39,12 @@ class Author():
         self.papers = root.attrib['n']
         self.affiliations = root.xpath('/dblpperson/person/note/text()')
         self.publications = [{'author':[]} for _ in range(int(self.papers))]
+        self.ccfa, self.ccfb, self.ccfc, self.ccfnone = 0, 0, 0, 0
         for i, r in enumerate(root.xpath('/dblpperson/r')):
             pub = self.publications[i]
             for son in r.iter():
                 if son.tag=='author':
-                    pub[son.tag].append(['<a href=\'/author-pid=' + son.attrib['pid'] + '\'>' + son.text + '</a>', son.text])
+                    pub[son.tag].append(['<a href=\'/author=' + son.attrib['pid'] + '\'>' + son.text + '</a>', son.text])
                 elif son.tag in ('year', 'ee'):
                     pub[son.tag] = son.text
                 elif son.tag in ('journal', 'booktitle'):
@@ -64,6 +65,14 @@ class Author():
                     pub['key'] = son.attrib['key']
                     tmp = son.attrib['key'].split('/')
                     pub['rank'] = get_rank(tmp[0]+'/'+tmp[1])
+                    if pub['rank']=='a':
+                        self.ccfa += 1
+                    if pub['rank']=='b':
+                        self.ccfb += 1
+                    if pub['rank']=='c':
+                        self.ccfc += 1
+                    if pub['rank']=='none':
+                        self.ccfnone += 1
             self.publications[i] = pub
 
 def like(a, b):
