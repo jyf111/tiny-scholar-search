@@ -8,7 +8,7 @@
 
 #### 架构
 借助django框架
-数据来源于dblp、samanticscholar
+数据来源于dblp、semanticscholar
 
 #### 用法
 - 服务端
