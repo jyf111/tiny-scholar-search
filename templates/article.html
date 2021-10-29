@@ -79,6 +79,12 @@
     </div>
     <div id="bottom">
         <div id="left">
+            {% load static %}
+            <div><img src="{% static '/word.png' %}" alt="key words"></div>
+            {% if article.citations|length %}
+            {% load static %}
+            <iframe id="frame1" src="{% static '/citation.html' %}" width="320px"" height="320px" frameborder="auto" scrolling="false"></iframe>
+            {% endif %}
             <div>citations: {{ article.citations|length }}</div>
             <ol>
                 {% for paper in article.citations %}
@@ -125,55 +131,5 @@
             {% endif %}
         </div>
     </div>
-<<<<<<< HEAD
-    <div>{{ article.year }}</div>
-    <div>{{ article.venue }}</div>
-    <p>{{ article.abstract }}</p>
-    {% load static %}
-    <div><img src="{% static '/word.png' %}" alt="key words"></div>
-    {% if article.citations|length %}
-    {% load static %}
-    <iframe id="frame1" src="{% static '/citation.html' %}" width="320px"" height="320px" frameborder="auto" scrolling="false"></iframe>
-    {% endif %}
-    <div>citations: {{ article.citations|length }}</div>
-    <ol>
-        {% for paper in article.citations %}
-            <li>
-                <a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a>
-                <div>
-                    {% for author in paper.authors %}
-                        {% if forloop.last %}
-                            <span>{{ author }}</span>
-                        {% else %}
-                            <span>{{ author }},</span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div>{{ paper.year }}</div>
-                <div>{{ paper.venue }}</div>
-            </li>
-        {% endfor %}
-    </ol>
-    <div>references: {{ article.references|length }}</div>
-    <ol>
-        {% for paper in article.references %}
-            <li>
-                <a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a>
-                <div>
-                    {% for author in paper.authors %}
-                        {% if forloop.last %}
-                            <span>{{ author }}</span>
-                        {% else %}
-                            <span>{{ author }},</span>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <div>{{ paper.year }}</div>
-                <div>{{ paper.venue }}</div>
-            </li>
-        {% endfor %}
-    </ol>
-=======
->>>>>>> 24c80946d8fa1166800d7983b96018c42d314a0e
 </body>
 </html>
