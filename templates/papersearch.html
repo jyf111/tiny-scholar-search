@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>papersearch result</title>
+</head>
+<body>
+    {% for article in articles %}
+        <div>
+            {{ article.title }}
+        </div>
+        <span>
+            {% for topic in article.fields %}
+            {% if forloop.last %}
+            <span>{{ topic }}</span>
+            {% else %}
+            <span>{{ topic }},</span>
+            {% endif %}
+            {% endfor %}
+        </span>
+        <div class="authors">
+            {% for author in article.authors %}
+                {% if forloop.last %}
+                    <span>{{ author }}</span>
+                {% else %}
+                    <span>{{ author }},</span>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div>
+            {{ article.abstract }}
+        </div>
+        <div>
+            {{ article.year }}
+            {{ article.venue }}
+            {{ article.citationCount }}
+        </div>
+    {% endfor %}
+</body>
+</html>

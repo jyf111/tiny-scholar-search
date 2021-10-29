@@ -25,6 +25,10 @@ class Article():
             self.citations = [gen(paper) for paper in article['citations']]
         else:
             self.citations = []
+        if 'citationCount' in article:
+            self.citationCount = int(article['citationCount'])
+        else:
+            self.citationCount = len(article['citations'])
         if 'references' in article:
             self.references = [gen(paper) for paper in article['references']]
         else:
@@ -45,8 +49,10 @@ def genArticle(doi):
 def search(key):
     resp = requests.get(SEMANTIC_PAPER_KEYSEARCH_URL, params={'query':key, 'offset':0, 'limit':10, 'fields':'title,authors,year,externalIds,abstract,venue,citationCount,fieldsOfStudy'}).content
     papers = json.loads(resp)['data']
-    #for paper in papers:
-
+    articles = []
+    for paper in papers:
+        articles.append(Article(paper, ""))
+    return articles
 
 if __name__ == '__main__':
     # Article('10.1016/j.neucom.2021.01.130')

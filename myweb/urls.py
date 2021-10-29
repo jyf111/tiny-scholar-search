@@ -19,7 +19,8 @@ from . import views
 
 urlpatterns = [
     path('', views.page),
-    path('search/', views.search),
+    path('scholarsearch/', views.scholarsearch),
+    path('papersearch/', views.papersearch),
     url(r'^author=([\w\-]+/[\w\-]+)/$', views.author, name='author'),
     url(r'^article=([\S]+)/$', views.article, name='article')
 ]

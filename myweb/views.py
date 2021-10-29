@@ -8,10 +8,9 @@ import time
 
 
 def page(request):
-    return render(request, 'search.html')
+    return render(request, 'mainpage.html')
 
-
-def search(request):
+def scholarsearch(request):
     request.encoding = 'utf-8'
     if 'name' in request.GET and request.GET['name']:
         message = request.GET['name']
@@ -19,8 +18,17 @@ def search(request):
         message = ''
     exact_authors, likely_authors = utils.dblp.search(message)
 
-    return render(request, 'result.html', {'key': message, 'exact_authors': exact_authors, 'likely_authors': likely_authors})
+    return render(request, 'scholarsearch.html', {'key': message, 'exact_authors': exact_authors, 'likely_authors': likely_authors})
 
+def papersearch(request):
+    request.encoding = 'utf-8'
+    if 'name' in request.GET and request.GET['name']:
+        message = request.GET['name']
+    else:
+        message = ''
+
+    return render(request, 'papersearch.html', {'articles': utils.semantic.search(message)})
+    
 def author(request, pid):
     author = utils.dblp.gen_author(pid)
     mxyear, mnyear = time.localtime(time.time()).tm_year, 0
@@ -90,7 +98,7 @@ def author(request, pid):
             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
             .render('static/coauthor.html')
     )
-    return render(request, 'author.html', {'author': author})
+    return render(request, 'scholar.html', {'author': author})
 
 
 def article(request, doi):
@@ -130,4 +138,4 @@ def article(request, doi):
             height=300,
             collocations=True,
             ).generate(article.abstract).to_file('static/word.png')
-    return render(request, 'article.html', {'article': article})
+    return render(request, 'paper.html', {'article': article})

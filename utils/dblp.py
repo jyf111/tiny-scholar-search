@@ -18,7 +18,7 @@ def gen_author(pid):
 
 def get_rank(type):
     if len(rank_db)==0: # init rank_db
-        with open('ccfrank.txt', 'r') as f:
+        with open('static/ccfrank.txt', 'r') as f:
             while True:
                 cur = f.readline()
                 if not cur:
