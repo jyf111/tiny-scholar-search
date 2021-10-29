@@ -89,7 +89,7 @@
     <div id="top">
         <div id="left">
             {% load static %}
-            <div><img src="{% static '/user.png' %}"></div>
+            <div><img src="{% static '/images/user.png' %}"></div>
             <div>{{ author.name }}</div>
             <p id="info">
                 <div>total papars: {{ author.papers }}</div>
@@ -104,8 +104,8 @@
         </div>
         {% load static %}
         <div id="right">
-            <iframe id="frame1" src="{% static '/publish.html' %}" width="320px"" height="220px" frameborder="no" scrolling="auto"></iframe>
-            <iframe id="frame2" src="{% static '/coauthor.html' %}" width="320px"" height="320px" frameborder="no" scrolling="auto"></iframe>
+            <iframe id="frame1" src="{% static '/publish.html' %}" width="320px" height="220px" frameborder="no" scrolling="auto"></iframe>
+            <iframe id="frame2" src="{% static '/coauthor.html' %}" width="320px" height="320px" frameborder="no" scrolling="auto"></iframe>
         </div>
     </div>
     <hr>
