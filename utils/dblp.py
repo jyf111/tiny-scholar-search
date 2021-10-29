@@ -40,6 +40,7 @@ class Author():
         self.affiliations = root.xpath('/dblpperson/person/note/text()')
         self.publications = [{'author':[]} for _ in range(int(self.papers))]
         self.ccfa, self.ccfb, self.ccfc, self.ccfnone = 0, 0, 0, 0
+        self.journals, self.conferences = 0, 0
         for i, r in enumerate(root.xpath('/dblpperson/r')):
             pub = self.publications[i]
             for son in r.iter():
@@ -49,6 +50,11 @@ class Author():
                     pub[son.tag] = son.text
                 elif son.tag in ('journal', 'booktitle'):
                     pub['kind'] = son.text
+                    pub['type'] = ('Journal' if son.tag=='journal' else 'Conference')
+                    if pub['type']=='Journal':
+                        self.journals += 1
+                    else:
+                        self.conferences += 1
                 elif son.tag=='title':
                     result = ""
                     include = False

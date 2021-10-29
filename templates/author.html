@@ -7,25 +7,68 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static '/ccfrank.css' %}">
     <script>
+        update = function() {
+            if(this.checked) {
+                pubs = document.getElementsByClassName(this.value);
+                for(let j=0; j<pubs.length; j++)
+                    pubs[j].style.display = "inline-block";
+            } else {
+                pubs = document.getElementsByClassName(this.value);
+                for(let j=0; j<pubs.length; j++)
+                    pubs[j].style.display = "none";
+            }
+        }
         window.onload = function() {
             let ccfcheck = document.getElementsByClassName('ccf');
             for(let i=0; i<ccfcheck.length; i++) {
                 checkbox = ccfcheck[i];
-                checkbox.addEventListener('change', function() {
-                    if(this.checked) {
-                        pubs = document.getElementsByClassName(this.value);
-                        for(let j=0; j<pubs.length; j++)
-                            pubs[j].style.display = "inline-block";
-                    } else {
-                        pubs = document.getElementsByClassName(this.value);
-                        for(let j=0; j<pubs.length; j++)
-                            pubs[j].style.display = "none";
-                    }
-                });
+                checkbox.addEventListener('change', update);
+                if(checkbox.checked) {
+                    pubs = document.getElementsByClassName(checkbox.value);
+                    for(let j=0; j<pubs.length; j++)
+                        pubs[j].style.display = "inline-block";
+                } else {
+                    pubs = document.getElementsByClassName(checkbox.value);
+                    for(let j=0; j<pubs.length; j++)
+                        pubs[j].style.display = "none";
+                }
+            }
+
+            let typecheck = document.getElementsByClassName('type');
+            for(let i=0; i<typecheck.length; i++) {
+                checkbox = typecheck[i];
+                checkbox.addEventListener('change', update);
+                if(checkbox.checked) {
+                    pubs = document.getElementsByClassName(checkbox.value);
+                    for(let j=0; j<pubs.length; j++)
+                        pubs[j].style.display = "inline-block";
+                } else {
+                    pubs = document.getElementsByClassName(checkbox.value);
+                    for(let j=0; j<pubs.length; j++)
+                        pubs[j].style.display = "none";
+                }
             }
         }
     </script>
     <style>
+        .Journal {
+            display: inline-block;
+            background-color: #196ca3;
+            position: relative;
+            width: 15px;
+            height: 15px;
+            left: -18px;
+            top: 43px;
+        }
+        .Conference {
+            display: inline-block;
+            background-color: #c32b72;
+            position: relative;
+            width: 15px;
+            height: 15px;
+            left: -18px;
+            top: 43px;
+        }
         body {
             width: 70%;
             margin: 0 auto;
@@ -72,7 +115,7 @@
             background-image: linear-gradient(to right, #e8e9ea, #606b70, #e8e9ea);
         }
         li {
-            margin: 30px;
+            margin: 5px;
             height: auto;
             color: #606b70;
             list-style: none;
@@ -105,9 +148,16 @@
         .CCF-a .CCF-b .CCF-c .CCF-none {
             display: inline-block;
         }
+        .Journalli .Conferenceli {
+            display: inline-block;
+        }
         #ccfcheck {
             position: relative;
             bottom: 10px;
+        }
+        #typecheck {
+            position: relative;
+            bottom: 50px
         }
     </style>
 </head>
@@ -141,10 +191,16 @@
         <input type="checkbox" class="ccf" value="CCF-c" checked>CCF-C({{ author.ccfc }})
         <input type="checkbox" class="ccf" value="CCF-none" checked>CCF-None({{ author.ccfnone }})
     </div>
+    <div id="typecheck">
+        <input type="checkbox" class="type" value="Journalli" checked>Journal({{ author.journals }})
+        <input type="checkbox" class="type" value="Conferenceli" checked>Conference({{ author.conferences }})
+    </div>
     <div>
         <ul>
             {% for pub in author.publications %}
-            <li class="CCF-{{pub.rank}}">
+            <li class="CCF-{{pub.rank}} {{pub.type}}li">
+                {% load static %}
+                <img class="{{pub.type}}"alt title="{{pub.type}}" src="{% static 'images/n.png' %}">
                 <div>
                     {{ pub.url|safe }} 
                     <form action="{% url 'article' pub.doi %}">

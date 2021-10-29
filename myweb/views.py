@@ -94,7 +94,9 @@ def author(request, pid):
 
 
 def article(request, doi):
-    article = utils.semantic.Article(doi)
+    article = utils.semantic.genArticle(doi)
+    if article.error:
+        return HttpResponse(article.error)
     from pyecharts import options as opts
     from pyecharts.charts import Bar
     citcnt = {}
@@ -122,9 +124,10 @@ def article(request, doi):
     )
 
     from wordcloud import WordCloud
-    WordCloud(background_color='white',  
-        width=300,
-        height=300,
-        collocations=True,
-        ).generate(article.abstract).to_file('static/word.png')
+    if article.abstract!=None:
+        WordCloud(background_color='white',  
+            width=300,
+            height=300,
+            collocations=True,
+            ).generate(article.abstract).to_file('static/word.png')
     return render(request, 'article.html', {'article': article})

@@ -7,8 +7,13 @@
     <style>
         #frame1 {
             position: relative;
-            left: 0px;
-            top: 0px;
+            left: 20px;
+            top: 150px;
+        }
+        #wordcloud {
+            position: relative;
+            left: 20px;
+            top: 140px;
         }
         #top {
             width: 90%;
@@ -75,12 +80,16 @@
                 {% endfor %}
             </div>
         </div>
+        {% if article.abstract %}
         <p>{{ article.abstract }}</p>
+        {% endif %}
     </div>
     <div id="bottom">
         <div id="left">
+            {% if article.abstract %}
             {% load static %}
-            <div><img src="{% static '/word.png' %}" alt="key words"></div>
+            <div><img id="wordcloud" src="{% static '/word.png' %}" alt="key words"></div>
+            {% endif %}
             {% if article.citations|length %}
             {% load static %}
             <iframe id="frame1" src="{% static '/citation.html' %}" width="320px"" height="320px" frameborder="auto" scrolling="false"></iframe>
@@ -123,12 +132,6 @@
                     </li>
                 {% endfor %}
             </ol>
-        </div>
-        <div id="right">
-            {% if article.citations|length %}
-            {% load static %}
-            <iframe id="frame1" src="{% static '/citation.html' %}" width="320px"" height="320px" frameborder="auto" scrolling="false"></iframe>
-            {% endif %}
         </div>
     </div>
 </body>
