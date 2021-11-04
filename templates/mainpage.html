@@ -1,84 +1,111 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>tiny scholar</title>
     <script>
-      window.onload = function() {
-        let select = document.getElementById('choice');
-        select.addEventListener('change', function() {
-          val = select.options[select.selectedIndex].value;
-          document.getElementById('trans').action = val;
-          if(val[1]==='s') {
-            document.getElementById('search_bar').placeholder = 'search for scholars';
-          } else {
-            document.getElementById('search_bar').placeholder = 'search for papers';
-          }
-        });
-      }
+        window.onload = function () {
+            let select = document.getElementById('choice');
+            select.addEventListener('change', function () {
+                val = select.options[select.selectedIndex].value;
+                document.getElementById('trans').action = val;
+                if (val[1] === 's') {
+                    document.getElementById('search_bar').placeholder = 'Enter an author name';
+                } else {
+                    document.getElementById('search_bar').placeholder = 'Enter a title';
+                }
+            });
+        }
     </script>
     <style>
-      #block {
-        width: 50%;
-        position: absolute;
-        top: 10%;
-        left: 25%;
-      }
-      input {
-        display: block;
-        float: left;
-        margin: 20px 0;
-        padding: 0;
-        outline: none;
-      }
-      #search_bar {
-        height: 40px;
-        width: 80%;
-        border: 2px solid #b9b9b9;
-        border-right: 0;
-        border-radius: 22px 0 0 22px;
-        padding-left: 15px;
-        font-size: 20px;
-      }
-      #search_btn {
-        height: 44px;
-        width: 15%;
-        border: #2267b1 solid;
-        border-left: 0;
-        border-radius: 0 22px 22px 0;
-        background-color: #2267b1;
-        color: #ffffff;
-        font-size: 20px;
-      }
-      #search_btn:hover {
-        opacity: 0.5;
-      }
-      #search_btn:active {
-        transform: translateY(4px);
-      }
+        #block {
+            width: 50%;
+            position: absolute;
+            top: 10%;
+            left: 25%;
+        }
+
+        .input_item {
+            float: left;
+        }
+
+        #choice {
+            width: 15%;
+            height: 44px;
+            border: 2px solid #b9b9b9;
+            border-right: 0;
+            border-radius: 22px 0 0 22px;
+            padding-left: 15px;
+            outline: none;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        #vl {
+            position: relative;
+            top: 11px;
+            left:16%;
+            float: left;
+            width: 2px;
+            height: 24px;
+            background: #b9b9b9;
+        }
+
+        #search_bar {
+            width: 65%;
+            height: 40px;
+            border-width: 2px 0;
+            border-style: solid;
+            border-color: #b9b9b9;
+            border-radius: 0;
+            padding: 0;
+            padding-left: 18px;
+            outline: none;
+            font-size: 20px;
+        }
+
+        #search_btn {
+            width: 15%;
+            height: 44px;
+            border: #2267b1 solid;
+            border-left: 0;
+            border-radius: 0 22px 22px 0;
+            outline: none;
+            background-color: #2267b1;
+            color: #ffffff;
+            font-size: 20px;
+        }
+
+        #search_btn:hover {
+            opacity: 0.5;
+        }
+
+        #search_btn:active {
+            transform: translateY(4px);
+        }
     </style>
-  </head>
-  <body style="width: 100%">
+</head>
+
+<body style="width: 100%">
     <div id="block">
-      {% load static %}
-      <div style="width: 300px; margin: 0 auto">
-        <img
-          src="{% static '/images/logo.png' %}"
-          title="Tiny Scholar"
-          style="width: 300px; height: 250px"
-        />
-      </div>
-      <div>
-        <select name="opt" id="choice">
-          <option value="/scholarsearch/">scholar search</option>
-          <option value="/papersearch/">paper search</option>
-        </select>
-        <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
-          <input type="text" name="name" id="search_bar" placeholder='search for scholars'/>
-          <input type="submit" value="search" id="search_btn" />
-        </form>
-      </div>
+        {% load static %}
+        <div style="width: 300px; margin: 0 auto">
+            <img src="{% static '/images/home.png' %}" title="Tiny Scholar" style="width: 300px; height: 250px" />
+        </div>
+        <div style="font-size: 0;">
+            <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
+                <select name="opt" id="choice" class="intput_item">
+                    <option value="/scholarsearch/">author</option>
+                    <option value="/papersearch/">title</option>
+                </select>
+                <div id="vl"></div>
+                <input type="text" name="name" id="search_bar"  class="intput_item" placeholder='Enter an author name'/>
+                <input type="submit" value="search" id="search_btn"  class="intput_item"/>
+            </form>
+        </div>
     </div>
-  </body>
+</body>
+
 </html>
