@@ -1,41 +1,209 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>papersearch result</title>
+    <link rel="icon" href="{% static 'images/icon.svg' %}"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Paper search for:"{{ key }}</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #f6f7f9;
+        }
+        #foo {
+            width: 100%;
+            height: 150px;
+            display: flex;
+            align-items: center;
+        }
+
+        #search_box {
+            height: 40px;
+            width: 60%;
+            position: relative;
+            top: -80px;
+            margin: 0 auto;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px #7d848a;
+            background-color: #ffffff;
+            font-size: 0;
+        }
+
+        .input_item {
+            text-align: center;
+        }
+
+        #choice {
+            width: 15%;
+            height: 40px;
+            border: 0;
+            outline: none;
+            font-size: 20px;
+            font-family: Microsoft Yahei;
+            display: inline;
+        }
+
+        .vl {
+            position: absolute;
+            top: 10px;
+            float: left;
+            width: 2px;
+            height: 24px;
+            background: #b9b9b9;
+        }
+
+        #search_bar {
+            width: 67%;
+            height: 40px;
+            border-width: 0;
+            padding: 0;
+            padding-left: 25px;
+            outline: none;
+            font-size: 20px;
+            font-family: Microsoft Yahei;
+        }
+
+        #search_btn {
+            width: 15%;
+            height: 40px;
+            border: #f4d35e;
+            background-color: #f4d35e;
+            padding-right: 5px;
+            outline: none;
+            font-size: 20px;
+            font-family: Microsoft Yahei;
+            position: absolute;
+            right: 0px;
+        }
+
+        #search_btn:hover {
+            opacity: 0.5;
+        }
+
+        #search_btn:active {
+            transform: translateY(4px);
+        }
+
+        #tips {
+            display: inline;
+            float: left;
+            position: relative;
+            top: -5px;
+        }
+
+        .grid-container {
+            width: 96%;
+            position: relative;
+            top: -100px;
+            left: 30px;
+            display: grid;
+            grid-template-columns: 1;
+        }
+
+        li {
+            margin: 20px 0;
+            width: 95%;
+            padding: 10px;
+            list-style: none;
+            transform: translate(-3.5%, 0);
+        }
+
+        #paper-title {
+            font-family: Roboto,Helvetica Neue,Arial,sans-serif;
+            font-size: 25px;
+            font-weight: 500;
+            color: #1857b6;
+            display: block;
+        }
+        #paper-fields {
+            color: gold;
+            font-size: 15px;
+            font-weight: 1000;
+            display: block;
+        }
+        #paper-authors, #paper-venue {
+            color: rgba(84,105,115,.9);
+            font-size: 15px;
+            display: block;
+        }
+        #paper-cite {
+            font-size: 15px;
+            color: red;
+        }
+        #temp {
+            font-size: 15px;
+        }
+        #abstract {
+            background-color: #fff;
+            border-radius: 0.3em;
+            font-family: Roboto,Helvetica Neue,Arial,sans-serif;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            padding: 2px 5px;
+        }
+    </style>
 </head>
-<body>
-    {% for article in articles %}
-        <div>
-            {{ article.title }}
+<body style="width: 100%">
+    <div style="position: relative; top: -15%; left: 2%">
+        <img src="{% static '/images/logo.png' %}" width="132px" height="80px" style="margin: auto" />
+    </div>
+    <div id="foo" class="row">
+        <div id="search_box">
+            <img src="{% static '/images/paper.svg' %}" width="50" height="50" id="tips"/>
+            <form id="trans" action="/papersearch/" autocomplete="off" method="get">
+                <div id="choice" value="/papersearch/">paper</div>
+                <div class="vl" style="left: 16%"></div>
+                <input type="text" name="name" id="search_bar" placeholder="{{ key }}" />
+                <div class="vl" style="left: 83%"></div>
+                <input type="submit" value="search" id="search_btn" class="input_item" />
+            </form>
         </div>
-        <span>
-            {% for topic in article.fields %}
-            {% if forloop.last %}
-            <span>{{ topic }}</span>
-            {% else %}
-            <span>{{ topic }},</span>
-            {% endif %}
+    </div>
+    <div id="body">
+        <ul class="grid-container">
+            {% for article in articles %}
+            <li class="grid-item">
+                <span id="paper-title">
+                    {{ article.title }}
+                </span>
+                <span id="paper-fields">
+                    {% for topic in article.fields %}
+                    {% if forloop.last %}
+                    <span>{{ topic }}</span>
+                    {% else %}
+                    <span>{{ topic }},</span>
+                    {% endif %}
+                    {% endfor %}
+                </span>
+                <span id="paper-authors">
+                    {% for author in article.authors %}
+                        {% if forloop.last %}
+                            <span>{{ author }}</span>
+                        {% else %}
+                            <span>{{ author }},</span>
+                        {% endif %}
+                    {% endfor %}
+                </span>
+                <span id="abstract">
+                    Abstract
+                </span>
+                <span>
+                    {{ article.abstract }}
+                </span>
+                <span id="paper-venue">
+                    {{ article.year }}
+                    {{ article.venue }}
+                </span>
+                <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
+                <span id="temp">cited by: </span>
+                <span id="paper-cite">
+                   {{ article.citationCount }}
+                </span>
+            </li>
             {% endfor %}
-        </span>
-        <div class="authors">
-            {% for author in article.authors %}
-                {% if forloop.last %}
-                    <span>{{ author }}</span>
-                {% else %}
-                    <span>{{ author }},</span>
-                {% endif %}
-            {% endfor %}
-        </div>
-        <div>
-            {{ article.abstract }}
-        </div>
-        <div>
-            {{ article.year }}
-            {{ article.venue }}
-            {{ article.citationCount }}
-        </div>
-    {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>

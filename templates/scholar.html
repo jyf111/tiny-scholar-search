@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
+    <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>author infomation</title>
-    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static '/ccfrank.css' %}">
     <script>
         update = function() {
@@ -162,9 +163,11 @@
     </style>
 </head>
 <body>
+    <div style="position: relative; top: -15%; left: 2%">
+        <img src="{% static '/images/logo.png' %}" width="132px" height="80px" style="margin: auto" />
+    </div>
     <div id="top">
         <div id="left">
-            {% load static %}
             <div><img src="{% static '/images/user.png' %}"></div>
             <div>{{ author.name }}</div>
             <p id="info">

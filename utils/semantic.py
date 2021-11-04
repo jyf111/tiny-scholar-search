@@ -1,7 +1,7 @@
 import requests
 import json
 
-SEMANTIC_BASE_URL = 'https://api.semanticscholar.org/'
+SEMANTIC_BASE_URL = 'http://api.semanticscholar.org/'
 SEMANTIC_PAPER_SEARCH_URL = SEMANTIC_BASE_URL + 'v1/paper/'
 SEMANTIC_PAPER_KEYSEARCH_URL = SEMANTIC_BASE_URL + 'graph/v1/paper/search'
 
@@ -48,7 +48,11 @@ def genArticle(doi):
 
 def search(key):
     resp = requests.get(SEMANTIC_PAPER_KEYSEARCH_URL, params={'query':key, 'offset':0, 'limit':10, 'fields':'title,authors,year,externalIds,abstract,venue,citationCount,fieldsOfStudy'}).content
-    papers = json.loads(resp)['data']
+    result = json.loads(resp)
+    if 'data' in result:
+        papers = json.loads(resp)['data']
+    else:
+        papers = []
     articles = []
     for paper in papers:
         articles.append(Article(paper, ""))

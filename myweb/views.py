@@ -27,7 +27,7 @@ def papersearch(request):
     else:
         message = ''
 
-    return render(request, 'papersearch.html', {'articles': utils.semantic.search(message)})
+    return render(request, 'papersearch.html', {'key': message, 'articles': utils.semantic.search(message)})
     
 def author(request, pid):
     author = utils.dblp.gen_author(pid)
