@@ -3,7 +3,7 @@
 # Rose, S., D. Engel, N. Cramer, and W. Cowley (2010). 
 # Automatic keyword extraction from indi-vidual documents. 
 # In M. W. Berry and J. Kogan (Eds.), Text Mining: Applications and Theory.unknown: John Wiley and Sons, Ltd.
-
+import os
 import re
 import operator
 
@@ -138,32 +138,15 @@ class Rake(object):
 
 
 def getkey(text):
-    # Split text into sentences
     sentenceList = split_sentences(text)
-    #stoppath = "FoxStoplist.txt" #Fox stoplist contains "numbers", so it will not find "natural numbers" like in Table 1.1
-    stoppath = "SmartStoplist.txt"  #SMART stoplist misses some of the lower-scoring keywords in Figure 1.5, which means that the top 1/3 cuts off one of the 4.0 score words in Table 1.1
-    stopwordpattern = build_stop_word_regex(stoppath)
-
-    # generate candidate keywords
-    phraseList = generate_candidate_keywords(sentenceList, stopwordpattern)
-
-    # calculate individual word scores
-    wordscores = calculate_word_scores(phraseList)
-
-    # generate candidate keyword scores
-    keywordcandidates = generate_candidate_keyword_scores(phraseList, wordscores)
-    if debug: print(keywordcandidates)
-
-    sortedKeywords = sorted(keywordcandidates.items(), key=operator.itemgetter(1), reverse=True)
-    if debug: print(sortedKeywords)
-
-    totalKeywords = len(sortedKeywords)
-    if debug: print(totalKeywords)
-    # print(sortedKeywords[0:(totalKeywords // 3)])
-
-    rake = Rake("SmartStoplist.txt")
+    module_path = os.path.dirname(__file__)    
+    stoppath = module_path+"/SmartStoplist.txt"  
+    rake = Rake(stoppath)
     keywords = rake.run(text)
-    print(keywords)
+    L = len(keywords)
+    if L > 5:
+        L = 5
+    return [key[0] for key in keywords[:L]]
 
 if __name__ == '__main__':
-    getkey('Nowadays, machines like computers and mobile devices are developing towards having human-like behaviors and thoughts. However, they are unable to completely replace humans because of the high levels of uncertainty and vulnerability. It is expedient to combine humans and machines to complement disadvantages of each other. The previous computing methods are lack of a general definition and framework for combining humans and machines in a dynamic environment. This paper proposes a new concept on cooperation between humans and machines that can give more meaningful inspiration for future development of the filed; we call the proposed computing paradigm human–machine computing (HMC). HMC aims to provide a general framework for machines and humans working on a task interactively in an evolving environment, such that machines achieve optimized performance under human guidance during the computing procedure. In this paper, we describe HMC from six perspectives: definition, framework, challenges, technologies, comparisons, and case studies.')
+    print(getkey('Recognition of Group Mobility Level and Group Structure with Mobile Devices.Monitoring group mobility and structure is crucial for understanding group activities and social relations. In this paper, we develop algorithms for fine-grained mobility classification and structure recognition of social groups utilizing mobile devices. First, we present a method that recognizes four levels of group mobility, including stationary, strolling, walking, and running. Second, using multiple types of mobile sensors, a novel relative position relationship estimation algorithm is developed to understand different moving group structures. We have conducted real-life experiments in which 12 volunteers moved in different small groups either in an office building or a shopping mall with various speeds and structures. Experimental results show that our approach achieves an accuracy of 99.5 percent in group mobility level classification and about 80 percent in group structure recognition.'))

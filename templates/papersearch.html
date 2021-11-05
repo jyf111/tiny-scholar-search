@@ -6,6 +6,24 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Paper search for:"{{ key }}</title>
+    <script>
+        window.onload = function() {
+            let controls = document.getElementsByClassName('control');
+            for(let i=0; i<controls.length; i++) {
+                control = controls[i];
+                control.addEventListener('click', function() {
+                    abstract = this.previousSibling.previousSibling;
+                    if(this.innerText==='Expand') {
+                        abstract.style.display = 'block';
+                        this.innerText = 'Collapse';
+                    } else {
+                        abstract.style.display = '-webkit-box';
+                        this.innerText = 'Expand';
+                    }
+                });
+            }
+        }
+    </script>
     <style>
         body {
             margin: 0;
@@ -134,7 +152,7 @@
         #temp {
             font-size: 15px;
         }
-        #abstract {
+        #abstract-tag {
             background-color: #fff;
             border-radius: 0.3em;
             font-family: Roboto,Helvetica Neue,Arial,sans-serif;
@@ -142,6 +160,52 @@
             font-style: normal;
             font-weight: 500;
             padding: 2px 5px;
+        }
+
+        #abstract {
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical;
+        }
+        
+        #result-count {
+            position: relative;
+            font-family: Roboto Slab,Georgia,serif;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 26px;
+            top: -100px;
+            left: 40px;
+        }
+
+        .control {
+            color: #1857b6;
+            cursor: pointer;
+            display: inline;
+        }
+        .control:hover {
+            text-decoration:underline;
+        }
+        ul.pagination {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul.pagination li {display: inline;}
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+        }
+
+        ul.pagination li a.active {
+            background-color: #4CAF50;
+            color: white;
         }
     </style>
 </head>
@@ -161,13 +225,18 @@
             </form>
         </div>
     </div>
+    <div id="result-count">
+        About {{ total }} results for "{{key}}"
+    </div>
     <div id="body">
         <ul class="grid-container">
             {% for article in articles %}
             <li class="grid-item">
-                <span id="paper-title">
-                    {{ article.title }}
-                </span>
+                <a href="{% url 'article' article.url %}">
+                    <span id="paper-title">
+                        {{ article.title }}
+                    </span>
+                </a>
                 <span id="paper-fields">
                     {% for topic in article.fields %}
                     {% if forloop.last %}
@@ -186,12 +255,15 @@
                         {% endif %}
                     {% endfor %}
                 </span>
-                <span id="abstract">
+                <span id="abstract-tag">
                     Abstract
                 </span>
-                <span>
+                <div id="abstract">
                     {{ article.abstract }}
-                </span>
+                </div>
+                <div class="control">
+                    Expand
+                </div>
                 <span id="paper-venue">
                     {{ article.year }}
                     {{ article.venue }}

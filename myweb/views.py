@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from pyecharts import options as opts
 from pyecharts.charts import Bar
+from random import randint
 import utils.dblp
 import utils.semantic
 import time
@@ -26,8 +27,8 @@ def papersearch(request):
         message = request.GET['name']
     else:
         message = ''
-
-    return render(request, 'papersearch.html', {'key': message, 'articles': utils.semantic.search(message)})
+    result = utils.semantic.search(message)
+    return render(request, 'papersearch.html', {'key': message, 'total': result[0], 'articles': result[1]})
     
 def author(request, pid):
     author = utils.dblp.gen_author(pid)
@@ -100,6 +101,11 @@ def author(request, pid):
     )
     return render(request, 'scholar.html', {'author': author})
 
+def random_color_func(word=None, font_size=None, position=None,  orientation=None, font_path=None, random_state=None):
+        h  = randint(0,100)
+        s = int(100.0 * 255.0 / 255.0)
+        l = int(100.0 * float(randint(60, 120)) / 255.0)
+        return "hsl({}, {}%, {}%)".format(h, s, l)
 
 def article(request, doi):
     article = utils.semantic.genArticle(doi)
@@ -111,6 +117,8 @@ def article(request, doi):
     mnyear, mxyear = time.localtime(time.time()).tm_year, time.localtime(time.time()).tm_year
     for citation in article.citations:
         year = citation['year']
+        if year==None:
+            continue
         if year < mnyear:
             mnyear = year
         if year > mxyear:
@@ -131,11 +139,17 @@ def article(request, doi):
             .render('static/citation.html')
     )
 
+    keywords = []
+
     from wordcloud import WordCloud
     if article.abstract!=None:
-        WordCloud(background_color='white',  
-            width=300,
+        WordCloud( background_color=None,
+            mode="RGBA",  
+            width=500,
             height=300,
             collocations=True,
-            ).generate(article.abstract).to_file('static/word.png')
-    return render(request, 'paper.html', {'article': article})
+            color_func = random_color_func,
+            ).generate(article.abstract).to_file('static/images/word.png')
+        import RAKE.rake
+        keywords = RAKE.rake.getkey(article.title+'.'+article.abstract)
+    return render(request, 'paper.html', {'article': article, 'keywords': keywords})

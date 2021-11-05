@@ -5,6 +5,8 @@ DBLP_BASE_URL = 'http://dblp.uni-trier.de/'
 DBLP_AUTHOR_SEARCH_URL = DBLP_BASE_URL + 'search/author'
 DBLP_PERSON_URL = DBLP_BASE_URL + 'pid/{pid}.xml'
 
+headers = {'User-Agent': 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
+
 lazy_db = {}
 rank_db = {}
 
@@ -33,7 +35,7 @@ def get_rank(type):
 class Author():
     def __init__(self, pid):
         self.pid = pid
-        xml = requests.get(DBLP_PERSON_URL.format(pid=pid)).content
+        xml = requests.get(DBLP_PERSON_URL.format(pid=pid), headers=headers).content
         root = etree.fromstring(xml)
         self.name = root.attrib['name']
         self.papers = root.attrib['n']
@@ -88,7 +90,7 @@ def like(a, b):
     return a[:i+1].lower().strip()==b.lower().strip()
 
 def search(author_str):
-    resp = requests.get(DBLP_AUTHOR_SEARCH_URL, params={'xauthor':author_str})
+    resp = requests.get(DBLP_AUTHOR_SEARCH_URL, headers=headers, params={'xauthor':author_str})
     root = etree.fromstring(resp.content)
     exact_authors, likely_authors = [], []
     for author in root.xpath('/authors/author'):

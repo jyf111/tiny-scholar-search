@@ -5,25 +5,25 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>article infomation</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" media="screen" type="text/css" />
+    <title>{{ article.title }}</title>
     <style>
+        body {
+            margin: 0;
+            background-color: #f6f7f9;
+        }
         #frame1 {
             position: relative;
-            left: 20px;
-            top: 150px;
-        }
-        #wordcloud {
-            position: relative;
-            left: 20px;
-            top: 140px;
+            left: 15px;
+            top: 70px;
         }
         #top {
             width: 90%;
             height: 400px;
             margin: 0 auto;
         }
-        #top>div {
-            height: 50%;
+        #detail {
+            text-align: center;
         }
         #detail div:first-child {
             font-size: 30px;
@@ -31,7 +31,6 @@
         #detail span {
             margin-right: 10px;
         }
-
         #bottom {
             width: 90%;
         }
@@ -39,7 +38,7 @@
             text-decoration: none;
         }
         a:link {
-            color: #606b70;
+            color: #264653;
         }
         a:visited {
             color: #771caa;
@@ -53,14 +52,104 @@
             font-size: 19px;
             text-decoration: underline;
         }
+        #article-title {
+            font-size: 30px;
+            line-height: 32px;
+            font-family: Roboto Slab,Georgia,serif;
+            font-weight: 700;
+        }
+        #paper-fields {
+            color: gold;
+            font-size: 15px;
+            font-weight: 1000;
+            display: block;
+        }
+        #paper-authors, #paper-venue {
+            color: rgba(84,105,115,.9);
+            font-size: 15px;
+            display: block;
+        }
+        #abstract-tag {
+            background-color: #fff;
+            border-radius: 0.3em;
+            font-family: Roboto,Helvetica Neue,Arial,sans-serif;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            padding: 2px 5px;
+            position: relative;
+            top: 5px;
+        }
+
+        #abstract {
+            font-family: Microsoft Yahei;
+            font-size:18px;
+            position: relative;
+            top: 10px;
+        }
+        #keywords-tag {
+            background-color: #fff;
+            border-radius: 0.3em;
+            font-family: Roboto,Helvetica Neue,Arial,sans-serif;
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            padding: 2px 5px;
+            position: relative;
+            top: 15px;
+            width: 88px;
+        }
+        #keywords {
+            position: relative;
+            top: 20px;
+            font-size: 15px;
+            color: #1a0dab;
+            font-weight:550;
+            text-align: center;
+        }
+        #wordcloud {
+            display: inline-block;
+            position: relative;
+            top: 50px;
+            left: 30px;
+        }
+        #paper-cite {
+            color: red;
+        }
+        #paper-reference {
+            color: blue;
+        }
+        #citations,#references {
+            font-size: 17px;
+            position: relative;
+            top: -50px;
+            left: 20px;
+        }
+        #cite-list,#refer-list {
+            position: relative;
+            width: 100%;
+            top: -45px;
+        }
+        #paper-title {
+            font-size: 20px;
+            line-height: 22px;
+            font-family: Roboto Slab,Georgia,serif;
+            font-weight: 550;
+            color: black;
+        }
     </style>
 </head>
-<body>
+<body style="width: 100%">
+    <div style="position: relative; top: -15%; left: 2%">
+        <img src="{% static '/images/logo.png' %}" width="132px" height="80px" style="margin: auto" />
+    </div>
     <div id="top">
         <div id="detail">
-            <div><a href="//doi.org/{{ article.url }}" style="font-size: 24px; color: #7d848a;">{{ article.title }}</a></div>
+            <div id="article-title">
+                <a href="//doi.org/{{ article.url }}">{{ article.title }}</a>
+            </div>
             <div class="info">
-                <span>
+                <span id="paper-fields">
                     {% for topic in article.fields %}
                     {% if forloop.last %}
                     <span>{{ topic }}</span>
@@ -69,10 +158,8 @@
                     {% endif %}
                     {% endfor %}
                 </span>
-                <span>{{ article.year }}</span>
-                <span>{{ article.venue }}</span>
             </div>
-            <div class="authors">
+            <span id="paper-authors">
                 {% for author in article.authors %}
                     {% if forloop.last %}
                         <span>{{ author }}</span>
@@ -80,58 +167,96 @@
                         <span>{{ author }},</span>
                     {% endif %}
                 {% endfor %}
-            </div>
+            </span>
+            <span id="paper-venue">
+                {{ article.year }}
+                {{ article.venue }}
+            </span>
         </div>
         {% if article.abstract %}
-        <p>{{ article.abstract }}</p>
+        <div>
+            <span id="abstract-tag">
+                Abstract
+            </span>
+            <div id="abstract">
+                {{ article.abstract }}
+        </div>
         {% endif %}
     </div>
+    <div id="keywords-tag">
+        Top Key Words
+    </div>
+    {% if keywords|length %}
+    <div id="keywords">
+        {% for key in keywords %}
+            {% if forloop.last %}
+                <span>{{ key }}</span>
+            {% else %}
+                <span>{{ key }}、</span>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% if article.abstract %}
+        <img id="wordcloud" src="{% static 'images/word.png' %}" alt="key words">
+    {% endif %}
     <div id="bottom">
+        {% if article.citations|length %}
+            <iframe id="frame1" src="{% static '/citation.html' %}" width="400px"" height="320px" frameborder="auto" scrolling="false"></iframe>
+        {% endif %}
         <div id="left">
-            {% if article.abstract %}
-            {% load static %}
-            <div><img id="wordcloud" src="{% static '/word.png' %}" alt="key words"></div>
-            {% endif %}
-            {% if article.citations|length %}
-            {% load static %}
-            <iframe id="frame1" src="{% static '/citation.html' %}" width="320px"" height="320px" frameborder="auto" scrolling="false"></iframe>
-            {% endif %}
-            <div>citations: {{ article.citations|length }}</div>
-            <ol>
+            <div id="citations">
+                <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
+                <span>citations: </span>
+                <span id="paper-cite">
+                    {{ article.citations|length }}
+                </span>
+            </div>
+            <ol id="cite-list" class="live">
                 {% for paper in article.citations %}
-                    <li>
-                        <a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a>
-                        <div>
-                            {% for author in paper.authors %}
-                                {% if forloop.last %}
-                                    <span>{{ author }}</span>
-                                {% else %}
-                                    <span>{{ author }},</span>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div>{{ paper.year }}</div>
-                        <div>{{ paper.venue }}</div>
-                    </li>
+                <li>
+                    <a href="//doi.org/{{ paper.doi }}" id="paper-title">{{ paper.title }}</a>
+                    <span id="paper-authors">
+                        {% for author in paper.authors %}
+                            {% if forloop.last %}
+                                <span>{{ author }}</span>
+                            {% else %}
+                                <span>{{ author }},</span>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <span id="paper-venue">
+                        {{ paper.year }}
+                        {{ paper.venue }}
+                    </span>
+                </li>
                 {% endfor %}
             </ol>
-            <div>references: {{ article.references|length }}</div>
-            <ol>
+            <div id="references">
+                <img src="{% static '/images/reference.svg' %}" width="12px" height="12px" style="margin: auto" />
+                <span>references: </span>
+                <span id="paper-reference">
+                    {{ article.references|length }}
+                </span>
+            </div>
+            <ol id="refer-list" class="live">
                 {% for paper in article.references %}
-                    <li>
-                        <a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a>
-                        <div>
-                            {% for author in paper.authors %}
-                                {% if forloop.last %}
-                                    <span>{{ author }}</span>
-                                {% else %}
-                                    <span>{{ author }},</span>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div>{{ paper.year }}</div>
-                        <div>{{ paper.venue }}</div>
-                    </li>
+                <li>
+                    <a href="//doi.org/{{ paper.doi }}" id="paper-title">{{ paper.title }}</a>
+                    <span id="paper-authors">
+                        {% for author in paper.authors %}
+                            {% if forloop.last %}
+                                <span>{{ author }}</span>
+                            {% else %}
+                                <span>{{ author }},</span>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
+                    <span id="paper-venue">
+                        {{ paper.year }}
+                        {{ paper.venue }}
+                    </span>
+                </li>
                 {% endfor %}
             </ol>
         </div>
