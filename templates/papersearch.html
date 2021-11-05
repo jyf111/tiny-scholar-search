@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Paper search for:"{{ key }}</title>
     <script>
+        function insertAfter(new_item, item) {
+            item.parentNode.insertBefore(new_item, item.nextSibling);
+        }
         window.onload = function() {
             let controls = document.getElementsByClassName('control');
             for(let i=0; i<controls.length; i++) {
@@ -21,6 +24,18 @@
                         this.innerText = 'Expand';
                     }
                 });
+            }
+            let paperurls = document.getElementsByClassName('paper-url');
+            for(let i=0; i<paperurls.length; i++) {
+                paperurl = paperurls[i];
+                viewtag = paperurl.nextSibling.nextSibling;
+                if(paperurl.href.indexOf('article=//')!=-1) {
+                    paperurl.style.textDecoration = 'none';
+                    paperurl.style.cursor = 'default';
+                    viewtag.style.display = 'none';
+                } else {
+                    viewtag.href = paperurl.href;
+                }
             }
         }
     </script>
@@ -207,6 +222,12 @@
             background-color: #4CAF50;
             color: white;
         }
+        .paper-url {
+            display: inline-block;
+        }
+        .view-tag {
+            display: inline-block;
+        }
     </style>
 </head>
 <body style="width: 100%">
@@ -232,11 +253,12 @@
         <ul class="grid-container">
             {% for article in articles %}
             <li class="grid-item">
-                <a href="{% url 'article' article.url %}">
+                <a href="{% url 'article' article.url %}" class="paper-url">
                     <span id="paper-title">
                         {{ article.title }}
                     </span>
                 </a>
+                <img class="view-tag" src="{% static '/images/viewmore.svg' %}" title="with more info" width="20px" height="20px" style="margin: auto" />
                 <span id="paper-fields">
                     {% for topic in article.fields %}
                     {% if forloop.last %}

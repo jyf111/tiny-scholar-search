@@ -7,6 +7,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" media="screen" type="text/css" />
     <title>{{ article.title }}</title>
+    <script>
+        let index = 2; //default
+        var result;
+        const slim = '<li class="grid-item">';
+        function hide() {
+            let dom = document.getElementsByClassName("spinner")[0];
+            dom.style.display = "none";
+            for (let i = 0; i < dom.children.length; i++) {
+                dom.children[i].style.display = "none";
+            }
+        }
+        function gen() {
+            info = slim + '\n' + result[index];
+            document.getElementById('relate-paper').innerHTML = info;
+            let controls = document.getElementsByClassName('control');
+            for(let i=0; i<controls.length; i++) {
+                control = controls[i];
+                control.addEventListener('click', function() {
+                    abstract = this.previousSibling.previousSibling;
+                    if(this.innerText==='Expand') {
+                        abstract.style.display = 'block';
+                        this.innerText = 'Collapse';
+                    } else {
+                        abstract.style.display = '-webkit-box';
+                        this.innerText = 'Expand';
+                    }
+                });
+            }
+            let paperurls = document.getElementsByClassName('paper-url');
+            for(let i=0; i<paperurls.length; i++) {
+                paperurl = paperurls[i];
+                viewtag = paperurl.nextSibling.nextSibling;
+                if(paperurl.href.indexOf('article=//')!=-1) {
+                    paperurl.style.textDecoration = 'none';
+                    paperurl.style.cursor = 'default';
+                    viewtag.style.display = 'none';
+                } else {
+                    viewtag.href = paperurl.href;
+                }
+            }
+        }
+        function nextPage() {
+            if(index<=5 && index<=result.length) {
+                index++;
+                gen();
+            }
+            if(index==6 || index>=result.length) {
+                document.getElementById('next').setAttribute("disabled", true);
+            } else {
+                document.getElementById('next').removeAttribute("disabled");
+            }
+            if(index==2) {
+                document.getElementById('prev').setAttribute("disabled", true);
+            } else {
+                document.getElementById('prev').removeAttribute("disabled");
+            }
+        }
+        function prevPage() {
+            if(index>2) {
+                index--;
+                gen();
+            }
+            if(index==6 || index>=result.length) {
+                document.getElementById('next').setAttribute("disabled", true);
+            } else {
+                document.getElementById('next').removeAttribute("disabled");
+            }
+            if(index==2) {
+                document.getElementById('prev').setAttribute("disabled", true);
+            } else {
+                document.getElementById('prev').removeAttribute("disabled");
+            }
+        }
+        window.onload = function() {
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    hide();
+                    let info = xmlhttp.responseText;
+                    result = info.split('<li class="grid-item">');
+                    document.getElementById('page-button').innerHTML = '<button id="prev" type="button" onclick="prevPage()" disabled>Prev</button>\n<button id="next" type="button" onclick="nextPage()">Next</button>';
+                    gen();
+                }
+            };
+            xmlhttp.open("GET", "/papersearch/?name=" + document.getElementById("title").innerText, true);
+            xmlhttp.send();
+        }
+    </script>
     <style>
         body {
             margin: 0;
@@ -14,8 +102,9 @@
         }
         #frame1 {
             position: relative;
-            left: 15px;
-            top: 70px;
+            left: 20px;
+            top: -450px;
+            display:flex;
         }
         #top {
             width: 90%;
@@ -81,7 +170,7 @@
             top: 5px;
         }
 
-        #abstract {
+        #main-abstract {
             font-family: Microsoft Yahei;
             font-size:18px;
             position: relative;
@@ -97,7 +186,7 @@
             padding: 2px 5px;
             position: relative;
             top: 15px;
-            width: 88px;
+            width: 100px;
         }
         #keywords {
             position: relative;
@@ -122,20 +211,154 @@
         #citations,#references {
             font-size: 17px;
             position: relative;
-            top: -50px;
+            top: -445px;
             left: 20px;
         }
         #cite-list,#refer-list {
             position: relative;
             width: 100%;
-            top: -45px;
+            top: -445px;
         }
-        #paper-title {
+        .grid-item #paper-title {
+            font-size: 18px;
+            line-height: 20px;
+            font-family: Roboto Slab,Georgia,serif;
+            font-weight: 450;
+            color: black;
+        }
+        .live #paper-title {
             font-size: 20px;
             line-height: 22px;
             font-family: Roboto Slab,Georgia,serif;
             font-weight: 550;
-            color: black;
+            color: #1857b6;
+        }
+        #relate-tag {
+            color: #2e414f;
+            font-family: Roboto,Helvetica Neue,Arial,sans-serif;
+            font-size: 20px;
+            font-weight: 550;
+            line-height: 1.4;
+        }
+        #container {
+            position:relative;
+            left: 550px;
+            top: -260px;
+            background: linear-gradient(225deg,transparent 50%,#d9dadb 0),linear-gradient(45deg,#fff,#fff),linear-gradient(135deg,#fff,#fff),linear-gradient(225deg,transparent 13.5px,#fff 0);
+            background-position: 100% 0,0 0,100% 100%,100% 0;
+            background-repeat: no-repeat;
+            background-size: 18px 18px,0 0,0 0,100% 100%;
+            width: 500px;
+            height: 500px;
+        }
+        .spinner {
+            margin: 10px auto;
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            font-size: 10px;
+            display: inline-block;
+            white-space: nowrap;
+            position: relative;
+            top: 200px;
+            left: 200px;
+        }
+
+        .spinner>div {
+            background-color:black;
+            height: 100%;
+            width: 6px;
+            -webkit-animation: stretchdelay 1.2s infinite ease-in-out;
+            animation: stretchdelay 1.2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        .spinner .rect2 {
+            -webkit-animation-delay: -1.1s;
+            animation-delay: -1.1s;
+        }
+
+        .spinner .rect3 {
+            -webkit-animation-delay: -1s;
+            animation-delay: -1s;
+        }
+
+        .spinner .rect4 {
+            -webkit-animation-delay: -0.9s;
+            animation-delay: -0.9s;
+        }
+
+        .spinner .rect5 {
+            -webkit-animation-delay: -0.8s;
+            animation-delay: -0.8s;
+        }
+
+        @-webkit-keyframes stretchdelay {
+
+            0%,
+            40%,
+            100% {
+                -webkit-transform: scaleY(0.4);
+            }
+
+            20% {
+                -webkit-transform: scaleY(1);
+            }
+        }
+
+        @keyframes stretchdelay {
+
+            0%,
+            40%,
+            100% {
+                transform: scaleY(0.4);
+                -webkit-transform: scaleY(0.4);
+            }
+
+            20% {
+                transform: scaleY(1);
+                -webkit-transform: scaleY(1);
+            }
+        }
+        .control {
+            color: #1857b6;
+            cursor: pointer;
+            display: inline;
+        }
+        .control:hover {
+            text-decoration:underline;
+        }
+        .paper-url {
+            display: inline-block;
+        }
+        .view-tag {
+            display: inline-block;
+        }
+        #temp {
+            font-size: 15px;
+        }
+
+        #abstract {
+            overflow: hidden; 
+            text-overflow: ellipsis; 
+            display: -webkit-box; 
+            -webkit-line-clamp: 2; 
+            -webkit-box-orient: vertical;
+            position:relative;
+            top: 5px;
+        }
+        .grid-item {
+            list-style: none;
+        }
+        #prev {
+            position: absolute;
+            top: 470px;
+            left: 10px;
+        }
+        #next {
+            position: absolute;
+            top: 470px;
+            right: 10px;
         }
     </style>
 </head>
@@ -146,7 +369,7 @@
     <div id="top">
         <div id="detail">
             <div id="article-title">
-                <a href="//doi.org/{{ article.url }}">{{ article.title }}</a>
+                <a id="title" href="//doi.org/{{ article.url }}">{{ article.title }}</a>
             </div>
             <div class="info">
                 <span id="paper-fields">
@@ -178,13 +401,13 @@
             <span id="abstract-tag">
                 Abstract
             </span>
-            <div id="abstract">
+            <div id="main-abstract">
                 {{ article.abstract }}
         </div>
         {% endif %}
     </div>
     <div id="keywords-tag">
-        Top Key Words
+        Top Key Phrases
     </div>
     {% if keywords|length %}
     <div id="keywords">
@@ -200,10 +423,28 @@
     {% if article.abstract %}
         <img id="wordcloud" src="{% static 'images/word.png' %}" alt="key words">
     {% endif %}
+    <div id="container">
+        <div id="relate-tag">
+            Most Related Papers
+        </div>   
+        <div class="spinner">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+        <div id="relate-paper">
+
+        </div>
+        <div id="page-button">
+
+        </div>
+    </div>
+    {% if article.citations|length %}
+        <iframe id="frame1" src="{% static '/citation.html' %}" width="400px"" height="200px" frameborder="no" scrolling="no"></iframe>
+    {% endif %}
     <div id="bottom">
-        {% if article.citations|length %}
-            <iframe id="frame1" src="{% static '/citation.html' %}" width="400px"" height="320px" frameborder="auto" scrolling="false"></iframe>
-        {% endif %}
         <div id="left">
             <div id="citations">
                 <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />

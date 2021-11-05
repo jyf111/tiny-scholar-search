@@ -136,6 +136,18 @@ class Rake(object):
         sorted_keywords = sorted(keyword_candidates.items(), key=operator.itemgetter(1), reverse=True)
         return sorted_keywords
 
+def delete_substring(keywords):
+    nkeywords = []
+    for i in range(len(keywords)-1, -1, -1):
+        flag = True
+        for j in range(i-1, -1, -1):
+            if keywords[j][0].find(keywords[i][0])!=-1:
+                flag = False
+        if flag:
+            nkeywords.append(keywords[i])
+    nkeywords.reverse()
+    return nkeywords
+
 
 def getkey(text):
     sentenceList = split_sentences(text)
@@ -143,6 +155,7 @@ def getkey(text):
     stoppath = module_path+"/SmartStoplist.txt"  
     rake = Rake(stoppath)
     keywords = rake.run(text)
+    keywords = delete_substring(keywords)
     L = len(keywords)
     if L > 5:
         L = 5

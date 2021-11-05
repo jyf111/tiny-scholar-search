@@ -131,7 +131,7 @@ def article(request, doi):
         if i not in citcnt:
             citcnt[i] = 0
     bar = (
-        Bar(init_opts=opts.InitOpts(width="300px", height="200px"))
+        Bar(init_opts=opts.InitOpts(width="400px", height="200px"))
             .add_xaxis(list(range(mnyear, mxyear + 1)))
             .add_yaxis("count", [citcnt[year] for year in range(mnyear, mxyear + 1)],
                        itemstyle_opts=opts.ItemStyleOpts(color="blue"))
@@ -145,7 +145,7 @@ def article(request, doi):
     if article.abstract!=None:
         WordCloud( background_color=None,
             mode="RGBA",  
-            width=500,
+            width=400,
             height=300,
             collocations=True,
             color_func = random_color_func,
