@@ -1,0 +1,216 @@
+/* 头部区域 */
+.header {
+    z-index: 5;
+}
+/* banner区域 */
+.banner {
+    width: 100%;
+    height: 100px;
+    margin-top: 55px;
+    background: url("../../../../static/images/banner.jpg");
+}
+    /* 导航栏 */
+.banner .nav>li{
+    float: left;
+    height: 80px;
+    margin: 20px 0 0;
+    padding: 0 30px;
+    color: #fff;
+}
+.banner .nav>li:hover {
+    background-color: #fff;
+    border-radius: 5px 5px 0 0;
+    color: #333;
+}
+.banner .nav>li h4{
+    font-size: 16px;
+    text-align: center;
+    line-height: 60px;
+}
+    /* 弹出菜单 */
+.banner .nav li:first-child {
+    position: relative;
+}
+.banner .nav li:first-child .select {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    border-radius: 0 0 5px 5px;
+    font-size: 12px;
+}
+.banner .nav li:first-child .select ul li {
+    display: none;
+    position: relative;
+    width: 100%;
+    height: 24px;
+    padding: 0 20px;
+    background-color: #fff;
+    color: #333;
+    line-height: 24px;
+}
+.banner .nav li:first-child:hover .select ul li {
+    display: block;
+}
+.banner .nav li:first-child .select ul li:last-child{
+    border-radius: 0 0 5px 5px;
+}
+.banner .nav li:first-child .select ul li::after {
+    content: '';
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, .1);
+}
+.banner .nav li:first-child .select ul li:last-child:after {
+    border-radius: 0 0 5px 5px;
+}
+.banner .nav li:first-child .select ul li:hover::after {
+    display: block;
+}
+/* 内容区域 */
+    /* 左侧 */
+.content {
+    min-height: 600px;
+}
+.content .left {
+    /* float: left; */
+    width: 75%;
+    height: auto;
+}
+        /* 提示信息 */
+.content .left .tips {
+    color: #666;
+    font-size: 12px;
+}
+.content .left .tips span:first-child {
+    float: left;
+    padding: 10px 20px;
+}
+.content .left .tips span:last-child {
+    float: right;
+    padding: 10px 20px;
+}
+    /* 论文表 */
+.content .left .paperlist table {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #fff;
+    text-align: center;
+    table-layout: fixed;
+}
+.content .left .paperlist table td {
+    height: 40px;
+}
+    /* 设置列宽和字体大小 */
+
+.content .left .paperlist table tr td:nth-child(1) {
+    width: 40%;
+}
+.content .left .paperlist table tr td:nth-child(2) {
+    width: 15%;
+    font-size: 12px;
+}
+.content .left .paperlist table tr td:nth-child(3) {
+    width: 10%;
+    font-size: 12px;
+}
+.content .left .paperlist table tr td:nth-child(4) {
+    width: 10%;
+    font-size: 12px;
+}
+.content .left .paperlist table tr td:nth-child(5) {
+    width: 10%;
+    font-size: 12px;
+}
+.content .left .paperlist table tr td:nth-child(6) {
+    width: 15%;
+    font-size: 12px;
+}
+.content .left .paperlist table tr td:nth-child(6) button {
+    width: 40px;
+    height: 20px;
+    border: 0;
+    border-radius: 10px;
+    background-color: #2368b1;
+    color: #fff;
+}
+        /* 表头 */
+.content .left .paperlist table thead tr {
+    width: 100%;
+    background-color: #dfdfdf;
+    font-weight: 700;
+}
+.content .left .paperlist table thead tr td:nth-child(n){
+    font-size: 14px;
+}
+        /* 表项 */
+.content .left .paperlist table tbody tr:nth-child(odd) {
+    background-color: #fcfcfc;
+}
+.content .left .paperlist table tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+.content .left .paperlist table tbody tr:hover {
+    background-color: rgba(0, 0, 0, .1);
+}
+    /* 右侧 */
+.content .right {
+    position: fixed;
+    top: 115px;
+    right: 10%;
+    width: 18%;
+}
+.content .right>div {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+}
+.content .right>div .hd {
+    width: 100%;
+    height: 20%;
+    padding: 0 10px;
+    border-radius: 5px 5px 0 0;
+    background-color: #2368b1;
+    color: #fff;
+    font-size: 20px;
+    text-align: left;
+    line-height: 40px;
+}
+.content .right>div:hover .hd {
+    background-color: #fd7010;
+}
+.content .right>div .bd {
+    width: 100%;
+    height: 80%;
+    border-radius: 0 0 5px 5px;
+    background-color: #fff;
+}
+.content .right #author .bd {
+    padding: 10px;
+    color: #666;
+    line-height: 21px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+
+}
+.content .right #author .bd div span {
+    color: #333;
+    font-weight: 700;
+}
+.content .right #publication .bd iframe {
+    width: 100%;
+    height: 100%;
+}
+.content .right #co-author .bd iframe {
+    width: 100%;
+    height: 100%;
+    margin: -4px 0 0 -4px;
+}

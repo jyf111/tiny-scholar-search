@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="../../css/common.css"> -->
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <!-- <link rel="stylesheet" href="../../css/search/author/detail.css"> -->
+    <link rel="stylesheet" href="{% static 'css/search/author/detail.css' %}">
+    <link rel="icon" href="{% static 'images/icon.svg' %}"/>
+    <title>{{ author.name }}</title>
+</head>
+<body>
+     <!-- 头部区域 -->
+     <div class="header">
+        <div class="w">
+            <h1 class="logo">
+                <a href="../../index.html"><img src="../../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+            </h1>
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Share</a></li>
+                    <li><a href="#">Donate</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- banner区域 -->
+    <div class="banner">
+        <ul class="nav w">
+            <li>
+                <h4>CCF-Rank</h4>
+                <div class="select">
+                    <ul>
+                        <li>CCF-A({{ author.ccfa }})</li>
+                        <li>CCF-B({{ author.ccfb }})</li>
+                        <li>CCF-C({{ author.ccfc }})</li>
+                        <li>CCF-None({{ author.ccfnone }})</li>
+                    </ul>
+                </div>
+            </li>
+            <li><h4>Journal({{ author.journals }})</h4></li>
+            <li><h4>Conference({{ author.conferences }})</h4></li>
+        </ul>
+    </div>
+    <!-- 内容区域 -->
+    <div class="content w">
+        <div class="left">
+            <div class="tips">
+                <span>Author: {{ author.name }}</span>
+                <span>Total {{ author.papers }} results found</span>
+            </div>
+            <div class="paperlist clearfix">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Title</td>
+                            <td>Authors</td>
+                            <td>Date</td>
+                            <td>Kind</td>
+                            <td>Rank</td>
+                            <td>Others</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pub in author.publications %}
+                        <tr class="CCF-{{pub.rank}} {{pub.type}}tr">
+                            <td>{{ pub.url|safe }}</td>
+                            <td>
+                                {% for author in pub.author %}
+                                {% if forloop.last %}
+                                    <span>{{ author.0|safe }}</span>
+                                {% else %}
+                                    <span>{{ author.0|safe }},</span>
+                                {% endif %}
+                            {% endfor %}
+                            </td>
+                            <td>{{ pub.year }}</td>
+                            <td>{{ pub.kind }}</td>
+                            <td class="ccf-rank ccf-{{pub.rank}}">ccf-{{ pub.rank }}</td>
+                            <td>
+                                <form action="{% url 'article' pub.doi %}">
+                                    <button type="submit">detail</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="right">
+            <div id="author">
+                <div class="hd">{{ author.name }}</div>
+                <div class="bd">
+                    <div><span>total papars: </span>{{ author.papers }}</div>
+                    {% for affiliation in author.affiliations %}
+                        {% if forloop.first %}
+                        <div><span>affiliation: </span>{{ affiliation }}</div>
+                        {% else %}
+                        <div><span>affiliation(former): </span>{{ affiliation }}</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div id="publication">
+                <div class="hd">Publication</div>
+                <div class="bd">
+                    <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no"></iframe>
+                </div>
+            </div>
+            <div id="co-author">
+                <div class="hd">Co-author</div>
+                <div class="bd">
+                    <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 底部区域 -->
+    <div class="footer">
+        <div class="w">
+            <ul>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Cookies policy</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

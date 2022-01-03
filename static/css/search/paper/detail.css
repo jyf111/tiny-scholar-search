@@ -1,0 +1,123 @@
+/* 内容区域 */
+.content {
+    min-height: 700px;
+    margin-top: 80px;
+}
+/* 内容最上部 */
+.content .top {
+    margin-bottom: 20px;
+    background-color: #fff;
+}
+
+    /* 左侧图片区域 */
+.content .top .left {
+    float: left;
+    width: 35%;
+    padding: 50px 20px;
+}
+.content .top .left .pic img {
+    width: 100%;
+}
+    /* 右侧论文信息 */
+.content .top .right {
+    float: right;
+    width: 65%;
+    padding: 20px;
+    color: #888;
+}
+    /* 标题 */
+.content .top .right h3 {
+    width: 100%;
+    padding: 0 20px 20px;
+}
+.content .top .right h3 a {
+    color: #333;
+    font-size: 28px;
+}
+.content .top .right>div:first-of-type {
+    border-top: 2px solid #f5f5f5;
+}
+.content .top .right>div {
+    width: 100%;
+    padding: 20px;
+    border-bottom: 2px solid #f5f5f5;
+}
+.content .top .right>div .label {
+    color: #333;
+    font-weight: 700;
+}
+    /* 摘要 */
+.content .middle {
+    margin-bottom: 20px;
+    padding: 10px 30px;
+    color: #9b9b9b;
+    background-color: #fff;
+}
+.content .middle h4 {
+    height: 40px;
+    padding-left: 10px;
+    border-left: 5px solid #2368b1;
+    color: #333;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 40px;
+}
+.content .middle p {
+    padding: 10px 0;
+    color: #888;
+    text-indent: 2em;
+    line-height: 28px;
+}
+    /* 引用 */
+.content .bottom {
+    margin-bottom: 20px;
+    padding: 10px 30px;
+    color: #9b9b9b;
+    background: #fff;
+}
+.content .bottom h4 {
+    height: 40px;
+    padding-left: 10px;
+    border-left: 5px solid #2368b1;
+    color: #333;
+    font-size: 20px;
+    font-weight: 700;
+    font-style: italic;
+    line-height: 40px;
+}
+.content .bottom ul {
+    margin: 20px 0 50px;
+}
+.content .bottom ul li {
+    padding: 10px 0;
+    color: #888;
+}
+.content .bottom ul li:hover .dot {
+    transform: scale(2);
+}
+.content .bottom ul li .dot {
+    float: left;
+    width: 8px;
+    height: 8px;
+    margin: 12px 24px;
+    border-radius: 4px;
+    background-color: #ddeeff;
+    transition: all .5s;
+}
+.content .bottom ul li .block {
+    float: right;
+    width: 95%;
+}
+.content .bottom ul li .block h5 {
+    padding: 0 15px;
+    color: #2368b1;
+    font-size: 20px;
+    line-height: 32px;
+}
+.content .bottom ul li .block>span {
+    display: inline-block;
+    padding: 5px 20px 5px 15px;
+}
+
+

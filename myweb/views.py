@@ -9,7 +9,7 @@ import time
 
 
 def page(request):
-    return render(request, 'mainpage.html')
+    return render(request, 'index.html')
 
 def scholarsearch(request):
     request.encoding = 'utf-8'
@@ -19,7 +19,7 @@ def scholarsearch(request):
         message = ''
     exact_authors, likely_authors = utils.dblp.search(message)
 
-    return render(request, 'scholarsearch.html', {'key': message, 'exact_authors': exact_authors, 'likely_authors': likely_authors})
+    return render(request, 'search/author.html', {'key': message, 'exact_authors': exact_authors, 'likely_authors': likely_authors})
 
 def papersearch(request):
     request.encoding = 'utf-8'
@@ -28,7 +28,7 @@ def papersearch(request):
     else:
         message = ''
     result = utils.semantic.search(message)
-    return render(request, 'papersearch.html', {'key': message, 'total': result[0], 'articles': result[1]})
+    return render(request, 'search/paper.html', {'key': message, 'total': result[0], 'articles': result[1]})
     
 def author(request, pid):
     author = utils.dblp.gen_author(pid)
@@ -71,7 +71,7 @@ def author(request, pid):
         Bar(init_opts=opts.InitOpts(width="300px", height="200px"))
             .add_xaxis(list(range(mnyear, mxyear + 1)))
             .add_yaxis("count", [pubcnt[year] for year in range(mnyear, mxyear + 1)])
-            .set_global_opts(title_opts=opts.TitleOpts(title="publications"))
+            # .set_global_opts(title_opts=opts.TitleOpts(title="publications"))
             .render('static/publish.html')
     )
 
@@ -95,11 +95,11 @@ def author(request, pid):
     c = (
         Graph(init_opts=opts.InitOpts(width="300px", height="200px"))
             .add("", nodes, links, categories=categories, repulsion=100, is_draggable=True)
-            .set_global_opts(title_opts=opts.TitleOpts(title="co-author"))
+            # .set_global_opts(title_opts=opts.TitleOpts(title="co-author"))
             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
             .render('static/coauthor.html')
     )
-    return render(request, 'scholar.html', {'author': author})
+    return render(request, 'search/author/detail.html', {'author': author})
 
 def random_color_func(word=None, font_size=None, position=None,  orientation=None, font_path=None, random_state=None):
         h  = randint(0,100)
@@ -152,4 +152,4 @@ def article(request, doi):
             ).generate(article.abstract).to_file('static/images/word.png')
         import RAKE.rake
         keywords = RAKE.rake.getkey(article.title+'.'+article.abstract)
-    return render(request, 'paper.html', {'article': article, 'keywords': keywords})
+    return render(request, 'search/paper/detail.html', {'article': article, 'keywords': keywords})

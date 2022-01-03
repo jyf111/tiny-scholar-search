@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="../../css/common.css"> -->
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <!-- <link rel="stylesheet" href="../../css/search/paper/detail.css"> -->
+    <link rel="stylesheet" href="{% static 'css/search/paper/detail.css' %}">
+    <link rel="icon" href="{% static 'images/icon.svg' %}"/>
+    <title>{{ article.title }}</title>
+</head>
+<body>
+     <!-- 头部区域 -->
+     <div class="header">
+        <div class="w">
+            <h1 class="logo">
+                <a href="../../index.html"><img src="../../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+            </h1>
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Share</a></li>
+                    <li><a href="#">Donate</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 内容区域 -->
+    <div class="content w">
+        <div class="top clearfix">
+            <div class="left">
+                <div class="pic">
+                    <img src="{% static 'images/word.png' %}" alt="">
+                </div>
+            </div>
+            <div class="right">
+                <h3><a href="//doi.org/{{ article.url }}">{{ article.title }}</a></h3>
+                <div class="author">
+                    <span class="label">Authors: </span>
+                    <span>
+                    {% for author in article.authors %}
+                        {% if forloop.last %}
+                            <span>{{ author }}</span>
+                        {% else %}
+                            <span>{{ author }},</span>
+                        {% endif %}
+                    {% endfor %}
+                    </span>
+                </div>
+                <div class="topic">
+                    <span class="label">Topic: </span>
+                    <span>
+                    {% for topic in article.fields %}
+                        {% if forloop.last %}
+                            <span>{{ topic }}</span>
+                        {% else %}
+                            <span>{{ topic }},</span>
+                        {% endif %}
+                    {% endfor %}
+                    </span>
+                </div>
+                <div class="keywords">
+                    <span class="label">Keywords: </span>
+                    <span>
+                        {% for key in keywords %}
+                        {% if forloop.last %}
+                            <span>{{ key }}</span>
+                        {% else %}
+                            <span>{{ key }}、</span>
+                        {% endif %}
+                    {% endfor %}
+                    </span>
+                </div>
+                <div class="other">
+                    {{ article.year }}
+                    {{ article.venue }}
+                </div>
+            </div>
+        </div>
+        <div class="middle">
+            <h4>abstract</h4>
+            <p>{{ article.abstract }}</p>
+        </div>
+        <div class="bottom">
+            <div class="references">
+                <h4>references</h4>
+                <ul class="ref-list">
+                    {% for paper in article.references %}
+                    <li class="clearfix">
+                        <div class="dot"></div>
+                        <div class="block">
+                            <h5><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h5>
+                            <span>
+                            {% for author in paper.authors %}
+                                {% if forloop.last %}
+                                    <span>{{ author }}</span>
+                                {% else %}
+                                    <span>{{ author }},</span>
+                                {% endif %}
+                            {% endfor %}
+                            </span>
+                            <span class="venue">
+                                {{ paper.year }}
+                                {{ paper.venue }}
+                            </span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="citations">
+                <h4>citations</h4>
+                <ul class="cite-list">
+                    {% for paper in article.citations %}
+                    <li class="clearfix">
+                        <div class="dot"></div>
+                        <div class="block">
+                            <h5><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h5>
+                            <span>
+                            {% for author in paper.authors %}
+                                {% if forloop.last %}
+                                    <span>{{ author }}</span>
+                                {% else %}
+                                    <span>{{ author }},</span>
+                                {% endif %}
+                            {% endfor %}
+                            </span>
+                            <span class="venue">
+                                {{ paper.year }}
+                                {{ paper.venue }}
+                            </span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- 底部区域 -->
+    <div class="footer">
+        <div class="w">
+            <ul>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Cookies policy</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

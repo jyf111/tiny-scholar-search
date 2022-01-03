@@ -1,0 +1,143 @@
+/* 引入字体图标 */
+@font-face {
+    font-family: 'icomoon';
+    src:  url('../../../static/fonts/icomoon.eot?rkcc0f');
+    src:  url('../../../static/fonts/icomoon.eot?rkcc0f#iefix') format('embedded-opentype'),
+      url('../../../static/fonts/icomoon.ttf?rkcc0f') format('truetype'),
+      url('../../../static/fonts/icomoon.woff?rkcc0f') format('woff'),
+      url('../../../static/fonts/icomoon.svg?rkcc0f#icomoon') format('svg');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+.header {
+    z-index: 10;
+}
+
+/* 搜索模块 */
+.search {
+    position: fixed;
+    top: 8px;
+    left: 40%;
+    width: 500px;
+    height: 40px;
+    border: 1px solid #dfdfdf;
+    border-radius: 20px;
+    z-index: 10;
+    transform: translate(-50%, 0);
+}
+.search:hover {
+    border: 0;
+    box-shadow: 0 0 3px 2px rgba(0, 0, 0, .1);
+}
+.search::before {
+    content: '\ec15';
+    float: left;
+    padding-left: 15px;
+    color: #666;
+    font: 24px icomoon;
+    line-height: 40px;
+}
+.search input {
+    float: right;
+    width: 90%;
+    height: 38px;
+    border: 0;
+    border-radius: 0 20px 20px 0;
+    outline: none;
+}
+
+/* 内容区域 */
+.content {
+    min-height: 700px;
+}
+    /* 提示文本 */
+.content .msg{
+    margin-top: 90px;
+    font-size: 16px;
+}
+.content .copyright {
+    padding: 5px 30px  10px;
+    color: #888;
+    font-size: 12px;
+    text-align: right;
+}
+.content .paperlist ul li {
+    width: 100%;
+    padding: 10px 30px;
+    margin-bottom: 30px;
+    background-color: #fff;
+    box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+}
+        /* 标题 */
+.content .paperlist ul li h3 a {
+    color: #2368b1;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 40px;
+}
+        /* 论文信息 */
+.content .paperlist ul li .info {
+    color: #667777;
+}
+.content .paperlist ul li .info>span {
+    padding-right: 20px;
+    line-height: 30px;
+}
+.content .paperlist ul li .info .kind {
+    color: #ffd700;
+    font-weight: 700;
+}
+    /* 摘要 */
+.content .paperlist ul li .abstract {
+    position: relative;
+    line-height: 20px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+/* .content .paperlist ul li .abstract:hover {
+    display: block;
+} */
+.content .paperlist ul li .abstract .tip {
+    color: #333;
+    font-weight: 700;
+}
+.content .paperlist ul li .abstract p {
+    display: inline;
+    color: #333;
+}
+.content .paperlist ul li .abstract p::after {
+    content: 'more';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: 0;
+    color: #55bbff;
+    background: #fff;
+    line-height: 20px;
+}
+
+    /* 其他 */
+.content .paperlist ul li .other {
+    margin-top: 5px;
+    font-size: 12px;
+    text-align: right;
+}
+/* .content .paperlist ul li .other button {
+    float: left;
+    width: 40px;
+    height: 24px;
+    border: 1px solid #2368b1;
+    border-radius: 5px;
+    color: #2368b1;
+} */
+.content .paperlist ul li .other span {
+    /* float: right; */
+    padding-right: 20px;
+    line-height: 24px;
+    color: #666;
+}
+
+   

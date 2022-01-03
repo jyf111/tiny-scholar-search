@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="../css/common.css"> -->
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <!-- <link rel="stylesheet" href="../css/search/paper.css"> -->
+    <link rel="stylesheet" href="{% static 'css/search/paper.css' %}">
+    <link rel="icon" href="{% static 'images/icon.svg' %}"/>
+    <title>Search for:"{{ key }}"</title>
+    <!-- <script>
+        function insertAfter(new_item, item) {
+            item.parentNode.insertBefore(new_item, item.nextSibling);
+        }
+        window.onload = function() {
+            let controls = document.getElementsByClassName('more');
+            for(let i=0; i<controls.length; i++) {
+                control = controls[i];
+                control.addEventListener('click', function() {
+                    abstract = this.previousSibling.previousSibling;
+                    if(this.innerText==='more') {
+                        abstract.style.display = 'inline-block';
+                        this.innerText = 'less';
+                    } else {
+                        abstract.style.display = '-webkit-box';
+                        this.innerText = 'more';
+                    }
+                });
+            }
+            let paperurls = document.getElementsByClassName('paper-url');
+            for(let i=0; i<paperurls.length; i++) {
+                paperurl = paperurls[i];
+                viewtag = paperurl.nextSibling.nextSibling;
+                if(paperurl.href.indexOf('article=//')!=-1) {
+                    paperurl.style.textDecoration = 'none';
+                    paperurl.style.cursor = 'default';
+                    viewtag.style.display = 'none';
+                } else {
+                    viewtag.href = paperurl.href;
+                }
+            }
+        }
+    </script> -->
+</head>
+<body>
+    <!-- 头部区域 -->
+    <div class="header">
+        <div class="w">
+            <h1 class="logo">
+                <a href="../index.html"><img src="../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+            </h1>
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Share</a></li>
+                    <li><a href="#">Donate</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="search">
+        <form id="trans" action="/papersearch/" autocomplete="off" method="get">
+            <input type="text" id="search-bar" value="{{ key }}">
+        </form>
+    </div>
+    <!-- 内容区域 -->
+    <div class="content w">
+        <p class="msg">About {{ total }} results for '{{ key }}'.</p>
+        <p class="copyright">powered by NWPU</p>
+        <div class="paperlist">
+            <ul>
+                {% for article in articles %}
+                <li>
+                    <h3><a href="{% url 'article' article.url %}" class=""paper-url>{{ article.title }}</a></h3>
+                    <div class="info">
+                        <span class="author">
+                            {% for author in article.authors %}
+                            {% if forloop.last %}
+                                <span>{{ author }}</span>
+                            {% else %}
+                                <span>{{ author }},</span>
+                            {% endif %}
+                        {% endfor %}
+                        </span>
+                        <span class="topic">
+                            {% for topic in article.fields %}
+                            {% if forloop.last %}
+                            <span>{{ topic }}</span>
+                            {% else %}
+                            <span>{{ topic }},</span>
+                            {% endif %}
+                            {% endfor %}
+                        </span>
+                        <span class="year">{{ article.year }}</span>
+                        <span class="kind">{{ article.venue }}</span>
+                    </div>
+                    <div class="abstract">
+                        <span class="tip">abstract: </span> 
+                        <p>{{ article.abstract }}</p>
+                    </div>
+                    <div class="other clearfix">
+                        <!-- <button>detail</button> -->
+                        <span>citation: {{ article.citationCount }}</span>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- 底部区域 -->
+    <div class="footer">
+        <div class="w">
+            <ul>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Cookies policy</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

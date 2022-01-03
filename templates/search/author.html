@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="../css/common.css"> -->
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <!-- <link rel="stylesheet" href="../css/search/author.css"> -->
+    <link rel="stylesheet" href="{% static 'css/search/author.css' %}">
+    <link rel="icon" href="{% static 'images/icon.svg' %}"/>
+    <title>Search for:"{{ key }}"</title>
+</head>
+<body>
+    <!-- 头部区域 -->
+    <div class="header">
+        <div class="w">
+            <h1 class="logo">
+                <a href="../index.html"><img src="../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+            </h1>
+            <div class="nav">
+                <ul>
+                    <li><a href="#">Share</a></li>
+                    <li><a href="#">Donate</a></li>
+                    <li><a href="#">Feedback</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="search">
+        <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
+            <input type="text" id="search-bar" value="{{ key }}">
+        </form>
+    </div>
+    <!-- 内容区域 -->
+    <div class="content w">
+        <p class="msg">Showing searching results for '{{ key }}'.</p>
+        <h3 class="tips">Exact matches</h3>
+        <p class="copyright">powered by NWPU</p>
+        <ul class="match-list clearfix">
+            {% for author in exact_authors %}
+            <li>
+                <div class="pic">
+                    <img src="../../static/images/user.png" alt="">
+                </div>
+                <div class="info">
+                    <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
+                    <div class="body">
+                        <div>papers: <span>23</span></div>
+                        <div>affiliation: <span>Peking University, Key Laboratory of High Confidence Software Technologies, Beijing, China</span></div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        <h3 class="tips">Likely matches</h3>
+        <p class="copyright">powered by NWPU</p>
+        <ul class="match-list clearfix">
+            {% for author in likely_authors %}
+            <li>
+                <div class="pic">
+                    <img src="../../static/images/user.png" alt="">
+                </div>
+                <div class="info">
+                    <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
+                    <div class="body">
+                        <div>papers: <span>23</span></div>
+                        <div>affiliation: <span>Peking University, Key Laboratory of High Confidence Software Technologies, Beijing, China</span></div>
+                    </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 底部区域 -->
+    <div class="footer">
+        <div class="w">
+            <ul>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Cookies policy</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
