@@ -37,6 +37,13 @@
 .content .top .right>div:first-of-type {
     border-top: 2px solid #f5f5f5;
 }
+.content .top .right>div:first-of-type>span>span::before {
+    content: '\ebaf';
+    padding: 0 5px;
+    color: #2368b1;
+    font-size: 20px;
+    font-family: icomoon;
+}
 .content .top .right>div {
     width: 100%;
     padding: 20px;
@@ -45,6 +52,13 @@
 .content .top .right>div .label {
     color: #333;
     font-weight: 700;
+}
+.content .top .right>div:last-of-type span:last-child::before {
+    content: '\ed21';
+    padding: 0 5px;
+    color: #2368b1;
+    font-size: 20px;
+    font-family: icomoon;
 }
     /* 摘要 */
 .content .middle {

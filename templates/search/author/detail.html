@@ -37,16 +37,18 @@
 
         function Journal() {
             let box = document.querySelector("#Journal_check");
+            box.value = !box.value
             let pubs = document.querySelectorAll("tr");
             for(let i=1; i<pubs.length; i++) {
                 if(pubs[i].className.indexOf("Journal")!==-1) {
-                    pubs[i].style.display = (box.checked ? "table-row" : "none");
+                    pubs[i].style.display = (box.value ? "table-row" : "none");
                 }
             }
         }
         
         function Conference() {
             let box = document.querySelector("#Conference_check");
+            box.value = !box.value
             let pubs = document.querySelectorAll("tr");
             for(let i=1; i<pubs.length; i++) {
                 if(pubs[i].className.indexOf("Conference")!==-1) {
@@ -57,6 +59,7 @@
 
         function Other() {
             let box = document.querySelector("#Other_check");
+            box.value = !box.value
             let pubs = document.querySelectorAll("tr");
             for(let i=1; i<pubs.length; i++) {
                 if(pubs[i].className.indexOf("Conference")===-1 &&  pubs[i].className.indexOf("Journal")===-1) {
@@ -93,13 +96,13 @@
                         <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-A({{ author.ccfa }})</li>
                         <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-B({{ author.ccfb }})</li>
                         <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-C({{ author.ccfc }})</li>
-                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-None({{ author.ccfnone }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />None({{ author.ccfnone }})</li>
                     </ul>
                 </div>
             </li>
-            <li><input type="checkbox" checked="checked" onclick="Journal()" id="Journal_check" />Journal({{ author.journals }})</li>
-            <li><input type="checkbox" checked="checked" onclick="Conference()" id="Conference_check" />Conference({{ author.conferences }})</li>
-            <li><input type="checkbox" checked="checked" onclick="Other()" id="Other_check" />Other({{ author.others }})</li>
+            <li><h4 value="1" onclick="Journal()" id="Journal_check" />Journal({{ author.journals }})</h4></li>
+            <li><h4 value="1" onclick="Conference()" id="Conference_check" />Conference({{ author.conferences }})</h4></li>
+            <li><h4 value="1" onclick="Other()" id="Other_check" />Other({{ author.others }})</h4></li>
         </ul>
     </div>
     <!-- 内容区域 -->

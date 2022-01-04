@@ -70,14 +70,14 @@
                         {% if forloop.last %}
                             <span>{{ key }}</span>
                         {% else %}
-                            <span>{{ key }}、</span>
+                            <span>{{ key }}, </span>
                         {% endif %}
                     {% endfor %}
                     </span>
                 </div>
                 <div class="other">
                     {{ article.year }}
-                    {{ article.venue }}
+                    <span>{{ article.venue }}</span>
                 </div>
             </div>
         </div>

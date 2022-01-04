@@ -57,8 +57,9 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w">
-        <h2><p class="msg">search results for '{{ key }}':</p></h2>
+        <h2><p class="msg">Search results for '{{ key }}':</p></h2>
         <h3 class="tips">Exact matches</h3>
+        <p class="copyright">powered by NWPU</p>
         <ul class="match-list clearfix">
             {% for author in exact_authors %}
             <li>
@@ -72,9 +73,6 @@
                             <span id="number">{{ author.id }}</span>
                         </a>
                     </h4>
-                    <div class="details">
-                        details
-                    </div>
                     <div class="load">
                         <div class="spinner">
                             <div class="rect1"></div>
@@ -91,6 +89,7 @@
             {% endfor %}
         </ul>
         <h3 class="tips">Likely matches</h3>
+        <p class="copyright">powered by NWPU</p>
         <ul class="match-list clearfix">
             {% for author in likely_authors %}
             <li>
@@ -99,9 +98,6 @@
                 </div>
                 <div class="info">
                     <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
-                    <div class="details">
-                        details
-                    </div>
                     <div class="load">
                         <div class="spinner">
                             <div class="rect1"></div>

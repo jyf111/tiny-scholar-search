@@ -29,13 +29,13 @@
 }
 .search button {
     float: right;
-    height: 40px;
-    border: 2px solid #2368b1;
+    height: 38px;
+    border: 0;
     width: 10%;
     border-radius: 0 20px 20px 0;
-    background-color: #2368b1;
-    color: #fff;
-    font-size: 0px;
+    background-color: #fff;
+    color: #2368b1;
+    font-size: 0;
     cursor: pointer;
 }
 .search button::before {
@@ -77,7 +77,7 @@
 }
 .content .match-list li {
     float: left;
-    width: 32%;
+    width: 49%;
     height: 200px;
     margin: 0 2% 2% 0;
     background-color: #fff;
@@ -87,7 +87,7 @@
 }
 .content .match-list li .pic {
     float: left;
-    width: 35%;
+    width: 25%;
     height: 180px;
     margin: 10px;
     padding: 10px;
@@ -99,33 +99,31 @@
 }
 .content .match-list li .info {
     float: left;
-    width: 55%;
+    width: 65%;
     height: 180px;
     margin: 10px 10px 10px 8px;
 }
 .content .match-list li .info h4 {
-    height: 20%;
     font-size: 24px;
+    line-height: 50px;
 }
 .content .match-list li .info .body {
-    height: 80%;
-    padding-top: 35px
+    margin-top: 50px;
+    vertical-align: bottom;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 }
 .content .match-list li .info .body div {
     color: #666;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 28px;
 }
 .content .match-list li .info .body div span {
-    font-weight: 400;
+    font-weight: 700;
 }
-.content .match-list li .info .body div:last-child {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-}
-.content .match-list li:nth-child(3n) {
+.content .match-list li:nth-child(2n) {
     margin-right: 0;
 }
     /* 清除浮动 */
