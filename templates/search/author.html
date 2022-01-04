@@ -11,13 +11,33 @@
     <link rel="stylesheet" href="{% static 'css/search/author.css' %}">
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Search for:"{{ key }}"</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            urls = document.querySelectorAll(".info h4 a");
+            infos = document.querySelectorAll(".info .body");
+            loads = document.querySelectorAll(".info .load");
+            for (let i=0; i<urls.length; i++) {
+                let xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function() {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                        let info = xmlhttp.responseText.split("<div class=\"bd\">");
+                        info = info[1].split("<!-- end -->")[0];
+                        infos[i].innerHTML = info;
+                        loads[i].style.display = "none";
+                    }
+                }
+                xmlhttp.open("GET", urls[i], true);
+                xmlhttp.send();
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- 头部区域 -->
     <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="../index.html"><img src="../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -31,14 +51,14 @@
     </div>
     <div class="search">
         <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
-            <input type="text" id="search-bar" value="{{ key }}">
+            <input type="text" name='name' id="search-bar" value="{{ key }}">
+            <button type="submit">Search</button>
         </form>
     </div>
     <!-- 内容区域 -->
     <div class="content w">
-        <p class="msg">Showing searching results for '{{ key }}'.</p>
+        <h2><p class="msg">search results for '{{ key }}':</p></h2>
         <h3 class="tips">Exact matches</h3>
-        <p class="copyright">powered by NWPU</p>
         <ul class="match-list clearfix">
             {% for author in exact_authors %}
             <li>
@@ -46,17 +66,31 @@
                     <img src="../../static/images/user.png" alt="">
                 </div>
                 <div class="info">
-                    <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
+                    <h4>
+                        <a href="{% url 'author' author.pid %}">
+                            {{ author.name }}
+                            <span id="number">{{ author.id }}</span>
+                        </a>
+                    </h4>
+                    <div class="details">
+                        details
+                    </div>
+                    <div class="load">
+                        <div class="spinner">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                        </div>
+                    </div>
                     <div class="body">
-                        <div>papers: <span>23</span></div>
-                        <div>affiliation: <span>Peking University, Key Laboratory of High Confidence Software Technologies, Beijing, China</span></div>
                     </div>
                 </div>
             </li>
             {% endfor %}
         </ul>
         <h3 class="tips">Likely matches</h3>
-        <p class="copyright">powered by NWPU</p>
         <ul class="match-list clearfix">
             {% for author in likely_authors %}
             <li>
@@ -65,9 +99,19 @@
                 </div>
                 <div class="info">
                     <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
+                    <div class="details">
+                        details
+                    </div>
+                    <div class="load">
+                        <div class="spinner">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                        </div>
+                    </div>
                     <div class="body">
-                        <div>papers: <span>23</span></div>
-                        <div>affiliation: <span>Peking University, Key Laboratory of High Confidence Software Technologies, Beijing, China</span></div>
                     </div>
                 </div>
             </li>

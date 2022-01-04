@@ -20,7 +20,7 @@
                 let search_bar = document.getElementById('search-bar');
                 if (author.checked) {
                     document.getElementById('trans').action = author.value
-                    search_bar.placeholder = "Enter a author's name";
+                    search_bar.placeholder = "Enter an author's name";
                 } else {
                     document.getElementById('trans').action = paper.value
                     search_bar.placeholder = "Enter a paper's title";
@@ -34,7 +34,7 @@
     <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="index.html"><img src="../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -53,7 +53,7 @@
         </div>
         <div class="search">
             <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
-                <input type="text" name='name' id="search-bar" placeholder="Enter a author's name">
+                <input type="text" name='name' id="search-bar" placeholder="Enter an author's name">
                 <button type="submit">Search</button>
             </form>
         </div>

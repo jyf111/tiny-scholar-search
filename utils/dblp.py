@@ -31,13 +31,22 @@ def get_rank(type):
         return rank_db[type]
     else:
         return "none"
-        
+
+def work(name):
+    name.strip()
+    if len(name)>=4 and str.isdigit(name[-4]) and str.isdigit(name[-3]) and str.isdigit(name[-2]) and str.isdigit(name[-1]):
+        id = name[-4:]
+        name = name[:-4]
+    else:
+        id = ""
+    return name, id
+
 class Author():
     def __init__(self, pid):
         self.pid = pid
         xml = requests.get(DBLP_PERSON_URL.format(pid=pid), headers=headers).content
         root = etree.fromstring(xml)
-        self.name = root.attrib['name']
+        self.name, self.id = work(root.attrib['name'])
         self.papers = root.attrib['n']
         self.affiliations = root.xpath('/dblpperson/person/note/text()')
         self.publications = [{'author':[]} for _ in range(int(self.papers))]
@@ -82,7 +91,8 @@ class Author():
                     if pub['rank']=='none':
                         self.ccfnone += 1
             self.publications[i] = pub
-
+        self.others = len(self.publications) - self.journals - self.conferences; 
+        
 def like(a, b):
     i = len(a) - 1
     while i>=0 and a[i].isdigit():
@@ -94,10 +104,11 @@ def search(author_str):
     root = etree.fromstring(resp.content)
     exact_authors, likely_authors = [], []
     for author in root.xpath('/authors/author'):
+        name, id = work(author.text)
         if like(author.text, author_str):
-            exact_authors.append({'pid': author.attrib['pid'], 'name': author.text})
+            exact_authors.append({'pid': author.attrib['pid'], 'name': name, 'id': id})
         else:
-            likely_authors.append({'pid': author.attrib['pid'], 'name': author.text})
+            likely_authors.append({'pid': author.attrib['pid'], 'name': name, 'id': id})
     return exact_authors, likely_authors
 
 if __name__ == '__main__':

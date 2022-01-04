@@ -11,13 +11,67 @@
     <link rel="stylesheet" href="{% static 'css/search/author/detail.css' %}">
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>{{ author.name }}</title>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+        });
+
+        function ccf() {
+            let boxes = document.querySelectorAll(".ccf_check");
+            let pubs = document.querySelectorAll("tr");
+            for(let i=1; i<pubs.length; i++) {
+                if(pubs[i].className.indexOf("CCF-a")!==-1) {
+                    pubs[i].style.display = (boxes[0].checked ? "table-row" : "none");
+                }
+                if(pubs[i].className.indexOf("CCF-b")!==-1) {
+                    pubs[i].style.display = (boxes[1].checked ? "table-row" : "none");
+                }
+                if(pubs[i].className.indexOf("CCF-c")!==-1) {
+                    pubs[i].style.display = (boxes[2].checked ? "table-row" : "none");
+                }
+                if(pubs[i].className.indexOf("CCF-none")!==-1) {
+                    pubs[i].style.display = (boxes[3].checked ? "table-row" : "none");
+                }
+            }
+        }
+
+        function Journal() {
+            let box = document.querySelector("#Journal_check");
+            let pubs = document.querySelectorAll("tr");
+            for(let i=1; i<pubs.length; i++) {
+                if(pubs[i].className.indexOf("Journal")!==-1) {
+                    pubs[i].style.display = (box.checked ? "table-row" : "none");
+                }
+            }
+        }
+        
+        function Conference() {
+            let box = document.querySelector("#Conference_check");
+            let pubs = document.querySelectorAll("tr");
+            for(let i=1; i<pubs.length; i++) {
+                if(pubs[i].className.indexOf("Conference")!==-1) {
+                    pubs[i].style.display = (box.checked ? "table-row" : "none");
+                }
+            }
+        }
+
+        function Other() {
+            let box = document.querySelector("#Other_check");
+            let pubs = document.querySelectorAll("tr");
+            for(let i=1; i<pubs.length; i++) {
+                if(pubs[i].className.indexOf("Conference")===-1 &&  pubs[i].className.indexOf("Journal")===-1) {
+                    pubs[i].style.display = (box.checked ? "table-row" : "none");
+                }
+            }
+        }
+    </script>
 </head>
 <body>
      <!-- 头部区域 -->
      <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="../../index.html"><img src="../../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="../../.."><img src="../../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -36,15 +90,16 @@
                 <h4>CCF-Rank</h4>
                 <div class="select">
                     <ul>
-                        <li>CCF-A({{ author.ccfa }})</li>
-                        <li>CCF-B({{ author.ccfb }})</li>
-                        <li>CCF-C({{ author.ccfc }})</li>
-                        <li>CCF-None({{ author.ccfnone }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-A({{ author.ccfa }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-B({{ author.ccfb }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-C({{ author.ccfc }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-None({{ author.ccfnone }})</li>
                     </ul>
                 </div>
             </li>
-            <li><h4>Journal({{ author.journals }})</h4></li>
-            <li><h4>Conference({{ author.conferences }})</h4></li>
+            <li><input type="checkbox" checked="checked" onclick="Journal()" id="Journal_check" />Journal({{ author.journals }})</li>
+            <li><input type="checkbox" checked="checked" onclick="Conference()" id="Conference_check" />Conference({{ author.conferences }})</li>
+            <li><input type="checkbox" checked="checked" onclick="Other()" id="Other_check" />Other({{ author.others }})</li>
         </ul>
     </div>
     <!-- 内容区域 -->
@@ -52,7 +107,7 @@
         <div class="left">
             <div class="tips">
                 <span>Author: {{ author.name }}</span>
-                <span>Total {{ author.papers }} results found</span>
+                <span>Total {{ author.papers }} papers found</span>
             </div>
             <div class="paperlist clearfix">
                 <table>
@@ -63,7 +118,7 @@
                             <td>Date</td>
                             <td>Kind</td>
                             <td>Rank</td>
-                            <td>Others</td>
+                            <td>More</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,9 +160,10 @@
                         <div><span>affiliation(former): </span>{{ affiliation }}</div>
                         {% endif %}
                     {% endfor %}
+                <!-- end -->
                 </div>
             </div>
-            <div id="publication">
+            <!-- <div id="publication">
                 <div class="hd">Publication</div>
                 <div class="bd">
                     <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no"></iframe>
@@ -118,7 +174,7 @@
                 <div class="bd">
                     <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- 底部区域 -->

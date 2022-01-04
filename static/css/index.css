@@ -61,6 +61,7 @@ body {
     background-color: #2368b1;
     color: #fff;
     font-size: 0px;
+    cursor: pointer;
 }
 .content .search button::before {
     content: '\ec15';
