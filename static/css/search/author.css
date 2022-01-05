@@ -55,12 +55,21 @@
 
 /* 内容区域 */
     /* 提示文本 */
-.content .msg{
-    margin-top: 90px;
-    font-size: 23px;
+.content .msg {
+    font-family: Roboto Slab,Georgia,serif;
+    font-size: 25px;
+    font-weight: 750;
+    line-height: 26px;
+    padding: 10px 0px 5px;
+    margin-top: 100px;
 }
 .content .tips {
     margin: 15px 0 15px;
+    font-size: 20px;
+    font-weight: 400;
+}
+.content .tips2 {
+    margin: 0px 0 15px;
     font-size: 20px;
     font-weight: 400;
 }
@@ -108,7 +117,7 @@
     line-height: 50px;
 }
 .content .match-list li .info .body {
-    margin-top: 50px;
+    margin-top: 25px;
     vertical-align: bottom;
     overflow: hidden;
     display: -webkit-box;
@@ -208,4 +217,28 @@
         transform: scaleY(1.0);
         -webkit-transform: scaleY(1.0);
     }
+}
+
+.btn-gradient {
+	text-decoration: none;
+	color: white;
+	padding: 10px 30px;
+	display: inline-block;
+	position: relative;
+	border: 1px solid rgba(0,0,0,0.21);
+	border-bottom: 4px solid rgba(0,0,0,0.21);
+	border-radius: 4px;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.15);
+    font-size: 14px;
+    background: #6698cb;
+}
+
+.btn-gradient:active {
+	top: 4px;	
+}
+
+
+button[disabled] {
+    color: white !important;
+    background: #c7c7c7 !important;
 }

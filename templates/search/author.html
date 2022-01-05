@@ -12,7 +12,7 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Search for:"{{ key }}"</title>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        function update() {
             urls = document.querySelectorAll(".info h4 a");
             infos = document.querySelectorAll(".info .body");
             loads = document.querySelectorAll(".info .load");
@@ -29,6 +29,97 @@
                 xmlhttp.open("GET", urls[i], true);
                 xmlhttp.send();
             }
+        }
+        var start1 = 0, start2 = 0;
+        const USERS_PER_PAGE = 4;
+        function merge(url, s1, s2) {
+            return url + '&start1=' + s1.toString() + '&start2=' + s2.toString();
+        }
+        function next1() {
+            start1 += USERS_PER_PAGE;
+            url = window.location.href;
+            let id = url.indexOf("&start");
+            let redirect = url;
+            if (id!==-1) {
+                redirect = url.substr(0, id);
+            }
+            window.location = merge(redirect, start1, start2);
+        }
+        function prev1() {
+            start1 -= USERS_PER_PAGE;
+            url = window.location.href;
+            let id = url.indexOf("&start");
+            let redirect = url;
+            if (id!==-1) {
+                redirect = url.substr(0, id);
+            }
+            window.location = merge(redirect, start1, start2);
+        }
+        function next2() {
+            start2 += USERS_PER_PAGE;
+            url = window.location.href;
+            let id = url.indexOf("&start");
+            let redirect = url;
+            if (id!==-1) {
+                redirect = url.substr(0, id);
+            }
+            window.location = merge(redirect, start1, start2);
+        }
+        function prev2() {
+            start2 -= USERS_PER_PAGE;
+            url = window.location.href;
+            let id = url.indexOf("&start");
+            let redirect = url;
+            if (id!==-1) {
+                redirect = url.substr(0, id);
+            }
+            window.location = merge(redirect, start1, start2);
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            let loc = window.location.search;
+            if (loc.indexOf("start1=")!==-1) {
+                let id = loc.indexOf("start1=") + 7;
+                while (id<loc.length && loc[id]>=0 && loc[id]<=9) {
+                    start1 = start1*10 + Number(loc[id]);
+                    ++id;
+                }
+            }
+            if (loc.indexOf("start2=")!==-1) {
+                let id = loc.indexOf("start2=") + 7;
+                while (id<loc.length && loc[id]>=0 && loc[id]<=9) {
+                    start2 = start2*10 + Number(loc[id]);
+                    ++id;
+                }
+            }
+            if (start1-USERS_PER_PAGE<0) {
+                document.querySelector('#prev1').disabled = true;
+            } else {
+                document.querySelector('#prev1').disabled = false;
+            }
+            let tot1 = Number(document.querySelector('.tips').innerHTML.split(" ")[0]);
+            if (start1+USERS_PER_PAGE>=tot1) {
+                document.querySelector('#next1').disabled = true;
+            } else {
+                document.querySelector('#next1').disabled = false;
+            }
+            if (start2-USERS_PER_PAGE<0) {
+                document.querySelector('#prev2').disabled = true;
+            } else {
+                document.querySelector('#prev2').disabled = false;
+            }
+            let tot2 = Number(document.querySelector('.tips2').innerHTML.split(" ")[0]);
+            if (start2+USERS_PER_PAGE>=tot2) {
+                document.querySelector('#next2').disabled = true;
+            } else {
+                document.querySelector('#next2').disabled = false;
+            }
+            infos = document.querySelectorAll(".info .body");
+            loads = document.querySelectorAll(".info .load");
+            for (let i=0; i<loads.length; i++) {
+                loads[i].style.display = "inline-block";
+                infos[i].innerHTML = "";
+            }
+            update();
         });
     </script>
 </head>
@@ -37,7 +128,7 @@
     <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="/"><img src="../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="/static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -57,18 +148,13 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w">
-<<<<<<< Updated upstream
-        <h2><p class="msg">Search results for '{{ key }}':</p></h2>
-=======
         <h2><p class="msg">search results for "{{ key }}":</p></h2>
->>>>>>> Stashed changes
-        <h3 class="tips">Exact matches</h3>
-        <p class="copyright">powered by NWPU</p>
+        <h3 class="tips">{{ exact_len }} Exact matches</h3>
         <ul class="match-list clearfix">
             {% for author in exact_authors %}
             <li>
                 <div class="pic">
-                    <img src="../../static/images/user.png" alt="">
+                    <img src="/static/images/user.png" alt="">
                 </div>
                 <div class="info">
                     <h4>
@@ -92,13 +178,14 @@
             </li>
             {% endfor %}
         </ul>
-        <h3 class="tips">Likely matches</h3>
-        <p class="copyright">powered by NWPU</p>
+        <button class="btn-gradient" type="button" id="prev1" onclick="prev1()">prev</button>
+        <button class="btn-gradient" type="button" id="next1" onclick="next1()">next</button>
+        <h3 class="tips2">{{ likely_len }} Likely matches</h3>
         <ul class="match-list clearfix">
             {% for author in likely_authors %}
             <li>
                 <div class="pic">
-                    <img src="../../static/images/user.png" alt="">
+                    <img src="/static/images/user.png" alt="">
                 </div>
                 <div class="info">
                     <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
@@ -117,6 +204,8 @@
             </li>
             {% endfor %}
         </ul>
+        <button class="btn-gradient" type="button" id="prev2" onclick="prev2()">prev</button>
+        <button class="btn-gradient" type="button" id="next2" onclick="next2()">next</button>
     </div>
 
     <!-- 底部区域 -->

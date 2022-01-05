@@ -12,14 +12,30 @@ def page(request):
     return render(request, 'index.html')
 
 def scholarsearch(request):
+    USERS_PER_PAGE = 4
     request.encoding = 'utf-8'
     if 'name' in request.GET and request.GET['name']:
         message = request.GET['name']
     else:
         message = ''
+    if 'start1' in request.GET and request.GET['start1']:
+        start1 = int(request.GET['start1'])
+    else:
+        start1 = 0
+    if 'start2' in request.GET and request.GET['start2']:
+        start2 = int(request.GET['start2'])
+    else:
+        start2 = 0
     exact_authors, likely_authors = utils.dblp.search(message)
-
-    return render(request, 'search/author.html', {'key': message, 'exact_authors': exact_authors, 'likely_authors': likely_authors})
+    exact_len, likely_len = len(exact_authors), len(likely_authors)
+    start1, start2 = start1%exact_len, start2%likely_len
+    exact_authors = exact_authors[start1:]
+    likely_authors = likely_authors[start2:]
+    if len(exact_authors)>USERS_PER_PAGE:
+        exact_authors = exact_authors[:USERS_PER_PAGE]
+    if len(likely_authors)>USERS_PER_PAGE:
+        likely_authors = likely_authors[:USERS_PER_PAGE]
+    return render(request, 'search/author.html', {'key': message, 'exact_authors': exact_authors, 'exact_len': exact_len, 'likely_authors': likely_authors, 'likely_len': likely_len})
 
 def papersearch(request):
     request.encoding = 'utf-8'
@@ -68,7 +84,7 @@ def author(request, pid):
     from pyecharts import options as opts
     from pyecharts.charts import Bar
     bar = (
-        Bar(init_opts=opts.InitOpts(width="300px", height="200px"))
+        Bar(init_opts=opts.InitOpts(width="300px", height="280px"))
             .add_xaxis(list(range(mnyear, mxyear + 1)))
             .add_yaxis("count", [pubcnt[year] for year in range(mnyear, mxyear + 1)])
             # .set_global_opts(title_opts=opts.TitleOpts(title="publications"))
@@ -93,7 +109,7 @@ def author(request, pid):
         {"symbol": "circle"},
     ]
     c = (
-        Graph(init_opts=opts.InitOpts(width="300px", height="200px"))
+        Graph(init_opts=opts.InitOpts(width="300px", height="280px"))
             .add("", nodes, links, categories=categories, repulsion=100, is_draggable=True)
             # .set_global_opts(title_opts=opts.TitleOpts(title="co-author"))
             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))

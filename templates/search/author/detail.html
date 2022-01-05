@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <!-- <link rel="stylesheet" href="../../css/search/author/detail.css"> -->
     <link rel="stylesheet" href="{% static 'css/search/author/detail.css' %}">
+    <link rel="stylesheet" href="{% static 'css/ccfrank.css' %}">
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>{{ author.name }}</title>
     <script>
@@ -74,7 +75,7 @@
      <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="../../.."><img src="../../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="/static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -110,7 +111,6 @@
         <div class="left">
             <div class="tips">
                 <span>Author: {{ author.name }}</span>
-                <span>Total {{ author.papers }} papers found</span>
             </div>
             <div class="paperlist clearfix">
                 <table>
@@ -127,7 +127,7 @@
                     <tbody>
                         {% for pub in author.publications %}
                         <tr class="CCF-{{pub.rank}} {{pub.type}}tr">
-                            <td>{{ pub.url|safe }}</td>
+                            <td class="title">{{ pub.url|safe }}</td>
                             <td>
                                 {% for author in pub.author %}
                                 {% if forloop.last %}
@@ -139,10 +139,13 @@
                             </td>
                             <td>{{ pub.year }}</td>
                             <td>{{ pub.kind }}</td>
-                            <td class="ccf-rank ccf-{{pub.rank}}">ccf-{{ pub.rank }}</td>
+                            <td>
+                                <div class="ccf-rank ccf-{{pub.rank}}">
+                                    ccf-{{ pub.rank }}
+                                </div>
                             <td>
                                 <form action="{% url 'article' pub.doi %}">
-                                    <button type="submit">detail</button>
+                                    <button type="submit" class="detail_btn">detail</button>
                                 </form>
                             </td>
                         </tr>
@@ -153,31 +156,34 @@
         </div>
         <div class="right">
             <div id="author">
-                <div class="hd">{{ author.name }}</div>
+                <div class="hd">Person information</div>
                 <div class="bd">
-                    <div><span>total papars: </span>{{ author.papers }}</div>
+                    <div>
+                        {{ author.name }}
+                    </div>
+                    <div><span>Publications: </span>{{ author.papers }}</div>
                     {% for affiliation in author.affiliations %}
                         {% if forloop.first %}
-                        <div><span>affiliation: </span>{{ affiliation }}</div>
+                        <div><span>Affiliation: </span>{{ affiliation }}</div>
                         {% else %}
-                        <div><span>affiliation(former): </span>{{ affiliation }}</div>
+                        <div><span>Affiliation(former): </span>{{ affiliation }}</div>
                         {% endif %}
                     {% endfor %}
                 <!-- end -->
                 </div>
             </div>
-            <!-- <div id="publication">
+            <div id="publication">
                 <div class="hd">Publication</div>
                 <div class="bd">
-                    <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no"></iframe>
+                    <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
             </div>
             <div id="co-author">
-                <div class="hd">Co-author</div>
+                <div class="hd">Co-author network</div>
                 <div class="bd">
                     <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
     <!-- 底部区域 -->
