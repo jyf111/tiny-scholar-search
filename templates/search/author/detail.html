@@ -38,33 +38,33 @@
 
         function Journal() {
             let box = document.querySelector("#Journal_check");
-            box.value = !box.value
+            box.attributes[0].value = 1 - box.attributes[0].value;
             let pubs = document.querySelectorAll("tr");
             for(let i=1; i<pubs.length; i++) {
                 if(pubs[i].className.indexOf("Journal")!==-1) {
-                    pubs[i].style.display = (box.value ? "table-row" : "none");
+                    pubs[i].style.display = (box.attributes[0].value=='1' ? "table-row" : "none");
                 }
             }
         }
         
         function Conference() {
             let box = document.querySelector("#Conference_check");
-            box.value = !box.value
+            box.attributes[0].value = 1 - box.attributes[0].value;
             let pubs = document.querySelectorAll("tr");
             for(let i=1; i<pubs.length; i++) {
                 if(pubs[i].className.indexOf("Conference")!==-1) {
-                    pubs[i].style.display = (box.checked ? "table-row" : "none");
+                    pubs[i].style.display = (box.attributes[0].value=='1' ? "table-row" : "none");
                 }
             }
         }
 
         function Other() {
             let box = document.querySelector("#Other_check");
-            box.value = !box.value
+            box.attributes[0].value = 1 - box.attributes[0].value;
             let pubs = document.querySelectorAll("tr");
             for(let i=1; i<pubs.length; i++) {
-                if(pubs[i].className.indexOf("Conference")===-1 &&  pubs[i].className.indexOf("Journal")===-1) {
-                    pubs[i].style.display = (box.checked ? "table-row" : "none");
+                if(pubs[i].className.indexOf("Conference")==-1 &&  pubs[i].className.indexOf("Journal")===-1) {
+                    pubs[i].style.display = (box.attributes[0].value=='1' ? "table-row" : "none");
                 }
             }
         }
@@ -130,12 +130,12 @@
                             <td class="title">{{ pub.url|safe }}</td>
                             <td>
                                 {% for author in pub.author %}
-                                {% if forloop.last %}
-                                    <span>{{ author.0|safe }}</span>
-                                {% else %}
-                                    <span>{{ author.0|safe }},</span>
-                                {% endif %}
-                            {% endfor %}
+                                    {% if forloop.last %}
+                                        <span>{{ author.0|safe }}</span>
+                                    {% else %}
+                                        <span>{{ author.0|safe }},</span>
+                                    {% endif %}
+                                {% endfor %}
                             </td>
                             <td>{{ pub.year }}</td>
                             <td>{{ pub.kind }}</td>
@@ -158,17 +158,19 @@
             <div id="author">
                 <div class="hd">Person information</div>
                 <div class="bd">
-                    <div>
+                    <div class="author_name">
                         {{ author.name }}
                     </div>
-                    <div><span>Publications: </span>{{ author.papers }}</div>
-                    {% for affiliation in author.affiliations %}
-                        {% if forloop.first %}
-                        <div><span>Affiliation: </span>{{ affiliation }}</div>
-                        {% else %}
-                        <div><span>Affiliation(former): </span>{{ affiliation }}</div>
-                        {% endif %}
-                    {% endfor %}
+                    <span class="info">
+                        <div><span>Publications: </span>{{ author.papers }}</div>
+                        {% for affiliation in author.affiliations %}
+                            {% if forloop.first %}
+                                <div><span>Affiliation: </span>{{ affiliation }}</div>
+                            {% else %}
+                                <div><span>Affiliation(former): </span>{{ affiliation }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    </span>
                 <!-- end -->
                 </div>
             </div>
@@ -182,6 +184,17 @@
                 <div class="hd">Co-author network</div>
                 <div class="bd">
                     <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
+                </div>
+            </div>
+            <div id="related-author">
+                <div class="hd">Top related authors</div>
+                <div class="bd">
+                    {% for co in coauthor %}
+                        <div class="container">
+                            <div class="coauthor">{{ co.0|safe }}</div>
+                            <span class="copub">co-publications: {{ co.1 }}</span>
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>

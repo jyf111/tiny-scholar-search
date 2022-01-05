@@ -183,12 +183,14 @@
 .content .right #author .bd {
     padding: 10px;
     color: #666;
-    line-height: 21px;
+    line-height: 20px;
+    font-size: 13px;
+}
+.info {
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 7;
+    -webkit-line-clamp: 11;
     -webkit-box-orient: vertical;
-
 }
 .content .right #author .bd div span {
     color: #333;
@@ -210,4 +212,27 @@
 
 .title {
     font-weight: 550;
+}
+
+.author_name {
+    font-weight: 500;
+    font-size: 25px;
+    color: 2e3743;
+    line-height: 40px;
+}
+
+#Journal_check, #Conference_check, #Other_check {
+    cursor: pointer;
+}
+
+.coauthor {
+    color: #1857b6;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 35px;
+}
+
+.copub {
+    color: #536479;
+    font-size: 15px;
 }

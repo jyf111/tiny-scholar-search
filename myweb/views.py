@@ -28,7 +28,10 @@ def scholarsearch(request):
         start2 = 0
     exact_authors, likely_authors = utils.dblp.search(message)
     exact_len, likely_len = len(exact_authors), len(likely_authors)
-    start1, start2 = start1%exact_len, start2%likely_len
+    if exact_len:
+        start1 %= exact_len
+    if likely_len:
+        start2 %= likely_len
     exact_authors = exact_authors[start1:]
     likely_authors = likely_authors[start2:]
     if len(exact_authors)>USERS_PER_PAGE:
@@ -50,6 +53,8 @@ def author(request, pid):
     author = utils.dblp.gen_author(pid)
     mxyear, mnyear = time.localtime(time.time()).tm_year, 0
     pubcnt, node, link = {}, {}, set()
+    idx, ridx = {}, {}
+    url = {}
     for i, pub in enumerate(author.publications):
         if 'ee' not in pub:
             pub['ee'] = "/"
@@ -69,6 +74,7 @@ def author(request, pid):
         else:
             pubcnt[year] = 1
         for coauthor in pub['author']:
+            url[coauthor[1]] = coauthor[0]
             if coauthor[1] not in node:
                 node[coauthor[1]] = 0
             node[coauthor[1]] += 1
@@ -91,6 +97,28 @@ def author(request, pid):
             .render('static/publish.html')
     )
 
+    import numpy as np
+    from communities.algorithms import louvain_method
+    node_sort = sorted(node.items(), key=lambda p: -p[1])
+    node.clear()
+    num = 0
+    for (key, value) in node_sort:
+        idx[key] = num
+        ridx[num] = key
+        node[key] = value
+        num += 1
+        if num>=50: # show 30 related person
+            break
+    adj_matrix = np.zeros((num, num))
+    for (u, v) in iter(link):
+        if u in idx and v in idx:
+            adj_matrix[idx[u]][idx[v]] = 1
+    communities, _ = louvain_method(adj_matrix)
+    category = {}
+    for id, community in enumerate(communities):
+        for authorid in community:
+            category[ridx[authorid]] = id  
+
     from pyecharts.charts import Graph
     from math import log, ceil
     nodes = []
@@ -98,16 +126,16 @@ def author(request, pid):
         size = ceil(log(value/int(author.papers)*100))
         node[key] = size
         if size>=1:
-            nodes.append(opts.GraphNode(name=key, symbol_size=size*6, value=value, category=int(key==author.name)))
+            nodes.append(opts.GraphNode(name=key, symbol_size=size*8, value=value, category=category[key]))
     links = []
     for edge in link:
-        if node[edge[0]]>=1 and node[edge[1]]>=1:
+        if edge[0] in idx and edge[1] in idx and node[edge[0]]>=1 and node[edge[1]]>=1:
             links.append(opts.GraphLink(source=edge[0], target=edge[1]))
-    # TODO kmeans ?
-    categories = [
-        {"symbol": "circle"},
-        {"symbol": "circle"},
-    ]
+    
+    categories = []
+    for i in range(len(category)):
+        categories.append({"symbol": "circle"})
+
     c = (
         Graph(init_opts=opts.InitOpts(width="300px", height="280px"))
             .add("", nodes, links, categories=categories, repulsion=100, is_draggable=True)
@@ -115,7 +143,16 @@ def author(request, pid):
             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
             .render('static/coauthor.html')
     )
-    return render(request, 'search/author/detail.html', {'author': author})
+
+    coauthor = []
+    cnt = 0
+    for (key, value) in node_sort:
+        if cnt>5:
+            break
+        if cnt!=0:
+            coauthor.append([url[key], value])
+        cnt += 1
+    return render(request, 'search/author/detail.html', {'author': author, 'coauthor': coauthor})
 
 def random_color_func(word=None, font_size=None, position=None,  orientation=None, font_path=None, random_state=None):
         h  = randint(0,100)

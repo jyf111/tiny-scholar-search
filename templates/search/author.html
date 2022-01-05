@@ -149,6 +149,7 @@
     <!-- 内容区域 -->
     <div class="content w">
         <h2><p class="msg">search results for "{{ key }}":</p></h2>
+        {% if exact_len %}
         <h3 class="tips">{{ exact_len }} Exact matches</h3>
         <ul class="match-list clearfix">
             {% for author in exact_authors %}
@@ -180,6 +181,8 @@
         </ul>
         <button class="btn-gradient" type="button" id="prev1" onclick="prev1()">prev</button>
         <button class="btn-gradient" type="button" id="next1" onclick="next1()">next</button>
+        {% endif %}
+        {% if likely_len %}
         <h3 class="tips2">{{ likely_len }} Likely matches</h3>
         <ul class="match-list clearfix">
             {% for author in likely_authors %}
@@ -206,6 +209,7 @@
         </ul>
         <button class="btn-gradient" type="button" id="prev2" onclick="prev2()">prev</button>
         <button class="btn-gradient" type="button" id="next2" onclick="next2()">next</button>
+        {% endif %}
     </div>
 
     <!-- 底部区域 -->
