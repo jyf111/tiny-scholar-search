@@ -12,12 +12,15 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Tiny Scholar Search</title>
     <script>
-       window.onload = function () {
+       document.addEventListener("DOMContentLoaded", function() {
             let select = document.getElementById('choices');
+            let search_bar = document.getElementById('search-bar');
+            search_bar.focus();
             select.addEventListener('change', function () {
                 let author = document.getElementById('author');
                 let paper = document.getElementById('paper');
                 let search_bar = document.getElementById('search-bar');
+                search_bar.focus();
                 if (author.checked) {
                     document.getElementById('trans').action = author.value
                     search_bar.placeholder = "Enter an author's name";
@@ -26,7 +29,7 @@
                     search_bar.placeholder = "Enter a paper's title";
                 }
             });
-        }
+        });
     </script>
 </head>
 <body>

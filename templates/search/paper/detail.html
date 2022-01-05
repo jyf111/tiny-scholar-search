@@ -11,13 +11,101 @@
     <link rel="stylesheet" href="{% static 'css/search/paper/detail.css' %}">
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>{{ article.title }}</title>
+    <script>
+        let index = 2; //default
+        var result;
+        // const slim = '<li class="grid-item">';
+        // function hide() {
+        //     let dom = document.getElementsByClassName("spinner")[0];
+        //     dom.style.display = "none";
+        //     for (let i = 0; i < dom.children.length; i++) {
+        //         dom.children[i].style.display = "none";
+        //     }
+        // }
+        function gen() {
+            info = result[index].split('</li>')[0];
+            document.querySelector('#container').innerHTML = info;
+            let controls = document.querySelectorAll(".Expand");
+            for(let i=0; i<controls.length; i++) {
+                control = controls[i];
+                control.addEventListener('click', function() {
+                    abstract = this.previousSibling.previousSibling;
+                    if(this.innerText==='Expand') {
+                        abstract.style.display = 'inline-block';
+                        this.innerText = 'Collapse';
+                    } else {
+                        abstract.style.display = '-webkit-box';
+                        this.innerText = 'Expand';
+                    }
+                });
+            }
+            // let paperurls = document.getElementsByClassName('paper-url');
+            // for(let i=0; i<paperurls.length; i++) {
+            //     paperurl = paperurls[i];
+            //     viewtag = paperurl.nextSibling.nextSibling;
+            //     if(paperurl.href.indexOf('article=//')!=-1) {
+            //         paperurl.style.textDecoration = 'none';
+            //         paperurl.style.cursor = 'default';
+            //         viewtag.style.display = 'none';
+            //     } else {
+            //         viewtag.href = paperurl.href;
+            //     }
+            // }
+        }
+        // function nextPage() {
+        //     if(index<=5 && index<=result.length) {
+        //         index++;
+        //         gen();
+        //     }
+        //     if(index==6 || index>=result.length) {
+        //         document.getElementById('next').setAttribute("disabled", true);
+        //     } else {
+        //         document.getElementById('next').removeAttribute("disabled");
+        //     }
+        //     if(index==2) {
+        //         document.getElementById('prev').setAttribute("disabled", true);
+        //     } else {
+        //         document.getElementById('prev').removeAttribute("disabled");
+        //     }
+        // }
+        // function prevPage() {
+        //     if(index>2) {
+        //         index--;
+        //         gen();
+        //     }
+        //     if(index==6 || index>=result.length) {
+        //         document.getElementById('next').setAttribute("disabled", true);
+        //     } else {
+        //         document.getElementById('next').removeAttribute("disabled");
+        //     }
+        //     if(index==2) {
+        //         document.getElementById('prev').setAttribute("disabled", true);
+        //     } else {
+        //         document.getElementById('prev').removeAttribute("disabled");
+        //     }
+        // }
+        document.addEventListener("DOMContentLoaded", function() {
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    // hide();
+                    let info = xmlhttp.responseText;
+                    result = info.split('<li class=\"papers\">');
+                    // document.getElementById('page-button').innerHTML = '<button id="prev" type="button" onclick="prevPage()" disabled>Prev</button>\n<button id="next" type="button" onclick="nextPage()">Next</button>';
+                    gen();
+                }
+            };
+            xmlhttp.open("GET", "/papersearch/?name=" + document.querySelector("#title").innerText, true);
+            xmlhttp.send();
+        });
+    </script>
 </head>
 <body>
      <!-- 头部区域 -->
      <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="../../index.html"><img src="../../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="/static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -31,14 +119,17 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w">
+        <h3><a href="//doi.org/{{ article.url }}" id="title">{{ article.title }}</a></h3>
         <div class="top clearfix">
             <div class="left">
                 <div class="pic">
                     <img src="{% static 'images/word.png' %}" alt="">
                 </div>
+                {% if article.citations|length %}
+                <iframe id="frame1" src="{% static '/citation.html' %}" width="400px"" height="320px" frameborder="auto" scrolling="false"></iframe>
+                {% endif %}
             </div>
             <div class="right">
-                <h3><a href="//doi.org/{{ article.url }}">{{ article.title }}</a></h3>
                 <div class="author">
                     <span class="label">Authors: </span>
                     <span>
@@ -86,14 +177,29 @@
             <p>{{ article.abstract }}</p>
         </div>
         <div class="bottom">
-            <div class="references">
-                <h4>references</h4>
-                <ul class="ref-list">
-                    {% for paper in article.references %}
+            <div class="most related papers">
+                <h4>most related papers</h4>
+                <div id="container">
+                    <div class="load">
+                        <div class="spinner">
+                            <div class="rect1"></div>
+                            <div class="rect2"></div>
+                            <div class="rect3"></div>
+                            <div class="rect4"></div>
+                            <div class="rect5"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="citations">
+                <h4>{{ article.citations|length }} citations</h4>
+                <ul class="cite-list">
+                    {% for paper in article.citations %}
                     <li class="clearfix">
                         <div class="dot"></div>
                         <div class="block">
-                            <h5><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h5>
+                            <h3><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h3>
+                            {% if paper.authors|length %}
                             <span>
                             {% for author in paper.authors %}
                                 {% if forloop.last %}
@@ -103,6 +209,7 @@
                                 {% endif %}
                             {% endfor %}
                             </span>
+                            {% endif %}
                             <span class="venue">
                                 {{ paper.year }}
                                 {{ paper.venue }}
@@ -112,14 +219,15 @@
                     {% endfor %}
                 </ul>
             </div>
-            <div class="citations">
-                <h4>citations</h4>
-                <ul class="cite-list">
-                    {% for paper in article.citations %}
+            <div class="references">
+                <h4>{{ article.references|length }} references</h4>
+                <ul class="ref-list">
+                    {% for paper in article.references %}
                     <li class="clearfix">
                         <div class="dot"></div>
                         <div class="block">
-                            <h5><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h5>
+                            <h3><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h3>
+                            {% if paper.authors|length %}
                             <span>
                             {% for author in paper.authors %}
                                 {% if forloop.last %}
@@ -129,6 +237,7 @@
                                 {% endif %}
                             {% endfor %}
                             </span>
+                            {% endif %}
                             <span class="venue">
                                 {{ paper.year }}
                                 {{ paper.venue }}

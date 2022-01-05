@@ -30,20 +30,29 @@
     border: 0;
     box-shadow: 0 0 3px 2px rgba(0, 0, 0, .1);
 }
-.search::before {
+.search button {
+    float: right;
+    height: 40px;
+    border: 2px solid #2368b1;
+    width: 10%;
+    border-radius: 0 20px 20px 0;
+    background-color: #2368b1;
+    color: #fff;
+    font-size: 0px;
+    cursor: pointer;
+}
+.search button::before {
     content: '\ec15';
-    float: left;
-    padding-left: 15px;
-    color: #666;
-    font: 24px icomoon;
-    line-height: 40px;
+    font-family: icomoon;
+    font-size: 28px;
 }
 .search input {
-    float: right;
+    float: left;
     width: 90%;
     height: 38px;
     border: 0;
-    border-radius: 0 20px 20px 0;
+    padding-left: 15px;
+    border-radius: 20px;
     outline: none;
 }
 
@@ -55,6 +64,8 @@
 .content .msg{
     margin-top: 90px;
     font-size: 16px;
+    font-weight: 750;
+    margin-bottom: 15px;
 }
 .content .copyright {
     padding: 5px 30px  10px;
@@ -108,16 +119,6 @@
     display: inline;
     color: #333;
 }
-.content .paperlist ul li .abstract p::after {
-    content: 'more';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    border: 0;
-    color: #55bbff;
-    background: #fff;
-    line-height: 20px;
-}
 
     /* 其他 */
 .content .paperlist ul li .other {
@@ -140,4 +141,39 @@
     color: #666;
 }
 
-   
+.Expand {
+    color: #1857b6;
+    cursor: pointer;
+    display: inline;
+}
+.Expand:hover {
+    text-decoration:underline;
+}
+
+.topic {
+    font-size: 15px;
+    font-weight: 1000;
+    display: block;
+}
+
+.select {
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 3px;
+    color: #2e3743;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    padding: 5px 30px 5px 10px;
+    text-overflow: ellipsis;
+    -webkit-transition-duration: .25s;
+    transition-duration: .25s;
+    -webkit-transition-property: background-color,border,fill;
+    transition-property: background-color,border,fill;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+    white-space: nowrap;
+    width: 170px;
+    display: inline-block;
+}

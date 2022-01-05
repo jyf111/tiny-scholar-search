@@ -11,46 +11,52 @@
     <link rel="stylesheet" href="{% static 'css/search/paper.css' %}">
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Search for:"{{ key }}"</title>
-    <!-- <script>
+    <script>
         function insertAfter(new_item, item) {
             item.parentNode.insertBefore(new_item, item.nextSibling);
         }
-        window.onload = function() {
-            let controls = document.getElementsByClassName('more');
+        document.addEventListener("DOMContentLoaded", function() {
+            let controls = document.querySelectorAll(".Expand");
             for(let i=0; i<controls.length; i++) {
                 control = controls[i];
                 control.addEventListener('click', function() {
                     abstract = this.previousSibling.previousSibling;
-                    if(this.innerText==='more') {
+                    if(this.innerText==='Expand') {
                         abstract.style.display = 'inline-block';
-                        this.innerText = 'less';
+                        this.innerText = 'Collapse';
                     } else {
                         abstract.style.display = '-webkit-box';
-                        this.innerText = 'more';
+                        this.innerText = 'Expand';
                     }
                 });
             }
-            let paperurls = document.getElementsByClassName('paper-url');
-            for(let i=0; i<paperurls.length; i++) {
-                paperurl = paperurls[i];
-                viewtag = paperurl.nextSibling.nextSibling;
-                if(paperurl.href.indexOf('article=//')!=-1) {
-                    paperurl.style.textDecoration = 'none';
-                    paperurl.style.cursor = 'default';
-                    viewtag.style.display = 'none';
-                } else {
-                    viewtag.href = paperurl.href;
-                }
-            }
-        }
-    </script> -->
+            let selecter = document.querySelector(".selecter");
+            console.log(selecter);
+            selecter.addEventListener('select', function() {
+                console.log("???");
+                console.log(this.options[this.selectedIndex]);
+            });
+            // let paperurls = document.getElementsByClassName('paper-url');
+            // for(let i=0; i<paperurls.length; i++) {
+            //     paperurl = paperurls[i];
+            //     viewtag = paperurl.nextSibling.nextSibling;
+            //     if(paperurl.href.indexOf('article=//')!=-1) {
+            //         paperurl.style.textDecoration = 'none';
+            //         paperurl.style.cursor = 'default';
+            //         viewtag.style.display = 'none';
+            //     } else {
+            //         viewtag.href = paperurl.href;
+            //     }
+            // }
+        });
+    </script>
 </head>
 <body>
     <!-- 头部区域 -->
     <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="../index.html"><img src="../../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="/static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -64,21 +70,27 @@
     </div>
     <div class="search">
         <form id="trans" action="/papersearch/" autocomplete="off" method="get">
-            <input type="text" id="search-bar" value="{{ key }}">
+            <input type="text" name='name' id="search-bar" value="{{ key }}">
+            <button type="submit">Search</button>
         </form>
     </div>
     <!-- 内容区域 -->
     <div class="content w">
-        <p class="msg">About {{ total }} results for '{{ key }}'.</p>
-        <p class="copyright">powered by NWPU</p>
+        <p class="msg">About {{ total }} results for "{{ key }}"</p>
+        <select class="selecter">
+            <option>Sort by Relevance</option>
+            <option>Sort by Citation Count</option>
+            <option>Sort by Recency</option>
+        </select>
         <div class="paperlist">
             <ul>
                 {% for article in articles %}
-                <li>
-                    <h3><a href="{% url 'article' article.url %}" class=""paper-url>{{ article.title }}</a></h3>
+                <li class="papers">
+                    <h3><a href="{% url 'article' article.url %}">{{ article.title }}</a></h3>
                     <div class="info">
-                        <span class="author">
-                            {% for author in article.authors %}
+                        {% if article.authors|length %}
+                        <span>
+                        {% for author in article.authors %}
                             {% if forloop.last %}
                                 <span>{{ author }}</span>
                             {% else %}
@@ -86,6 +98,8 @@
                             {% endif %}
                         {% endfor %}
                         </span>
+                        {% endif %}
+                        {% if article.fields|length %}
                         <span class="topic">
                             {% for topic in article.fields %}
                             {% if forloop.last %}
@@ -95,15 +109,22 @@
                             {% endif %}
                             {% endfor %}
                         </span>
-                        <span class="year">{{ article.year }}</span>
-                        <span class="kind">{{ article.venue }}</span>
+                        {% endif %}
+                        <div>
+                            <span class="year">{{ article.year }}</span>
+                            <span class="kind">{{ article.venue }}</span>
+                        </div>
                     </div>
-                    <div class="abstract">
+                    <span class="abstract">
                         <span class="tip">abstract: </span> 
                         <p>{{ article.abstract }}</p>
+                    </span>
+                    <div class="Expand">
+                        Expand
                     </div>
                     <div class="other clearfix">
                         <!-- <button>detail</button> -->
+                        <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
                         <span>citation: {{ article.citationCount }}</span>
                     </div>
                 </li>
