@@ -186,7 +186,7 @@
     line-height: 20px;
     font-size: 13px;
 }
-.info {
+.personinfo {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 11;

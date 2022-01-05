@@ -161,7 +161,8 @@
                     <div class="author_name">
                         {{ author.name }}
                     </div>
-                    <span class="info">
+                <!-- begin -->
+                    <span class="personinfo">
                         <div><span>Publications: </span>{{ author.papers }}</div>
                         {% for affiliation in author.affiliations %}
                             {% if forloop.first %}

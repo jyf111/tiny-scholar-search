@@ -20,8 +20,8 @@
                 let xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
                     if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-                        let info = xmlhttp.responseText.split("<div class=\"bd\">");
-                        info = info[1].split("<!-- end -->")[0];
+                        let info = xmlhttp.responseText.split("<!-- begin -->")[1];
+                        info = info.split("<!-- end -->")[0];
                         infos[i].innerHTML = info;
                         loads[i].style.display = "none";
                     }
