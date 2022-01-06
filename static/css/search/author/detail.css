@@ -22,7 +22,28 @@
     border-radius: 5px 5px 0 0;
     color: #333;
 }
+.banner .nav>li em {
+    position: relative;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin: 22px 5px;
+    border: 2px dotted #fff;
+}
+.banner .nav>li:hover em {
+    border-color: #333;
+}
+.banner .nav>li em::before {
+    position: absolute;
+    top: 0;
+    left: -10%;
+    content: '√';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 10px;
+}
 .banner .nav>li h4 {
+    float: left;
     font-size: 16px;
     text-align: center;
     line-height: 60px;

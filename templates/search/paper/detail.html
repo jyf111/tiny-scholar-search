@@ -107,7 +107,6 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w">
-        <h3><a href="//doi.org/{{ article.url }}" id="title">{{ article.title }}</a></h3>
         <div class="top clearfix">
             <div class="left">
                 <div class="pic">
@@ -118,6 +117,7 @@
                 {% endif %}
             </div>
             <div class="right">
+                <h3><a href="//doi.org/{{ article.url }}" id="title">{{ article.title }}</a></h3>
                 <div class="author">
                     <span class="label">Authors: </span>
                     <span>
@@ -165,8 +165,8 @@
             <p>{{ article.abstract }}</p>
         </div>
         <div class="bottom">
-            <div class="most related paper">
-                <h4>most related paper</h4>
+            <div class="most_related">
+                <h4>most related papers</h4>
                 <div id="container">
                     <div class="load">
                         <div class="spinner">

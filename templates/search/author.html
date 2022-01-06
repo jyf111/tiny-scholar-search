@@ -151,65 +151,66 @@
         <h2><p class="msg">search results for "{{ key }}":</p></h2>
         {% if exact_len %}
         <h3 class="tips">{{ exact_len }} Exact matches</h3>
-        <ul class="match-list clearfix">
-            {% for author in exact_authors %}
-            <li>
-                <div class="pic">
-                    <img src="/static/images/user.png" alt="">
-                </div>
-                <div class="info">
-                    <h4>
-                        <a href="{% url 'author' author.pid %}">
-                            {{ author.name }}
-                            <span id="number">{{ author.id }}</span>
-                        </a>
-                    </h4>
-                    <div class="load">
-                        <div class="spinner">
-                            <div class="rect1"></div>
-                            <div class="rect2"></div>
-                            <div class="rect3"></div>
-                            <div class="rect4"></div>
-                            <div class="rect5"></div>
+        <div class="match-list clearfix" id="exact_match">
+            <ul>
+                {% for author in exact_authors %}
+                <li>
+                    <div class="pic">
+                        <img src="/static/images/user.png" alt="">
+                    </div>
+                    <div class="info">
+                        <h4>
+                            <a href="{% url 'author' author.pid %}">
+                                {{ author.name }}
+                                <span id="number">{{ author.id }}</span>
+                            </a>
+                        </h4>
+                        <div class="load">
+                            <div class="spinner">
+                                <div class="rect1"></div>
+                                <div class="rect2"></div>
+                                <div class="rect3"></div>
+                                <div class="rect4"></div>
+                                <div class="rect5"></div>
+                            </div>
+                        </div>
+                        <div class="body">
                         </div>
                     </div>
-                    <div class="body">
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        <button class="btn-gradient" type="button" id="prev1" onclick="prev1()">prev</button>
-        <button class="btn-gradient" type="button" id="next1" onclick="next1()">next</button>
-        {% endif %}
-        {% if likely_len %}
+                </li>
+                {% endfor %}
+            </ul>
+            <button class="btn-gradient" type="button" id="prev1" onclick="prev1()">prev</button>
+            <button class="btn-gradient" type="button" id="next1" onclick="next1()">next</button>
+        </div>
         <h3 class="tips2">{{ likely_len }} Likely matches</h3>
-        <ul class="match-list clearfix">
-            {% for author in likely_authors %}
-            <li>
-                <div class="pic">
-                    <img src="/static/images/user.png" alt="">
-                </div>
-                <div class="info">
-                    <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
-                    <div class="load">
-                        <div class="spinner">
-                            <div class="rect1"></div>
-                            <div class="rect2"></div>
-                            <div class="rect3"></div>
-                            <div class="rect4"></div>
-                            <div class="rect5"></div>
+        <div class="match-list clearfix" id="likely_match">
+            <ul>
+                {% for author in likely_authors %}
+                <li>
+                    <div class="pic">
+                        <img src="/static/images/user.png" alt="">
+                    </div>
+                    <div class="info">
+                        <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>
+                        <div class="load">
+                            <div class="spinner">
+                                <div class="rect1"></div>
+                                <div class="rect2"></div>
+                                <div class="rect3"></div>
+                                <div class="rect4"></div>
+                                <div class="rect5"></div>
+                            </div>
+                        </div>
+                        <div class="body">
                         </div>
                     </div>
-                    <div class="body">
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
-        <button class="btn-gradient" type="button" id="prev2" onclick="prev2()">prev</button>
-        <button class="btn-gradient" type="button" id="next2" onclick="next2()">next</button>
-        {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            <button class="btn-gradient" type="button" id="prev2" onclick="prev2()">prev</button>
+            <button class="btn-gradient" type="button" id="next2" onclick="next2()">next</button>
+        </div>
     </div>
 
     <!-- 底部区域 -->
