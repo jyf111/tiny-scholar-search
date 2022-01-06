@@ -15,6 +15,8 @@
        document.addEventListener("DOMContentLoaded", function() {
             let select = document.getElementById('choices');
             let search_bar = document.getElementById('search-bar');
+            document.getElementById('author').checked = true;
+            document.getElementById('paper').checked = false;
             search_bar.focus();
             select.addEventListener('change', function () {
                 let author = document.getElementById('author');

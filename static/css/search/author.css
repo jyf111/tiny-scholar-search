@@ -234,7 +234,8 @@
 }
 
 .btn-gradient:active {
-	top: 4px;	
+    top: 4px;	
+    cursor: pointer;
 }
 
 

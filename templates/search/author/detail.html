@@ -13,60 +13,63 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>{{ author.name }}</title>
     <script>
+        var arr = new Array(4);
+        for (let i=0; i<4; i++) {
+            arr[i] = new Array(3);
+            for (let j=0; j<3; j++) arr[i][j] = 1;
+        }
         document.addEventListener("DOMContentLoaded", function() {
-            
+
         });
 
-        function ccf() {
-            let boxes = document.querySelectorAll(".ccf_check");
-            let pubs = document.querySelectorAll("tr");
-            for(let i=1; i<pubs.length; i++) {
-                if(pubs[i].className.indexOf("CCF-a")!==-1) {
-                    pubs[i].style.display = (boxes[0].checked ? "table-row" : "none");
-                }
-                if(pubs[i].className.indexOf("CCF-b")!==-1) {
-                    pubs[i].style.display = (boxes[1].checked ? "table-row" : "none");
-                }
-                if(pubs[i].className.indexOf("CCF-c")!==-1) {
-                    pubs[i].style.display = (boxes[2].checked ? "table-row" : "none");
-                }
-                if(pubs[i].className.indexOf("CCF-none")!==-1) {
-                    pubs[i].style.display = (boxes[3].checked ? "table-row" : "none");
+        function check(event) {
+            let boxes = document.querySelectorAll(".check");
+            inner = event.target.innerHTML;
+            if (inner.length) {
+                let idx = 0;
+                if (inner[0]=='C') idx = 1;
+                else if (inner[0]=='O') idx = 2;
+                boxes[4+idx].attributes[0].value = 1 - boxes[4+idx].attributes[0].value;
+            }
+            for (let i=0; i<4; i++) {
+                for (let j=0; j<3; j++) {
+                    arr[i][j] = boxes[i].checked & boxes[4+j].attributes[0].value;
                 }
             }
-        }
+            let pubs = document.querySelectorAll("tr");
+            let str = ["CCF-a", "CCF-b", "CCF-c", "CCF-none"];
+            let str2 = ["Journal", "Conference"];
+            for(let i=1; i<pubs.length; i++) {
+                let x = 0, y = 0;
+                for (; x<4; x++) {
+                    if(pubs[i].className.indexOf(str[x])!==-1) {
+                        break;
+                    }
+                }
+                for (; y<2; y++) {
+                    if(pubs[i].className.indexOf(str2[y])!==-1) {
+                        break;
+                    }
+                }
+                pubs[i].style.display = (arr[x][y] ? "table-row" : "none");
+            }
+        }   
 
-        function Journal() {
-            let box = document.querySelector("#Journal_check");
-            box.attributes[0].value = 1 - box.attributes[0].value;
-            let pubs = document.querySelectorAll("tr");
-            for(let i=1; i<pubs.length; i++) {
-                if(pubs[i].className.indexOf("Journal")!==-1) {
-                    pubs[i].style.display = (box.attributes[0].value=='1' ? "table-row" : "none");
-                }
-            }
-        }
-        
-        function Conference() {
-            let box = document.querySelector("#Conference_check");
-            box.attributes[0].value = 1 - box.attributes[0].value;
-            let pubs = document.querySelectorAll("tr");
-            for(let i=1; i<pubs.length; i++) {
-                if(pubs[i].className.indexOf("Conference")!==-1) {
-                    pubs[i].style.display = (box.attributes[0].value=='1' ? "table-row" : "none");
-                }
-            }
-        }
-
-        function Other() {
-            let box = document.querySelector("#Other_check");
-            box.attributes[0].value = 1 - box.attributes[0].value;
-            let pubs = document.querySelectorAll("tr");
-            for(let i=1; i<pubs.length; i++) {
-                if(pubs[i].className.indexOf("Conference")==-1 &&  pubs[i].className.indexOf("Journal")===-1) {
-                    pubs[i].style.display = (box.attributes[0].value=='1' ? "table-row" : "none");
-                }
-            }
+        function control(event) {
+            parent = event.target.parentNode.parentNode;
+            hd = parent.children[0];
+            bd = parent.children[1];
+            if (bd.style.display==="table") {
+                bd.style.display = "none";
+                bd.style.height = "0%";
+                hd.style.height = "100%";
+                parent.style.height = "43px";
+            } else {
+                bd.style.display = "table";
+                bd.style.height = "87%";
+                hd.style.height = "13%";
+                parent.style.height = "330px";
+            }   
         }
     </script>
 </head>
@@ -94,16 +97,16 @@
                 <h4>CCF-Rank</h4>
                 <div class="select">
                     <ul>
-                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-A({{ author.ccfa }})</li>
-                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-B({{ author.ccfb }})</li>
-                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />CCF-C({{ author.ccfc }})</li>
-                        <li><input type="checkbox" checked="checked" onclick="ccf()" class="ccf_check" />None({{ author.ccfnone }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="check(event)" class="check checkbox" />CCF-A({{ author.ccfa }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="check(event)" class="check checkbox" />CCF-B({{ author.ccfb }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="check(event)" class="check checkbox" />CCF-C({{ author.ccfc }})</li>
+                        <li><input type="checkbox" checked="checked" onclick="check(event)" class="check checkbox" />None({{ author.ccfnone }})</li>
                     </ul>
                 </div>
             </li>
-            <li><h4 value="1" onclick="Journal()" id="Journal_check" />Journal({{ author.journals }})</h4></li>
-            <li><h4 value="1" onclick="Conference()" id="Conference_check" />Conference({{ author.conferences }})</h4></li>
-            <li><h4 value="1" onclick="Other()" id="Other_check" />Other({{ author.others }})</h4></li>
+            <li><h4 value=1 onclick="check(event)" class="check" />Journal({{ author.journals }})</h4></li>
+            <li><h4 value=1 onclick="check(event)" class="check" />Conference({{ author.conferences }})</h4></li>
+            <li><h4 value=1 onclick="check(event)" class="check" />Other({{ author.others }})</h4></li>
         </ul>
     </div>
     <!-- 内容区域 -->
@@ -118,8 +121,8 @@
                         <tr>
                             <td>Title</td>
                             <td>Authors</td>
-                            <td>Date</td>
-                            <td>Kind</td>
+                            <td>Year</td>
+                            <td>Venue</td>
                             <td>Rank</td>
                             <td>More</td>
                         </tr>
@@ -141,7 +144,11 @@
                             <td>{{ pub.kind }}</td>
                             <td>
                                 <div class="ccf-rank ccf-{{pub.rank}}">
-                                    ccf-{{ pub.rank }}
+                                    {% ifequal pub.rank 'none' %}
+                                        none
+                                    {% else %}
+                                        ccf-{{ pub.rank }}
+                                    {% endifequal %}
                                 </div>
                             <td>
                                 <form action="{% url 'article' pub.doi %}">
@@ -155,9 +162,14 @@
             </div>
         </div>
         <div class="right">
-            <div id="author">
-                <div class="hd">Person information</div>
-                <div class="bd">
+            <div id="author" style="height: 330px">
+                <div class="hd" style="height: 13%">
+                    <div class="tmp">
+                        Person information
+                    </div> 
+                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+                </div>
+                <div class="bd" style="display: table; height: 87%">
                     <div class="author_name">
                         {{ author.name }}
                     </div>
@@ -175,21 +187,36 @@
                 <!-- end -->
                 </div>
             </div>
-            <div id="publication">
-                <div class="hd">Publication</div>
-                <div class="bd">
+            <div id="publication" style="height: 330px">
+                <div class="hd" style="height: 13%">
+                    <div class="tmp">
+                        Publication
+                    </div>
+                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+                </div>
+                <div class="bd" style="display: table; height: 87%">
                     <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
             </div>
-            <div id="co-author">
-                <div class="hd">Co-author network</div>
-                <div class="bd">
+            <div id="co-author" style="height: 330px">
+                <div class="hd" style="height: 13%">
+                    <div class="tmp">
+                        Co-author network
+                    </div>
+                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+                </div>
+                <div class="bd" style="display: table; height: 87%">
                     <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
             </div>
-            <div id="related-author">
-                <div class="hd">Top related authors</div>
-                <div class="bd">
+            <div id="related-author" style="height: 330px">
+                <div class="hd" style="height: 13%">
+                    <div class="tmp">
+                        Top related authors
+                    </div>
+                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+                </div>
+                <div class="bd" style="display: table; height: 87%">
                     {% for co in coauthor %}
                         <div class="container">
                             <div class="coauthor">{{ co.0|safe }}</div>

@@ -155,14 +155,12 @@
 }
 .content .right>div {
     width: 330px;
-    height: 330px;
     margin-bottom: 10px;
     border-radius: 5px;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
 }
 .content .right>div .hd {
     width: 100%;
-    height: 13%;
     padding: 0 10px;
     border-radius: 5px 5px 0 0;
     background-color: #2368b1;
@@ -176,7 +174,6 @@
 }
 .content .right>div .bd {
     width: 100%;
-    height: 87%;
     border-radius: 0 0 5px 5px;
     background-color: #fff;
 }
@@ -221,10 +218,6 @@
     line-height: 40px;
 }
 
-#Journal_check, #Conference_check, #Other_check {
-    cursor: pointer;
-}
-
 .coauthor {
     color: #1857b6;
     font-size: 20px;
@@ -235,4 +228,26 @@
 .copub {
     color: #536479;
     font-size: 15px;
+}
+
+.check {
+    cursor: pointer;
+}
+
+.checkbox {
+    width: 10px;
+}
+img.control {
+    position: relative;
+    cursor: pointer;
+    right: -280px;
+    top: -34px;
+}
+
+.tmp {
+    width: 200px;
+}
+
+checkbox {
+    position: relative;
 }

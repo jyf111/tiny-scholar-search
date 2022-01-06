@@ -12,12 +12,63 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Search for:"{{ key }}"</title>
     <script>
-        function insertAfter(new_item, item) {
-            item.parentNode.insertBefore(new_item, item.nextSibling);
+        var start = 0;
+        const PAPERS_PER_PAGE = 10;
+        function merge(url, s) {
+            return url + '&start=' + s.toString();
         }
+        function next() {
+            start += PAPERS_PER_PAGE;
+            url = window.location.href;
+            let id = url.indexOf("&start");
+            let redirect = url;
+            if (id!==-1) {
+                redirect = url.substr(0, id);
+            }
+            window.location = merge(redirect, start);
+        }
+        function prev() {
+            start -= PAPERS_PER_PAGE;
+            url = window.location.href;
+            let id = url.indexOf("&start");
+            let redirect = url;
+            if (id!==-1) {
+                redirect = url.substr(0, id);
+            }
+            window.location = merge(redirect, start);
+        }
+        var papers = [], cites = [], ord = [], years = [];
         document.addEventListener("DOMContentLoaded", function() {
+            let loc = window.location.search;
+            if (loc.indexOf("start=")!==-1) {
+                let id = loc.indexOf("start=") + 6;
+                while (id<loc.length && loc[id]>=0 && loc[id]<=9) {
+                    start = start*10 + Number(loc[id]);
+                    ++id;
+                }
+            }
+            if (start-PAPERS_PER_PAGE<0) {
+                document.querySelector('#prev').disabled = true;
+            } else {
+                document.querySelector('#prev').disabled = false;
+            }
+            let tot = Number(document.querySelector('#total').innerHTML);
+            if (start+PAPERS_PER_PAGE>=tot) {
+                document.querySelector('#next').disabled = true;
+            } else {
+                document.querySelector('#next').disabled = false;
+            }
             let controls = document.querySelectorAll(".Expand");
-            for(let i=0; i<controls.length; i++) {
+            let dompapers = document.querySelectorAll(".papers");
+            for (let i=0; i<dompapers.length; i++) {
+                ord.push(i);
+                papers.push(dompapers[i].innerHTML);
+            }
+            let citations = document.querySelectorAll(".citation");
+            for (let i=0; i<citations.length; i++) cites.push(Number(citations[i].innerHTML.split(" ")[1]));
+            let domyears = document.querySelectorAll(".year");
+            for (let i=0; i<domyears.length; i++) years.push(Number(domyears[i].innerHTML));
+            for (let i=0; i<controls.length; i++) {
                 control = controls[i];
                 control.addEventListener('click', function() {
                     abstract = this.previousSibling.previousSibling;
@@ -31,10 +82,16 @@
                 });
             }
             let selecter = document.querySelector(".selecter");
-            console.log(selecter);
-            selecter.addEventListener('select', function() {
-                console.log("???");
-                console.log(this.options[this.selectedIndex]);
+            selecter.addEventListener('change', function() {
+                cur = this.value;
+                for (let i=0; i<papers.length; i++) ord[i] = i;
+                if (cur=="Sort by Citation Count") {
+                    ord.sort((a, b) => cites[b]-cites[a] );
+                } else if (cur=="Sort by Recency") {
+                    ord.sort((a, b) => years[b]-years[a] );
+                }
+                let dompapers = document.querySelectorAll(".papers");
+                for (let i=0; i<dompapers.length; i++) dompapers[i].innerHTML = papers[ord[i]];
             });
             // let paperurls = document.getElementsByClassName('paper-url');
             // for(let i=0; i<paperurls.length; i++) {
@@ -76,7 +133,8 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w">
-        <p class="msg">About {{ total }} results for "{{ key }}"</p>
+        <p class="msg">About <span id="total">{{ total }}</span> results for "{{ key }}"</p>
+        {% if total %}
         <select class="selecter">
             <option>Sort by Relevance</option>
             <option>Sort by Citation Count</option>
@@ -125,12 +183,15 @@
                     <div class="other clearfix">
                         <!-- <button>detail</button> -->
                         <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
-                        <span>citation: {{ article.citationCount }}</span>
+                        <span class="citation">citation: {{ article.citationCount }}</span>
                     </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
+        <button class="btn-gradient" type="button" id="prev" onclick="prev()">prev</button>
+        <button class="btn-gradient" type="button" id="next" onclick="next()">next</button>
+        {% endif %}
     </div>
 
     <!-- 底部区域 -->

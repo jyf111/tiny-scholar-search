@@ -46,7 +46,11 @@ def papersearch(request):
         message = request.GET['name']
     else:
         message = ''
-    result = utils.semantic.search(message)
+    if 'start' in request.GET and request.GET['start']:
+        start = int(request.GET['start'])
+    else:
+        start = 0
+    result = utils.semantic.search(message, start)
     return render(request, 'search/paper.html', {'key': message, 'total': result[0], 'articles': result[1]})
     
 def author(request, pid):
@@ -184,7 +188,7 @@ def article(request, doi):
         if i not in citcnt:
             citcnt[i] = 0
     bar = (
-        Bar(init_opts=opts.InitOpts(width="400px", height="200px"))
+        Bar(init_opts=opts.InitOpts(width="400px", height="300px"))
             .add_xaxis(list(range(mnyear, mxyear + 1)))
             .add_yaxis("count", [citcnt[year] for year in range(mnyear, mxyear + 1)],
                        itemstyle_opts=opts.ItemStyleOpts(color="blue"))

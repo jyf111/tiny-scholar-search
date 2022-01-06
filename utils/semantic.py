@@ -52,8 +52,8 @@ def genArticle(doi):
     article = json.loads(resp)
     return Article(article, doi)
 
-def search(key):
-    resp = requests.get(SEMANTIC_PAPER_KEYSEARCH_URL, headers=headers, params={'query':key, 'offset':0, 'limit':10, 'fields':'title,authors,year,externalIds,abstract,venue,citationCount,fieldsOfStudy'}).content
+def search(key, start):
+    resp = requests.get(SEMANTIC_PAPER_KEYSEARCH_URL, headers=headers, params={'query':key, 'offset':0, 'limit':10, 'offset':start, 'fields':'title,authors,year,externalIds,abstract,venue,citationCount,fieldsOfStudy'}).content
     result = json.loads(resp)
     if 'data' in result:
         papers = result['data']

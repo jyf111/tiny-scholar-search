@@ -24,7 +24,9 @@
         // }
         function gen() {
             info = result[index].split('</li>')[0];
-            document.querySelector('#container').innerHTML = info;
+            document.querySelector('.load').innerHTML = info;
+            document.querySelector('#prev').style.display = "inline";
+            document.querySelector('#next').style.display = "inline";
             let controls = document.querySelectorAll(".Expand");
             for(let i=0; i<controls.length; i++) {
                 control = controls[i];
@@ -52,38 +54,34 @@
             //     }
             // }
         }
-        // function nextPage() {
-        //     if(index<=5 && index<=result.length) {
-        //         index++;
-        //         gen();
-        //     }
-        //     if(index==6 || index>=result.length) {
-        //         document.getElementById('next').setAttribute("disabled", true);
-        //     } else {
-        //         document.getElementById('next').removeAttribute("disabled");
-        //     }
-        //     if(index==2) {
-        //         document.getElementById('prev').setAttribute("disabled", true);
-        //     } else {
-        //         document.getElementById('prev').removeAttribute("disabled");
-        //     }
-        // }
-        // function prevPage() {
-        //     if(index>2) {
-        //         index--;
-        //         gen();
-        //     }
-        //     if(index==6 || index>=result.length) {
-        //         document.getElementById('next').setAttribute("disabled", true);
-        //     } else {
-        //         document.getElementById('next').removeAttribute("disabled");
-        //     }
-        //     if(index==2) {
-        //         document.getElementById('prev').setAttribute("disabled", true);
-        //     } else {
-        //         document.getElementById('prev').removeAttribute("disabled");
-        //     }
-        // }
+        function next() {
+            ++index;
+            if(index>=2 && index<result.length) gen();
+            if(index+1==result.length) {
+                document.getElementById('next').setAttribute("disabled", true);
+            } else {
+                document.getElementById('next').removeAttribute("disabled");
+            }
+            if(index==2) {
+                document.getElementById('prev').setAttribute("disabled", true);
+            } else {
+                document.getElementById('prev').removeAttribute("disabled");
+            }
+        }
+        function prev() {
+            --index;
+            if(index>=2 && index<result.length) gen();
+            if(index+1==result.length) {
+                document.getElementById('next').setAttribute("disabled", true);
+            } else {
+                document.getElementById('next').removeAttribute("disabled");
+            }
+            if(index==2) {
+                document.getElementById('prev').setAttribute("disabled", true);
+            } else {
+                document.getElementById('prev').removeAttribute("disabled");
+            }
+        }
         document.addEventListener("DOMContentLoaded", function() {
             let xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
@@ -91,6 +89,7 @@
                     // hide();
                     let info = xmlhttp.responseText;
                     result = info.split('<li class=\"papers\">');
+                    console.log(result);
                     // document.getElementById('page-button').innerHTML = '<button id="prev" type="button" onclick="prevPage()" disabled>Prev</button>\n<button id="next" type="button" onclick="nextPage()">Next</button>';
                     gen();
                 }
@@ -123,10 +122,10 @@
         <div class="top clearfix">
             <div class="left">
                 <div class="pic">
-                    <img src="{% static 'images/word.png' %}" alt="">
+                    <img src="{% static 'images/word.png' %}" alt="keyword cloud">
                 </div>
                 {% if article.citations|length %}
-                <iframe id="frame1" src="{% static '/citation.html' %}" width="400px"" height="320px" frameborder="auto" scrolling="false"></iframe>
+                <iframe id="frame1" src="{% static '/citation.html' %}" width="420px"" height="350px" frameborder="no" scrolling="false"></iframe>
                 {% endif %}
             </div>
             <div class="right">
@@ -177,8 +176,8 @@
             <p>{{ article.abstract }}</p>
         </div>
         <div class="bottom">
-            <div class="most related papers">
-                <h4>most related papers</h4>
+            <div class="most related paper">
+                <h4>most related paper</h4>
                 <div id="container">
                     <div class="load">
                         <div class="spinner">
@@ -189,9 +188,11 @@
                             <div class="rect5"></div>
                         </div>
                     </div>
+                    <button type="button" id="prev" onclick="prev()" style="display:none">prev</button>
+                    <button type="button" id="next" onclick="next()" style="display:none">next</button>
                 </div>
             </div>
-            <div class="citations">
+            <!-- <div class="citations">
                 <h4>{{ article.citations|length }} citations</h4>
                 <ul class="cite-list">
                     {% for paper in article.citations %}
@@ -246,7 +247,7 @@
                     </li>
                     {% endfor %}
                 </ul>
-            </div>
+            </div> -->
         </div>
     </div>
     <!-- 底部区域 -->
