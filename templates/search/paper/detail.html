@@ -14,14 +14,6 @@
     <script>
         let index = 2; //default
         var result;
-        // const slim = '<li class="grid-item">';
-        // function hide() {
-        //     let dom = document.getElementsByClassName("spinner")[0];
-        //     dom.style.display = "none";
-        //     for (let i = 0; i < dom.children.length; i++) {
-        //         dom.children[i].style.display = "none";
-        //     }
-        // }
         function gen() {
             info = result[index].split('</li>')[0];
             document.querySelector('.load').innerHTML = info;
@@ -86,11 +78,8 @@
             let xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                    // hide();
                     let info = xmlhttp.responseText;
                     result = info.split('<li class=\"papers\">');
-                    console.log(result);
-                    // document.getElementById('page-button').innerHTML = '<button id="prev" type="button" onclick="prevPage()" disabled>Prev</button>\n<button id="next" type="button" onclick="nextPage()">Next</button>';
                     gen();
                 }
             };
