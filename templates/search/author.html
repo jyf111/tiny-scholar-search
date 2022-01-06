@@ -94,7 +94,7 @@
             if (start1-USERS_PER_PAGE<0) {
                 document.querySelector('#prev1').disabled = true;
             } else {
-                document.querySelector('#prev1').disabled = false;
+                document.querySelector('#prev1').disabled = true;
             }
             let tot1 = Number(document.querySelector('.tips').innerHTML.split(" ")[0]);
             if (start1+USERS_PER_PAGE>=tot1) {
@@ -180,9 +180,11 @@
                 </li>
                 {% endfor %}
             </ul>
-            <button class="btn-gradient" type="button" id="prev1" onclick="prev1()">prev</button>
-            <button class="btn-gradient" type="button" id="next1" onclick="next1()">next</button>
+            <button class="btn" type="button" id="prev1" onclick="prev1()">prev</button>
+            <button class="btn" type="button" id="next1" onclick="next1()">next</button>
         </div>
+        {% endif %}
+        {% if likely_len %}
         <h3 class="tips2">{{ likely_len }} Likely matches</h3>
         <div class="match-list clearfix" id="likely_match">
             <ul>
@@ -208,9 +210,10 @@
                 </li>
                 {% endfor %}
             </ul>
-            <button class="btn-gradient" type="button" id="prev2" onclick="prev2()">prev</button>
-            <button class="btn-gradient" type="button" id="next2" onclick="next2()">next</button>
+            <button class="btn" type="button" id="prev2" onclick="prev2()">prev</button>
+            <button class="btn" type="button" id="next2" onclick="next2()">next</button>
         </div>
+        {% endif %}
     </div>
 
     <!-- 底部区域 -->

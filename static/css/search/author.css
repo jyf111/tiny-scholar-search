@@ -114,10 +114,11 @@
 .content .match-list #prev1::before,
 .content .match-list #prev2::before {
     content: '\eb66';
-    display: inline-block;
+    /* display: inline-block; */
     padding: 20px 10px;
     font-family: icomoon;
     font-size: 28px;
+    cursor: pointer;
 }
 .content .match-list #next1::before,
 .content .match-list #next2::before {
@@ -126,6 +127,7 @@
     padding: 20px 10px;
     font-family: icomoon;
     font-size: 28px;
+    cursor: pointer;
 }
 .content #exact_match:hover button {
     display: block;
@@ -272,10 +274,8 @@
 .btn-gradient:active {
     top: 4px;	
     cursor: pointer;
-}
-
-
-button[disabled] {
-    color: white !important;
-    background: #c7c7c7 !important;
 } */
+
+.btn[disabled] {
+    display: none !important;
+}

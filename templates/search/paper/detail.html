@@ -46,9 +46,7 @@
             //     }
             // }
         }
-        function next() {
-            ++index;
-            if(index>=2 && index<result.length) gen();
+        function maintain() {
             if(index+1==result.length) {
                 document.getElementById('next').setAttribute("disabled", true);
             } else {
@@ -59,33 +57,68 @@
             } else {
                 document.getElementById('prev').removeAttribute("disabled");
             }
+        }
+        function next() {
+            ++index;
+            if(index>=2 && index<result.length) gen();
+            maintain();
         }
         function prev() {
             --index;
             if(index>=2 && index<result.length) gen();
-            if(index+1==result.length) {
-                document.getElementById('next').setAttribute("disabled", true);
-            } else {
-                document.getElementById('next').removeAttribute("disabled");
+            maintain();
+        }
+        const PAPERS_PER_LIST = 5;
+        function inrange(x, l, r) { // [l, r)
+            return x>=l && x<r;
+        }
+        function work(start, listparent) {
+            list = listparent.children;
+            listparent.setAttribute("start", start);
+            for (let i=0; i<list.length; i++) {
+                if (inrange(i, start, Math.min(start+PAPERS_PER_LIST, list.length))) list[i].style.display = "block";
+                else list[i].style.display = "none";
             }
-            if(index==2) {
-                document.getElementById('prev').setAttribute("disabled", true);
+            if (start-PAPERS_PER_LIST<0) {
+                listparent.parentNode.children[2].disabled = true;
             } else {
-                document.getElementById('prev').removeAttribute("disabled");
+                listparent.parentNode.children[2].disabled = false;
+            }
+            if (start+PAPERS_PER_LIST>=list.length) {
+                listparent.parentNode.children[3].disabled = true;
+            } else {
+                listparent.parentNode.children[3].disabled = false;
             }
         }
         document.addEventListener("DOMContentLoaded", function() {
+            citelist = document.querySelector('.cite-list');
+            work(0, citelist);
+            reflist = document.querySelector('.ref-list');
+            work(0, reflist);
             let xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
                 if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                     let info = xmlhttp.responseText;
                     result = info.split('<li class=\"papers\">');
                     gen();
+                    maintain();
                 }
             };
             xmlhttp.open("GET", "/papersearch/?name=" + document.querySelector("#title").innerText, true);
             xmlhttp.send();
         });
+        function prev2(event) {
+            listparent = event.target.parentNode.children[1];
+            start = Number(listparent.getAttribute('start'));
+            start -= PAPERS_PER_LIST;
+            work(start, listparent);
+        }
+        function next2(event) {
+            listparent = event.target.parentNode.children[1];
+            start = Number(listparent.getAttribute('start'));
+            start += PAPERS_PER_LIST;
+            work(start, listparent);
+        }
     </script>
 </head>
 <body>
@@ -181,11 +214,11 @@
                     <button type="button" id="next" onclick="next()" style="display:none">next</button>
                 </div>
             </div>
-            <!-- <div class="citations">
+            <div class="citations">
                 <h4>{{ article.citations|length }} citations</h4>
                 <ul class="cite-list">
                     {% for paper in article.citations %}
-                    <li class="clearfix">
+                    <li class="clearfix" style="display:none">
                         <div class="dot"></div>
                         <div class="block">
                             <h3><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h3>
@@ -208,12 +241,14 @@
                     </li>
                     {% endfor %}
                 </ul>
+                <button type="button" onclick="prev2(event)">prev</button>
+                <button type="button" onclick="next2(event)">next</button>
             </div>
             <div class="references">
                 <h4>{{ article.references|length }} references</h4>
                 <ul class="ref-list">
                     {% for paper in article.references %}
-                    <li class="clearfix">
+                    <li class="clearfix" style="display:none">
                         <div class="dot"></div>
                         <div class="block">
                             <h3><a href="//doi.org/{{ paper.doi }}">{{ paper.title }}</a></h3>
@@ -236,7 +271,9 @@
                     </li>
                     {% endfor %}
                 </ul>
-            </div> -->
+                <button type="button" onclick="prev2(event)">prev</button>
+                <button type="button" onclick="next2(event)">next</button>
+            </div>
         </div>
     </div>
     <!-- 底部区域 -->

@@ -272,3 +272,14 @@ img.control {
 checkbox {
     position: relative;
 }
+
+i {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 26px;
+    background: url(/static/images/icon-selected.png) no-repeat 4px 6px;
+    
+    position: relative;
+    top: 18px;
+}

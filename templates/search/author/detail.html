@@ -30,6 +30,11 @@
                 if (inner[0]=='C') idx = 1;
                 else if (inner[0]=='O') idx = 2;
                 boxes[4+idx].attributes[0].value = 1 - boxes[4+idx].attributes[0].value;
+                if (boxes[4+idx].attributes[0].value=='1') {
+                    boxes[4+idx].parentNode.children[0].style.backgroundPosition = "4px -20px"; 
+                } else {
+                    boxes[4+idx].parentNode.children[0].style.backgroundPosition = "4px 5px"; 
+                }
             }
             for (let i=0; i<4; i++) {
                 for (let j=0; j<3; j++) {
@@ -104,9 +109,18 @@
                     </ul>
                 </div>
             </li>
-            <li><em></em><h4 value=1 onclick="check(event)" class="check" />Journal({{ author.journals }})</h4></li>
-            <li><em></em><h4 value=1 onclick="check(event)" class="check" />Conference({{ author.conferences }})</h4></li>
-            <li><em></em><h4 value=1 onclick="check(event)" class="check" />Other({{ author.others }})</h4></li>
+            <li>
+                <i style="background-position: 4px -20px"></i>
+                <h4 value=1 onclick="check(event)" class="check" />Journal({{ author.journals }})</h4>
+            </li>
+            <li>
+                <i style="background-position: 4px -20px"></i>
+                <h4 value=1 onclick="check(event)" class="check" />Conference({{ author.conferences }})</h4>
+            </li>
+            <li>
+                <i style="background-position: 4px -20px"></i>
+                <h4 value=1 onclick="check(event)" class="check" />Other({{ author.others }})</h4>
+            </li>
         </ul>
     </div>
     <!-- 内容区域 -->
