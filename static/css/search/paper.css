@@ -58,14 +58,14 @@
 
 /* 内容区域 */
 .content {
-    min-height: 700px;
+    min-height: 600px;
 }
     /* 提示文本 */
 .content .msg{
     margin-top: 90px;
     font-size: 16px;
     font-weight: 750;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 .content .copyright {
     padding: 5px 30px  10px;
@@ -140,6 +140,41 @@
     line-height: 24px;
     color: #666;
 }
+.bnav {
+    position: relative;
+    height: 30px;
+    margin: 0 auto;
+}
+.bnav ul {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    width: 450px;
+    transform: translate(-50%, -50%);
+}
+.bnav ul li {
+    float: left;
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    border: 1px solid #cfcfcf;
+    color: #777;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    transition: transform .3s;
+}
+.bnav ul li:first-child {
+    margin: 0 10px 0 0;
+}
+.bnav ul li:last-child {
+    margin: 0 0 0 10px;
+}
+.bnav ul li:hover {
+    border-color: #3399ff;
+    color: #3399ff;
+    transform: scale(1.1);
+}
 
 .Expand {
     color: #1857b6;
@@ -174,11 +209,12 @@
     transition-timing-function: ease-in-out;
     white-space: nowrap;
     width: 220px;
-    display: inline-block;
+    float: right;
     margin-bottom: 10px;
+    outline: none;
 }
 
-.btn-gradient {
+/* .btn-gradient {
 	text-decoration: none;
 	color: white;
 	padding: 10px 30px;
@@ -201,4 +237,4 @@
 button[disabled] {
     color: white !important;
     background: #c7c7c7 !important;
-}
+} */

@@ -132,14 +132,16 @@
         </form>
     </div>
     <!-- 内容区域 -->
-    <div class="content w">
+    <div class="content w clearfix">
         <p class="msg">About <span id="total">{{ total }}</span> results for "{{ key }}"</p>
         {% if total %}
-        <select class="selecter">
-            <option>Sort by Relevance</option>
-            <option>Sort by Citation Count</option>
-            <option>Sort by Recency</option>
-        </select>
+        <div class="clearfix">
+            <select class="selecter">
+                <option>Sort by Relevance</option>
+                <option>Sort by Citation Count</option>
+                <option>Sort by Recency</option>
+            </select>
+        </div>
         <div class="paperlist">
             <ul>
                 {% for article in articles %}
@@ -189,8 +191,19 @@
                 {% endfor %}
             </ul>
         </div>
-        <button class="btn-gradient" type="button" id="prev" onclick="prev()">prev</button>
-        <button class="btn-gradient" type="button" id="next" onclick="next()">next</button>
+        <div class="bnav">
+            <ul class="clearfix">
+                <li class="btn-gradient" type="button" id="prev" onclick="prev()">&lt;</li>
+                <li>...</li>
+                <li>2</li>
+                <li>3</li>
+                <li class="selected">4</li>
+                <li>5</li>
+                <li>6</li>
+                <li>...</li>
+                <li class="btn-gradient" type="button" id="next" onclick="next()">&gt;</li>
+            </ul>
+        </div>
         {% endif %}
     </div>
 

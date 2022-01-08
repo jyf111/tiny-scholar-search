@@ -68,12 +68,12 @@
                 bd.style.display = "none";
                 bd.style.height = "0%";
                 hd.style.height = "100%";
-                parent.style.height = "43px";
+                parent.style.height = "50px";
             } else {
                 bd.style.display = "table";
-                bd.style.height = "87%";
-                hd.style.height = "13%";
-                parent.style.height = "330px";
+                bd.style.height = "270px";
+                hd.style.height = "50px";
+                parent.style.height = "320px";
             }   
         }
     </script>
@@ -176,14 +176,12 @@
             </div>
         </div>
         <div class="right">
-            <div id="author" style="height: 330px">
-                <div class="hd" style="height: 13%">
-                    <div class="tmp">
-                        Person information
-                    </div> 
-                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+            <div id="author">
+                <div class="hd">
+                    Person information
+                    <span onclick="control(event)"></span>
                 </div>
-                <div class="bd" style="display: table; height: 87%">
+                <div class="bd" style="display: table;">
                     <div class="author_name">
                         {{ author.name }}
                     </div>
@@ -201,36 +199,29 @@
                 <!-- end -->
                 </div>
             </div>
-            <div id="publication" style="height: 330px">
-                <div class="hd" style="height: 13%">
-                    <div class="tmp">
-                        Publication
-                    </div>
-                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+            <div id="publication">
+                <div class="hd" style="height: 50px">
+                    Publication
+                    <span onclick="control(event)"></span>
                 </div>
-                <div class="bd" style="display: table; height: 87%">
+                <div class="bd" style="display: none; height: 270px">
                     <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
             </div>
-            <div id="co-author" style="height: 330px">
-                <div class="hd" style="height: 13%">
-                    <div class="tmp">
-                        Co-author network
-                    </div>
-                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+            <div id="co-author">
+                <div class="hd" style="height: 50px">
+                    Co-author network <span onclick="control(event)"></span>
                 </div>
-                <div class="bd" style="display: table; height: 87%">
+                <div class="bd" style="display: none; height: 270px">
                     <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
                 </div>
             </div>
-            <div id="related-author" style="height: 330px">
-                <div class="hd" style="height: 13%">
-                    <div class="tmp">
-                        Top related authors
-                    </div>
-                    <img onclick="control(event)" class="control" src="{% static '/images/swap.svg' %}" width="25px" height="25px" style="margin: auto" />
+            <div id="related-author">
+                <div class="hd">
+                    Top related authors
+                    <span onclick="control(event)"></span>
                 </div>
-                <div class="bd" style="display: table; height: 87%">
+                <div class="bd" style="display: none;">
                     {% for co in coauthor %}
                         <div class="container">
                             <div class="coauthor">{{ co.0|safe }}</div>

@@ -54,6 +54,9 @@
 }
 
 /* 内容区域 */
+.content {
+    min-height: 600px;
+}
     /* 提示文本 */
 .content .msg {
     font-family: Roboto Slab,Georgia,serif;
@@ -114,7 +117,7 @@
 .content .match-list #prev1::before,
 .content .match-list #prev2::before {
     content: '\eb66';
-    /* display: inline-block; */
+    display: inline-block;
     padding: 20px 10px;
     font-family: icomoon;
     font-size: 28px;
@@ -150,7 +153,7 @@
     width: 25%;
     height: 180px;
     margin: 10px;
-    padding: 10px;
+    padding: 0 10px;
     background-color: lightsteelblue;
 }
 .content .match-list ul li .pic img {
@@ -165,14 +168,14 @@
 }
 .content .match-list ul li .info h4 {
     font-size: 24px;
-    line-height: 50px;
+    line-height: 40px;
 }
 .content .match-list ul li .info .body {
     margin-top: 25px;
     vertical-align: bottom;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
 }
 .content .match-list ul li .info .body div {
@@ -256,25 +259,6 @@
         -webkit-transform: scaleY(1.0);
     }
 }
-
-/* .btn-gradient {
-	text-decoration: none;
-	color: white;
-	padding: 10px 30px;
-	display: inline-block;
-	position: relative;
-	border: 1px solid rgba(0,0,0,0.21);
-	border-bottom: 4px solid rgba(0,0,0,0.21);
-	border-radius: 4px;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.15);
-    font-size: 14px;
-    background: #6698cb;
-}
-
-.btn-gradient:active {
-    top: 4px;	
-    cursor: pointer;
-} */
 
 .btn[disabled] {
     display: none !important;

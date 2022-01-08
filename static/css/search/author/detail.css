@@ -22,26 +22,6 @@
     border-radius: 5px 5px 0 0;
     color: #333;
 }
-.banner .nav>li em {
-    position: relative;
-    float: left;
-    width: 16px;
-    height: 16px;
-    margin: 22px 5px;
-    border: 2px dotted #fff;
-}
-.banner .nav>li:hover em {
-    border-color: #333;
-}
-.banner .nav>li em::before {
-    position: absolute;
-    top: 0;
-    left: -10%;
-    content: '√';
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 10px;
-}
 .banner .nav>li h4 {
     float: left;
     font-size: 16px;
@@ -58,21 +38,20 @@
     left: 0;
     width: 100%;
     border-radius: 0 0 5px 5px;
+    background-color: #fff;
     font-size: 12px;
+    z-index: 1;
 }
 .banner .nav li:first-child .select ul {
     display: none;
-    background-color: #fff;
 }
 .banner .nav li:first-child:hover .select ul {
     display: block;
 }
 .banner .nav li:first-child .select ul li {
-    position: relative;
     width: 100%;
     height: 24px;
     padding: 0 20px;
-    background-color: #fff;
     color: #333;
     line-height: 24px;
 }
@@ -88,6 +67,7 @@
     font-weight: 600;
 }
 .content {
+    position: relative;
     min-height: 600px;
 }
 .content .left {
@@ -114,6 +94,8 @@
 }
 .content .left .paperlist table td {
     height: 40px;
+    padding: 5px;
+    word-break: break-all;
 }
     /* 设置列宽和字体大小 */
 
@@ -121,15 +103,15 @@
     width: 40%;
 }
 .content .left .paperlist table tr td:nth-child(2) {
-    width: 15%;
+    width: 20%;
     font-size: 12px;
 }
 .content .left .paperlist table tr td:nth-child(3) {
-    width: 10%;
+    width: 5%;
     font-size: 12px;
 }
 .content .left .paperlist table tr td:nth-child(4) {
-    width: 10%;
+    width: 15%;
     font-size: 12px;
 }
 .content .left .paperlist table tr td:nth-child(5) {
@@ -137,16 +119,19 @@
     font-size: 12px;
 }
 .content .left .paperlist table tr td:nth-child(6) {
-    width: 15%;
+    width: 10%;
     font-size: 12px;
 }
 .content .left .paperlist table tr td:nth-child(6) button {
-    width: 70px;
+    width: 50px;
     height: 24px;
     border: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     background-color: #2368b1;
     color: #fff;
+}
+.content .left .paperlist table tr td:nth-child(6) button:hover {
+    background-color: #3399ff;
 }
         /* 表头 */
 .content .left .paperlist table thead tr {
@@ -170,41 +155,45 @@
     /* 右侧 */
 .content .right {
     position: absolute;
-    top: 160px;
-    right: 10%;
-    width: 18%;
+    top: 10px;
+    right: 0;
+    width: 24%;
 }
 .content .right>div {
-    width: 330px;
+    position: relative;
     margin-bottom: 10px;
-    border-radius: 5px;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+}
+.content .right>div:first-child {
+    border-radius: 5px;
 }
 .content .right>div .hd {
     width: 100%;
+    height: 50px;
     padding: 0 10px;
-    border-radius: 5px 5px 0 0;
     background-color: #2368b1;
     color: #fff;
     font-size: 20px;
     text-align: left;
-    line-height: 40px;
+    line-height: 50px;
+}
+.content .right>div:first-child .hd {
+    border-radius: 5px 5px 0 0;
 }
 .content .right>div:hover .hd {
     background-color: #fd7010;
 }
 .content .right>div .bd {
     width: 100%;
-    border-radius: 0 0 5px 5px;
     background-color: #fff;
 }
 .content .right #author .bd {
-    padding: 10px;
+    padding: 0 15px 15px;
     color: #666;
     line-height: 20px;
     font-size: 13px;
 }
-.personinfo {
+#author .personinfo {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 11;
@@ -217,11 +206,19 @@
 .content .right #publication .bd iframe {
     width: 100%;
     height: 100%;
+    margin: -8px;
 }
 .content .right #co-author .bd iframe {
     width: 100%;
     height: 100%;
-    margin: -4px 0 0 -4px;
+    margin: -8px;
+}
+.content .right #related-author .bd {
+    overflow: hidden;
+    padding: 0 15px 15px;
+}
+#related-author .container {
+    margin-top: 5px;
 }
 
 .detail_btn {
@@ -243,12 +240,12 @@
     color: #1857b6;
     font-size: 20px;
     font-weight: 500;
-    line-height: 35px;
+    line-height: 30px;
 }
 
 .copub {
-    color: #536479;
-    font-size: 15px;
+    display: block;
+    color: #888;
 }
 
 .check {
@@ -258,28 +255,25 @@
 .checkbox {
     width: 10px;
 }
-img.control {
-    position: relative;
-    cursor: pointer;
-    right: -280px;
-    top: -34px;
+.content .right>div .hd span::before {
+    content: '\eb50';
+    position: absolute;
+    right: 10px;
+    font-family: icomoon;
 }
-
-.tmp {
-    width: 200px;
+.content .right>div .hd span::after {
+    display: none;
+    content: '\eb4e';
+    position: absolute;
+    right: 10px;
+    font-family: icomoon;
 }
-
-checkbox {
-    position: relative;
-}
-
 i {
     display: inline-block;
     vertical-align: middle;
     width: 20px;
     height: 26px;
     background: url(/static/images/icon-selected.png) no-repeat 4px 6px;
-    
     position: relative;
     top: 18px;
 }

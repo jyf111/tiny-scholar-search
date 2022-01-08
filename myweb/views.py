@@ -94,7 +94,7 @@ def author(request, pid):
     from pyecharts import options as opts
     from pyecharts.charts import Bar
     bar = (
-        Bar(init_opts=opts.InitOpts(width="300px", height="280px"))
+        Bar(init_opts=opts.InitOpts(width="288px", height="270px"))
             .add_xaxis(list(range(mnyear, mxyear + 1)))
             .add_yaxis("count", [pubcnt[year] for year in range(mnyear, mxyear + 1)])
             # .set_global_opts(title_opts=opts.TitleOpts(title="publications"))
@@ -141,7 +141,7 @@ def author(request, pid):
         categories.append({"symbol": "circle"})
 
     c = (
-        Graph(init_opts=opts.InitOpts(width="300px", height="280px"))
+        Graph(init_opts=opts.InitOpts(width="288px", height="270px"))
             .add("", nodes, links, categories=categories, repulsion=100, is_draggable=True)
             # .set_global_opts(title_opts=opts.TitleOpts(title="co-author"))
             .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
