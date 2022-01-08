@@ -214,27 +214,17 @@
     outline: none;
 }
 
-/* .btn-gradient {
-	text-decoration: none;
-	color: white;
-	padding: 10px 30px;
-	display: inline-block;
-	position: relative;
-	border: 1px solid rgba(0,0,0,0.21);
-	border-bottom: 4px solid rgba(0,0,0,0.21);
-	border-radius: 4px;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.15);
-    font-size: 14px;
-    background: #6698cb;
-}
-
-.btn-gradient:active {
-    top: 4px;	
+.btn {
     cursor: pointer;
+    font-weight: 550;
+}
+
+.btn:active {
+    top: 4px;	
 }
 
 
-button[disabled] {
-    color: white !important;
-    background: #c7c7c7 !important;
-} */
+.btn[disabled=true] {
+    background: #f5f5f5 !important;
+    cursor: default !important; 
+}

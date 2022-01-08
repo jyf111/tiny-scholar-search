@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
+    {% load filters %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,30 +13,42 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Search for:"{{ key }}"</title>
     <script>
-        var start = 0;
+        var start = 0, tot = 0;
         const PAPERS_PER_PAGE = 10;
+        function rwork(s) {
+            let ss = "";
+            for (let i=0; i<s.length; i++) {
+                if(s[i]==',') continue;
+                ss += s[i];
+            }
+            return ss;
+        }
         function merge(url, s) {
             return url + '&start=' + s.toString();
         }
-        function next() {
-            start += PAPERS_PER_PAGE;
+        function redirectUrl(start) {
             url = window.location.href;
             let id = url.indexOf("&start");
             let redirect = url;
             if (id!==-1) {
                 redirect = url.substr(0, id);
             }
-            window.location = merge(redirect, start);
+            return merge(redirect, start);
+        }
+        function next() {
+            if (start+PAPERS_PER_PAGE>=tot) return;
+            start += PAPERS_PER_PAGE;
+            window.location = redirectUrl(start);
         }
         function prev() {
+            if (start-PAPERS_PER_PAGE<0) return;
             start -= PAPERS_PER_PAGE;
-            url = window.location.href;
-            let id = url.indexOf("&start");
-            let redirect = url;
-            if (id!==-1) {
-                redirect = url.substr(0, id);
-            }
-            window.location = merge(redirect, start);
+            window.location = redirectUrl(start);
+        }
+        function get(event) {
+            let id = Number(event.target.innerText);
+            start = (id-1)*PAPERS_PER_PAGE;
+            window.location = redirectUrl(start);
         }
         var papers = [], cites = [], ord = [], years = [];
         document.addEventListener("DOMContentLoaded", function() {
@@ -47,17 +60,61 @@
                     ++id;
                 }
             }
-            if (start-PAPERS_PER_PAGE<0) {
-                document.querySelector('#prev').disabled = true;
+            let idx = start/PAPERS_PER_PAGE + 1;
+            tot = Number(rwork(document.querySelector('#total').innerHTML));
+            let pages = document.querySelector('.page');
+            if ((tot-1)/PAPERS_PER_PAGE+1<5) {
+                pages.children[1].style.display = "none";
+                for (let i=2; i<=6; i++) {
+                    if (i<=(tot-1)/PAPERS_PER_PAGE+2) {
+                        pages.children[i].style.display = "inline";
+                        let num = i - 1;
+                        pages.children[i].innerHTML = num.toString();
+                    }
+                    else pages.children[i].style.display = "none";
+                }
+                pages.children[7].style.display = "none";
+                let select_id = idx + 1;
+                for (let i=0; i<=8; i++) {
+                    pages.children[i].style.backgroundColor = "white";
+                    pages.children[i].style.color = "#1857b6";
+                }
+                pages.children[select_id].style.backgroundColor = "#1857b6";
+                pages.children[select_id].style.color = "white";
             } else {
-                document.querySelector('#prev').disabled = false;
+                for (let i=0; i<=8; i++) pages.children[i].style.display = "inline";
+                let select_id = 4; // mid by default
+                if (idx==1) {
+                    select_id = 2;
+                    pages.children[1].style.display = "none";
+                } else if(idx==2) {
+                    select_id = 3;
+                } else if(idx==(tot-1)/PAPERS_PER_PAGE+1) {
+                    pages.children[7].style.display = "none";
+                    select_id = 6;
+                } else if(idx==(tot-1)/PAPERS_PER_PAGE) {
+                    select_id = 5;
+                }
+                for (let i=0; i<=8; i++) {
+                    if (i==1 || i==7) pages.children[i].style.backgroundColor = "#f5f5f5";
+                    else pages.children[i].style.backgroundColor = "white";
+                    pages.children[i].style.color = "#1857b6";
+                }
+                pages.children[select_id].style.backgroundColor = "#1857b6";
+                pages.children[select_id].style.color = "white";
+                for (let i=2; i<=6; i++) {
+                    let num = idx + i - select_id;
+                    pages.children[i].innerHTML = num.toString();
+                }
             }
-            let tot = Number(document.querySelector('#total').innerHTML);
-            if (start+PAPERS_PER_PAGE>=tot) {
-                document.querySelector('#next').disabled = true;
-            } else {
-                document.querySelector('#next').disabled = false;
-            }
+            if (start-PAPERS_PER_PAGE<0)
+                document.querySelector('#prev').setAttribute("disabled", true);
+            else
+                document.querySelector('#prev').setAttribute("disabled", false);
+            if (start+PAPERS_PER_PAGE>=tot)
+                document.querySelector('#next').setAttribute("disabled", true);
+            else
+                document.querySelector('#next').setAttribute("disabled", false);
             let controls = document.querySelectorAll(".Expand");
             let dompapers = document.querySelectorAll(".papers");
             for (let i=0; i<dompapers.length; i++) {
@@ -133,7 +190,7 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w clearfix">
-        <p class="msg">About <span id="total">{{ total }}</span> results for "{{ key }}"</p>
+        <p class="msg">About <span id="total">{{ total|work }}</span> results for "{{ key }}"</p>
         {% if total %}
         <div class="clearfix">
             <select class="selecter">
@@ -185,23 +242,23 @@
                     <div class="other clearfix">
                         <!-- <button>detail</button> -->
                         <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
-                        <span class="citation">citation: {{ article.citationCount }}</span>
+                        <span class="citation">citation: {{ article.citationCount|work }}</span>
                     </div>
                 </li>
                 {% endfor %}
             </ul>
         </div>
         <div class="bnav">
-            <ul class="clearfix">
-                <li class="btn-gradient" type="button" id="prev" onclick="prev()">&lt;</li>
+            <ul class="clearfix page">
+                <li class="btn" type="button" id="prev" onclick="prev()">&lt;</li>
                 <li>...</li>
-                <li>2</li>
-                <li>3</li>
-                <li class="selected">4</li>
-                <li>5</li>
-                <li>6</li>
+                <li class="btn" onclick="get(event)">2</li>
+                <li class="btn" onclick="get(event)">3</li>
+                <li class="btn" onclick="get(event)">4</li>
+                <li class="btn" onclick="get(event)">5</li>
+                <li class="btn" onclick="get(event)">6</li>
                 <li>...</li>
-                <li class="btn-gradient" type="button" id="next" onclick="next()">&gt;</li>
+                <li class="btn" type="button" id="next" onclick="next()">&gt;</li>
             </ul>
         </div>
         {% endif %}

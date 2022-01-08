@@ -255,18 +255,25 @@
 .checkbox {
     width: 10px;
 }
-.content .right>div .hd span::before {
+#author .hd span::before {
     content: '\eb50';
     position: absolute;
     right: 10px;
     font-family: icomoon;
+    cursor: pointer;
 }
-.content .right>div .hd span::after {
-    display: none;
+#author .hd span.special::before {
+    content: '\eb4e';
+}
+.mark::before {
     content: '\eb4e';
     position: absolute;
     right: 10px;
     font-family: icomoon;
+    cursor: pointer;
+}
+.mark.special::before {
+    content: '\eb50';;
 }
 i {
     display: inline-block;
@@ -276,4 +283,5 @@ i {
     background: url(/static/images/icon-selected.png) no-repeat 4px 6px;
     position: relative;
     top: 18px;
+    cursor: pointer;
 }

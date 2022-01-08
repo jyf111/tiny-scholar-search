@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     {% load static %}
+    {% load filters %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -213,11 +214,11 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" id="prev" onclick="prev()" style="display:none">prev</button>
-                <button type="button" id="next" onclick="next()" style="display:none">next</button>
+                <button class="btn" type="button" id="prev" onclick="prev()" style="display:none">prev</button>
+                <button class="btn" type="button" id="next" onclick="next()" style="display:none">next</button>
             </div>
             <div class="citations">
-                <h4>{{ article.citations|length }} citations</h4>
+                <h4>{{ article.citations|length|work }} citations</h4>
                 <ul class="cite-list">
                     {% for paper in article.citations %}
                     <li class="clearfix" style="display:none">
@@ -243,11 +244,11 @@
                     </li>
                     {% endfor %}
                 </ul>
-                <button type="button" class="prev_btn" onclick="prev2(event)">prev</button>
-                <button type="button" class="next_btn" onclick="next2(event)">next</button>
+                <button type="button" class="prev_btn btn" onclick="prev2(event)">prev</button>
+                <button type="button" class="next_btn btn" onclick="next2(event)">next</button>
             </div>
             <div class="references">
-                <h4>{{ article.references|length }} references</h4>
+                <h4>{{ article.references|length|work }} references</h4>
                 <ul class="ref-list">
                     {% for paper in article.references %}
                     <li class="clearfix" style="display:none">
@@ -273,8 +274,8 @@
                     </li>
                     {% endfor %}
                 </ul>
-                <button type="button" class="prev_btn" onclick="prev2(event)">prev</button>
-                <button type="button" class="next_btn" onclick="next2(event)">next</button>
+                <button type="button" class="prev_btn btn" onclick="prev2(event)">prev</button>
+                <button type="button" class="next_btn btn" onclick="next2(event)">next</button>
             </div>
         </div>
     </div>

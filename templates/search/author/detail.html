@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="{% static 'css/ccfrank.css' %}">
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>{{ author.name }}</title>
+    <!-- jQuery
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script> -->
     <script>
         var arr = new Array(4);
         for (let i=0; i<4; i++) {
@@ -24,7 +26,9 @@
 
         function check(event) {
             let boxes = document.querySelectorAll(".check");
-            inner = event.target.innerHTML;
+            var inner;
+            if (event.target.className=="choose") inner = event.target.parentNode.children[1].innerHTML;
+            else inner = event.target.innerHTML;
             if (inner.length) {
                 let idx = 0;
                 if (inner[0]=='C') idx = 1;
@@ -59,9 +63,28 @@
                 pubs[i].style.display = (arr[x][y] ? "table-row" : "none");
             }
         }   
-
+        function hasClass(obj, cls) {  
+            return obj.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));  
+        }  
+        function addClass(obj, cls) {  
+            if (!this.hasClass(obj, cls)) obj.className += " " + cls;  
+        }  
+        function removeClass(obj, cls) {  
+            if (hasClass(obj, cls)) {  
+                var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)');  
+                obj.className = obj.className.replace(reg, ' ');  
+            }  
+        }  
+        function toggleClass(obj, cls){  
+            if (hasClass(obj,cls)){  
+                removeClass(obj, cls);  
+            } else {  
+                addClass(obj, cls);  
+            }  
+        } 
         function control(event) {
             parent = event.target.parentNode.parentNode;
+            toggleClass(event.target, 'special');
             hd = parent.children[0];
             bd = parent.children[1];
             if (bd.style.display==="table") {
@@ -74,7 +97,7 @@
                 bd.style.height = "270px";
                 hd.style.height = "50px";
                 parent.style.height = "320px";
-            }   
+            }  
         }
     </script>
 </head>
@@ -110,15 +133,15 @@
                 </div>
             </li>
             <li>
-                <i style="background-position: 4px -20px"></i>
-                <h4 value=1 onclick="check(event)" class="check" />Journal({{ author.journals }})</h4>
+                <i class="choose" onclick="check(event)" style="background-position: 4px -20px"></i>
+                <h4 value=1 onclick="check(event)" class="check" />Journal({{ author.journals }})</h4> 
             </li>
             <li>
-                <i style="background-position: 4px -20px"></i>
+                <i class="choose" onclick="check(event)" style="background-position: 4px -20px"></i>
                 <h4 value=1 onclick="check(event)" class="check" />Conference({{ author.conferences }})</h4>
             </li>
             <li>
-                <i style="background-position: 4px -20px"></i>
+                <i class="choose" onclick="check(event)" style="background-position: 4px -20px"></i>
                 <h4 value=1 onclick="check(event)" class="check" />Other({{ author.others }})</h4>
             </li>
         </ul>
@@ -202,7 +225,7 @@
             <div id="publication">
                 <div class="hd" style="height: 50px">
                     Publication
-                    <span onclick="control(event)"></span>
+                    <span class="mark" onclick="control(event)"></span>
                 </div>
                 <div class="bd" style="display: none; height: 270px">
                     <iframe id="frame1" src="{% static '/publish.html' %}" frameborder="no" scrolling="no"></iframe>
@@ -210,7 +233,8 @@
             </div>
             <div id="co-author">
                 <div class="hd" style="height: 50px">
-                    Co-author network <span onclick="control(event)"></span>
+                    Co-author network 
+                    <span class="mark" onclick="control(event)"></span>
                 </div>
                 <div class="bd" style="display: none; height: 270px">
                     <iframe id="frame2" src="{% static '/coauthor.html' %}" frameborder="no" scrolling="no"></iframe>
@@ -219,7 +243,7 @@
             <div id="related-author">
                 <div class="hd">
                     Top related authors
-                    <span onclick="control(event)"></span>
+                    <span class="mark" onclick="control(event)"></span>
                 </div>
                 <div class="bd" style="display: none;">
                     {% for co in coauthor %}
