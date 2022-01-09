@@ -9,6 +9,9 @@ import utils.semantic
 import time
 
 
+def error(request, error):
+    return render(request, 'error.html', {'error': error})
+
 def page(request):
     return render(request, 'index.html')
 
@@ -194,7 +197,7 @@ def random_color_func(word=None, font_size=None, position=None,  orientation=Non
 def article(request, doi):
     article = utils.semantic.genArticle(doi)
     if article.error:
-        return HttpResponse(article.error)
+        return error(request, article.error)
     from pyecharts import options as opts
     from pyecharts.charts import Bar
     citcnt = {}
