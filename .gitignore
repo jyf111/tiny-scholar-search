@@ -145,8 +145,8 @@ cython_debug/
 .vscode/
 
 # auto gen
-static/citation.html
-static/coauthor.html
-static/publish.html
-static/river.html
-static/images/word.png
+citation.html
+coauthor.html
+publish.html
+river.html
+word.png
