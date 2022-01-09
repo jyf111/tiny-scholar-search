@@ -54,6 +54,15 @@
     padding-left: 15px;
     border-radius: 20px;
     outline: none;
+    font-size: 20px;
+}
+.search::before {
+    content: '\ed8c';
+    float: left;
+    padding-left: 10px;
+    color: #2368b1;
+    font: 20px icomoon;
+    line-height: 38px;
 }
 
 /* 内容区域 */
