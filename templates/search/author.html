@@ -34,7 +34,9 @@
         var start1 = 0, start2 = 0;
         const USERS_PER_PAGE = 4;
         function merge(url, s1, s2) {
-            return url + '&start1=' + s1.toString() + '&start2=' + s2.toString();
+            if (s1!=0) url += '&start1=' + s1.toString();
+            if (s2!=0) url += '&start2=' + s2.toString();
+            return url;
         }
         function next1() {
             start1 += USERS_PER_PAGE;
@@ -77,6 +79,12 @@
             window.location = merge(redirect, start1, start2);
         }
         document.addEventListener("DOMContentLoaded", function() {
+            let pictures = document.querySelectorAll(".pic");
+            for (let i=0; i<pictures.length; i++) {
+                let img = pictures[i].children[0];
+                let d = Math.round(Math.random()*3 + 1);
+                img.src = "/static/images/avatar" + d.toString() + ".svg";
+            }
             let loc = window.location.search;
             if (loc.indexOf("start1=")!==-1) {
                 let id = loc.indexOf("start1=") + 7;
@@ -157,7 +165,7 @@
                 {% for author in exact_authors %}
                 <li>
                     <div class="pic">
-                        <img src="/static/images/user.png" alt="">
+                        <img src="" alt="">
                     </div>
                     <div class="info">
                         <h4>
@@ -192,7 +200,7 @@
                 {% for author in likely_authors %}
                 <li>
                     <div class="pic">
-                        <img src="/static/images/user.png" alt="">
+                        <img src="" alt="">
                     </div>
                     <div class="info">
                         <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>

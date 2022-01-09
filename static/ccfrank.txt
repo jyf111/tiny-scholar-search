@@ -1,3 +1,4 @@
+Computer Architecture/Parallel and Distributed Computing/Storage System
 A /journals/tocs
 A /journals/tos
 A /journals/tcad
@@ -87,6 +88,7 @@ C /conf/islped
 C /conf/ispd
 C /conf/hoti
 C /conf/vts
+Computer Network
 A /journals/jsac
 A /journals/tmc
 A /journals/ton
@@ -139,6 +141,7 @@ C /conf/msn
 C /conf/mswim
 C /conf/wasa
 C /conf/hotnets
+Network and Information Security
 A /journals/tdsc
 A /journals/tifs
 A /journals/joc
@@ -198,6 +201,7 @@ C /conf/pet
 C /conf/sacrypt
 C /conf/soups
 C /conf/uss/
+Software Engineering/System Software/Programming Language
 A /journals/toplas
 A /journals/tosem
 A /journals/tse
@@ -289,6 +293,7 @@ C /conf/tase
 C /conf/msr
 C /conf/refsq
 C /conf/wicsa
+Database/Data Mining/Content Retrieval
 A /journals/tods
 A /journals/tois
 A /journals/tkde
@@ -348,6 +353,7 @@ C /conf/waim
 C /conf/ssd
 C /conf/pakdd
 C /conf/wise
+Computer Science Theory
 A /journals/tit
 A /journals/iandc
 A /journals/siamcomp
@@ -400,6 +406,7 @@ C /conf/rta
 C /conf/isaac
 C /conf/mfcs
 C /conf/stacs
+Computer Graphics and Multimedia
 A /journals/tog
 A /journals/tip
 A /journals/tvcg
@@ -457,6 +464,7 @@ C /conf/icip
 C /conf/mmm
 C /conf/pcm
 C /conf/smi
+Artificial Intelligence
 A /journals/ai
 A /journals/pami
 A /journals/ijcv
@@ -559,6 +567,7 @@ C /conf/icb
 C /conf/ijcnn
 C /conf/pricai
 C /conf/naacl
+Human-Computer Interaction and Ubiquitous Computing
 A /journals/tochi
 A /journals/ijmms
 B /journals/cscw
@@ -595,6 +604,7 @@ C /conf/cscwd
 C /conf/coopis
 C /conf/mobiquitous
 C /conf/avi
+Cross/Integrated/Emerging
 A /journals/jacm
 A /journals/pieee
 B /journals/bioinformatics

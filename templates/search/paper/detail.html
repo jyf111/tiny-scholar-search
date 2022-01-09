@@ -15,13 +15,9 @@
     <script>
         let index = 2; //default
         var result;
-        function gen() {
-            info = result[index].split('</li>')[0];
-            document.querySelector('.load').innerHTML = info;
-            document.querySelector('#prev').style.display = "inline";
-            document.querySelector('#next').style.display = "inline";
+        function expand() {
             let controls = document.querySelectorAll(".Expand");
-            for(let i=0; i<controls.length; i++) {
+            for (let i=0; i<controls.length; i++) {
                 control = controls[i];
                 control.addEventListener('click', function() {
                     abstract = this.previousSibling.previousSibling;
@@ -34,6 +30,13 @@
                     }
                 });
             }
+        }
+        function gen() {
+            info = result[index].split('</li>')[0];
+            document.querySelector('.load').innerHTML = info;
+            document.querySelector('#prev').style.display = "inline";
+            document.querySelector('#next').style.display = "inline";
+            expand();
             // let paperurls = document.getElementsByClassName('paper-url');
             // for(let i=0; i<paperurls.length; i++) {
             //     paperurl = paperurls[i];
@@ -91,6 +94,7 @@
                 listparent.parentNode.children[3].disabled = false;
             }
         }
+        var tmpid = 0;
         document.addEventListener("DOMContentLoaded", function() {
             citelist = document.querySelector('.cite-list');
             work(0, citelist);
@@ -98,11 +102,22 @@
             work(0, reflist);
             let xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
                     let info = xmlhttp.responseText;
                     result = info.split('<li class=\"papers\">');
-                    gen();
-                    maintain();
+                    if (result.length<=2) {
+                        let keywords = document.querySelector(".keywords").children[1].children[tmpid].innerHTML;
+                        tmpid++;
+                        keywords = keywords.substring(0, keywords.lastIndexOf(','));  
+                        xmlhttp.open("GET", "/papersearch/?name=" + keywords, true);
+                        xmlhttp.send();
+                    } else {
+                        if (result.length>12) {
+                            result = result.slice(0, 12);
+                        }
+                        gen();
+                        maintain();
+                    }
                 }
             };
             xmlhttp.open("GET", "/papersearch/?name=" + document.querySelector("#title").innerText, true);

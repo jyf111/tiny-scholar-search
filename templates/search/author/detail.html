@@ -99,6 +99,17 @@
                 parent.style.height = "320px";
             }  
         }
+        function controlsp(event) {
+            parent = event.target.parentNode.parentNode;
+            toggleClass(event.target, 'special');
+            hd = parent.children[0];
+            bd = parent.children[1];
+            if (bd.style.display==="table") {
+                bd.style.display = "none";
+            } else {
+                bd.style.display = "table";
+            }  
+        }
     </script>
 </head>
 <body>
@@ -151,6 +162,15 @@
         <div class="left">
             <div class="tips">
                 <span>Author: {{ author.name }}</span>
+            </div>
+            <div id="dirchange">
+                <div class="hd">
+                    Changes in research interests
+                    <span onclick="controlsp(event)"></span>
+                </div>
+                <div class="bd" style="display: table;">
+                    <iframe id="frame3" frameborder="no" scrolling="no" style="height: 610px; width:900px" src="{% static '/river.html' %}"></iframe>
+                </div>
             </div>
             <div class="paperlist clearfix">
                 <table>

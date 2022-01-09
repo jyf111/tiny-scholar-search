@@ -156,6 +156,32 @@ def author(request, pid):
         if cnt!=0:
             coauthor.append([url[key], value])
         cnt += 1
+
+    x_data = ['Computer Architecture/Parallel and Distributed Computing/Storage System', 'Computer Network', 'Network and Information Security', 'Software Engineering/System Software/Programming Language', 'Database/Data Mining/Content Retrieval', 'Computer Science Theory', 'Computer Graphics and Multimedia', 'Artificial Intelligence', 'Human-Computer Interaction and Ubiquitous Computing', 'Cross/Integrated/Emerging', 'Other']
+    y_data = []
+    for dir in x_data:
+        for year in range(mnyear, mxyear+1):
+            cnt = 0
+            for pub in author.publications:
+                if int(pub['year'])==year and pub['dir']==dir:
+                    cnt += 1
+            y_data.append([str(year), cnt, dir])
+    from pyecharts.charts import ThemeRiver
+    (
+        ThemeRiver(init_opts=opts.InitOpts(width="850px", height="600px"))
+        .add(
+            series_name=x_data,
+            data=y_data,
+            singleaxis_opts=opts.SingleAxisOpts(
+                pos_top="50", pos_bottom="50", type_="value", min_=str(mnyear), max_=str(mxyear)
+            ),
+        )
+        .set_global_opts(
+            tooltip_opts=opts.TooltipOpts(is_show=False)
+        )
+        .set_series_opts(label_opts=opts.LabelOpts(is_show=False))
+        .render("static/river.html")
+    )
     return render(request, 'search/author/detail.html', {'author': author, 'coauthor': coauthor})
 
 def random_color_func(word=None, font_size=None, position=None,  orientation=None, font_path=None, random_state=None):

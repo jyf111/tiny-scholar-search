@@ -9,7 +9,7 @@ headers = {'User-Agent': 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_1
 
 lazy_db = {}
 rank_db = {}
-
+dir_db = {}
 def gen_author(pid):
     if pid in lazy_db:
         return lazy_db[pid]
@@ -25,12 +25,32 @@ def get_rank(type):
                 cur = f.readline()
                 if not cur:
                     break
+                if (cur[0] not in ['A', 'B', 'C']) or cur[1]!=' ':
+                    continue
                 rank_db[cur[2:-1]] = cur[0].lower()
     type = '/' + type
     if type in rank_db:
         return rank_db[type]
     else:
         return "none"
+
+def get_dir(type):
+    if len(dir_db)==0: # init dir_db
+        directon = ""
+        with open('static/ccfrank.txt', 'r') as f:
+            while True:
+                cur = f.readline()
+                if not cur:
+                    break
+                if (cur[0] not in ['A', 'B', 'C']) or cur[1]!=' ':
+                    direction = cur
+                else:
+                    dir_db[cur[2:-1]] = direction[:-1]
+    type = '/' + type
+    if type in dir_db:
+        return dir_db[type]
+    else:
+        return "Other"
 
 def work(name):
     name.strip()
@@ -82,6 +102,7 @@ class Author():
                     pub['key'] = son.attrib['key']
                     tmp = son.attrib['key'].split('/')
                     pub['rank'] = get_rank(tmp[0]+'/'+tmp[1])
+                    pub['dir'] = get_dir(tmp[0]+'/'+tmp[1])
                     if pub['rank']=='a':
                         self.ccfa += 1
                     if pub['rank']=='b':

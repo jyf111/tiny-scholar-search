@@ -83,9 +83,11 @@
 }
 .content .middle p {
     padding: 10px 0;
-    color: #888;
+    color: #2e3743;
     text-indent: 2em;
     line-height: 28px;
+    font-size: 14px;
+    overflow-wrap: anywhere;
 }
 .content .bottom #prev,
 .content .bottom .prev_btn {
@@ -192,7 +194,18 @@
     display: inline-block;
     padding: 5px 20px 5px 15px;
 }
-
+.kind {
+    color: #ffd700;
+    font-weight: 700;
+}
+.abstract {
+    position: relative;
+    line-height: 20px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
 .Expand {
     color: #1857b6;
     cursor: pointer;
@@ -213,10 +226,6 @@
 .abstract .tip {
     color: #333;
     font-weight: 700;
-}
-.abstract {
-    display: inline;
-    color: #333;
 }
 
 .spinner {
@@ -272,7 +281,17 @@
     }
 }
 
+.topic {
+    font-size: 15px;
+    font-weight: 1000;
+    display: block;
+}
+
 .btn[disabled] {
     display: none !important;
 }
 
+#container {
+    padding: 5px 15px 5px 15px;
+    line-height: 25px;
+}

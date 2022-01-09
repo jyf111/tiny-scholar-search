@@ -167,7 +167,7 @@
 .content .right>div:first-child {
     border-radius: 5px;
 }
-.content .right>div .hd {
+.hd {
     width: 100%;
     height: 50px;
     padding: 0 10px;
@@ -177,8 +177,14 @@
     text-align: left;
     line-height: 50px;
 }
-.content .right>div:first-child .hd {
+.hd {
     border-radius: 5px 5px 0 0;
+}
+#dirchange .hd {
+    float: left;
+}
+#dirchange .hd:hover {
+    background-color: #fd7010;
 }
 .content .right>div:hover .hd {
     background-color: #fd7010;
@@ -235,12 +241,14 @@
     color: 2e3743;
     line-height: 40px;
 }
-
-.coauthor {
+.coauthor a{
     color: #1857b6;
-    font-size: 20px;
+}
+.coauthor {
+    font-size: 23px;
     font-weight: 500;
     line-height: 30px;
+    font-family: Roboto,Helvetica Neue,Arial,sans-serif;
 }
 
 .copub {
@@ -255,14 +263,21 @@
 .checkbox {
     width: 10px;
 }
-#author .hd span::before {
+#author .hd span::before{
     content: '\eb50';
     position: absolute;
     right: 10px;
     font-family: icomoon;
     cursor: pointer;
 }
-#author .hd span.special::before {
+#dirchange .hd span::before{
+    content: '\eb50';
+    position: relative;
+    left: 565px;
+    font-family: icomoon;
+    cursor: pointer;
+}
+#author .hd span.special::before,  #dirchange .hd span.special::before{
     content: '\eb4e';
 }
 .mark::before {
@@ -285,3 +300,4 @@ i {
     top: 18px;
     cursor: pointer;
 }
+

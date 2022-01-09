@@ -24,7 +24,8 @@
             return ss;
         }
         function merge(url, s) {
-            return url + '&start=' + s.toString();
+            if (s!=0) url += '&start=' + s.toString();
+            return url;
         }
         function redirectUrl(start) {
             url = window.location.href;
@@ -50,6 +51,22 @@
             start = (id-1)*PAPERS_PER_PAGE;
             window.location = redirectUrl(start);
         }
+        function expand() {
+            let controls = document.querySelectorAll(".Expand");
+            for (let i=0; i<controls.length; i++) {
+                control = controls[i];
+                control.addEventListener('click', function() {
+                    abstract = this.previousSibling.previousSibling;
+                    if(this.innerText==='Expand') {
+                        abstract.style.display = 'inline-block';
+                        this.innerText = 'Collapse';
+                    } else {
+                        abstract.style.display = '-webkit-box';
+                        this.innerText = 'Expand';
+                    }
+                });
+            }
+        }
         var papers = [], cites = [], ord = [], years = [];
         document.addEventListener("DOMContentLoaded", function() {
             let loc = window.location.search;
@@ -60,18 +77,20 @@
                     ++id;
                 }
             }
-            let idx = start/PAPERS_PER_PAGE + 1;
+            let idx = Math.floor(start/PAPERS_PER_PAGE) + 1;
             tot = Number(rwork(document.querySelector('#total').innerHTML));
+            let totpages = Math.floor((tot-1)/PAPERS_PER_PAGE) + 1;
             let pages = document.querySelector('.page');
-            if ((tot-1)/PAPERS_PER_PAGE+1<5) {
+            if (totpages<5) {
+                pages.children[0].style.display = "inline";
+                pages.children[8].style.display = "inline";
                 pages.children[1].style.display = "none";
                 for (let i=2; i<=6; i++) {
-                    if (i<=(tot-1)/PAPERS_PER_PAGE+2) {
+                    if (i<=totpages+1) {
                         pages.children[i].style.display = "inline";
                         let num = i - 1;
                         pages.children[i].innerHTML = num.toString();
-                    }
-                    else pages.children[i].style.display = "none";
+                    } else pages.children[i].style.display = "none";
                 }
                 pages.children[7].style.display = "none";
                 let select_id = idx + 1;
@@ -86,15 +105,15 @@
                 let select_id = 4; // mid by default
                 if (idx==1) {
                     select_id = 2;
-                    pages.children[1].style.display = "none";
                 } else if(idx==2) {
                     select_id = 3;
-                } else if(idx==(tot-1)/PAPERS_PER_PAGE+1) {
-                    pages.children[7].style.display = "none";
+                } else if(idx==totpages) {
                     select_id = 6;
-                } else if(idx==(tot-1)/PAPERS_PER_PAGE) {
+                } else if(idx==totpages-1) {
                     select_id = 5;
                 }
+                if (idx<=3) pages.children[1].style.display = "none";
+                if (idx+2>=totpages) pages.children[7].style.display = "none";
                 for (let i=0; i<=8; i++) {
                     if (i==1 || i==7) pages.children[i].style.backgroundColor = "#f5f5f5";
                     else pages.children[i].style.backgroundColor = "white";
@@ -107,6 +126,31 @@
                     pages.children[i].innerHTML = num.toString();
                 }
             }
+            let alive = 0;
+            for (let i=0; i<=8; i++) 
+                if (pages.children[i].style.display=="inline") ++alive;
+            switch (alive) {
+                case 3:
+                    pages.style.left = "63%";
+                    break;
+                case 4:
+                    pages.style.left = "61%";
+                    break;
+                case 5:
+                    pages.style.left = "59%";
+                    break;
+                case 6:
+                    pages.style.left = "57%";
+                    break;
+                case 7:
+                    pages.style.left = "55%";
+                    break;
+                case 8:
+                    pages.style.left = "53%";
+                    break;
+                default:
+                    pages.style.left = "50%";
+            }
             if (start-PAPERS_PER_PAGE<0)
                 document.querySelector('#prev').setAttribute("disabled", true);
             else
@@ -115,29 +159,18 @@
                 document.querySelector('#next').setAttribute("disabled", true);
             else
                 document.querySelector('#next').setAttribute("disabled", false);
-            let controls = document.querySelectorAll(".Expand");
             let dompapers = document.querySelectorAll(".papers");
             for (let i=0; i<dompapers.length; i++) {
                 ord.push(i);
                 papers.push(dompapers[i].innerHTML);
             }
             let citations = document.querySelectorAll(".citation");
-            for (let i=0; i<citations.length; i++) cites.push(Number(citations[i].innerHTML.split(" ")[1]));
+            for (let i=0; i<citations.length; i++) {
+                cites.push(rwork(citations[i].innerHTML.split(" ")[1]));
+            }
             let domyears = document.querySelectorAll(".year");
             for (let i=0; i<domyears.length; i++) years.push(Number(domyears[i].innerHTML));
-            for (let i=0; i<controls.length; i++) {
-                control = controls[i];
-                control.addEventListener('click', function() {
-                    abstract = this.previousSibling.previousSibling;
-                    if(this.innerText==='Expand') {
-                        abstract.style.display = 'inline-block';
-                        this.innerText = 'Collapse';
-                    } else {
-                        abstract.style.display = '-webkit-box';
-                        this.innerText = 'Expand';
-                    }
-                });
-            }
+            expand();
             let selecter = document.querySelector(".selecter");
             selecter.addEventListener('change', function() {
                 cur = this.value;
@@ -149,6 +182,7 @@
                 }
                 let dompapers = document.querySelectorAll(".papers");
                 for (let i=0; i<dompapers.length; i++) dompapers[i].innerHTML = papers[ord[i]];
+                expand();
             });
             // let paperurls = document.getElementsByClassName('paper-url');
             // for(let i=0; i<paperurls.length; i++) {
