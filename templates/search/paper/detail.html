@@ -34,8 +34,6 @@
         function gen() {
             info = result[index].split('</li>')[0];
             document.querySelector('.load').innerHTML = info;
-            document.querySelector('#prev').style.display = "inline";
-            document.querySelector('#next').style.display = "inline";
             expand();
             // let paperurls = document.getElementsByClassName('paper-url');
             // for(let i=0; i<paperurls.length; i++) {
@@ -51,12 +49,12 @@
             // }
         }
         function maintain() {
-            if(index+1==result.length) {
+            if (index+1==result.length) {
                 document.getElementById('next').setAttribute("disabled", true);
             } else {
                 document.getElementById('next').removeAttribute("disabled");
             }
-            if(index==2) {
+            if (index==2) {
                 document.getElementById('prev').setAttribute("disabled", true);
             } else {
                 document.getElementById('prev').removeAttribute("disabled");
@@ -229,8 +227,8 @@
                         </div>
                     </div>
                 </div>
-                <button class="btn" type="button" id="prev" onclick="prev()" style="display:none">prev</button>
-                <button class="btn" type="button" id="next" onclick="next()" style="display:none">next</button>
+                <button class="prev_btn btn" type="button" id="prev" onclick="prev()">prev</button>
+                <button class="next_btn btn" type="button" id="next" onclick="next()">next</button>
             </div>
             <div class="citations">
                 <h4>{{ article.citations|length|parse }} citations</h4>

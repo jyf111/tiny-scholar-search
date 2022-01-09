@@ -213,6 +213,7 @@
         </div>
     </div>
     <div class="search">
+        <img src="{% static '/images/paper.svg' %}" width="35px" height="35px" style="margin: auto;float: left;" alt="paper search"/>
         <form id="trans" action="/papersearch/" autocomplete="off" method="get">
             <input type="text" name='name' id="search-bar" value="{{ key }}">
             <button type="submit">Search</button>
@@ -270,7 +271,6 @@
                         Expand
                     </div>
                     <div class="other clearfix">
-                        <!-- <button>detail</button> -->
                         <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
                         <span class="citation">citation: {{ article.citationCount|parse }}</span>
                     </div>

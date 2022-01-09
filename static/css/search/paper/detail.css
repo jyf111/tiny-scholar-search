@@ -89,7 +89,7 @@
     font-size: 14px;
     overflow-wrap: anywhere;
 }
-.content .bottom #prev,
+
 .content .bottom .prev_btn {
     display: none;
     position: absolute;
@@ -101,7 +101,7 @@
     font-size: 0;
     transform: translate(0, -40%);
 }
-.content .bottom #next,
+
 .content .bottom .next_btn {
     display: none;
     position: absolute;
@@ -113,7 +113,7 @@
     font-size: 0;
     transform: translate(0, -40%);
 }
-.content .bottom #prev::before,
+
 .content .bottom .prev_btn::before {
     content: '\eb66';
     display: inline-block;
@@ -122,7 +122,7 @@
     font-size: 28px;
     cursor: pointer;
 }
-.content .bottom #next::before,
+
 .content .bottom .next_btn::before {
     content: '\eb67';
     display: inline-block;
