@@ -143,3 +143,10 @@ cython_debug/
 
 # VSCode
 .vscode/
+
+# auto gen
+static/citation.html
+static/coauthor.html
+static/publish.html
+static/river.html
+static/images/word.png
