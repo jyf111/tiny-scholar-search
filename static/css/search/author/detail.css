@@ -155,17 +155,15 @@
     /* 右侧 */
 .content .right {
     position: absolute;
-    top: 10px;
+    top: 40px;
     right: 0;
     width: 24%;
 }
 .content .right>div {
     position: relative;
     margin-bottom: 10px;
+    border-radius: 5px 5px 0 0;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
-}
-.content .right>div:first-child {
-    border-radius: 5px;
 }
 .hd {
     width: 100%;
@@ -185,6 +183,9 @@
 }
 #dirchange .hd:hover {
     background-color: #fd7010;
+}
+#dirchange .bd {
+    background-color: #fff;
 }
 .content .right>div:hover .hd {
     background-color: #fd7010;
