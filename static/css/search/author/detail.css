@@ -71,7 +71,7 @@
     min-height: 600px;
 }
 .content .left {
-    /* float: left; */
+    float: left;
     width: 75%;
     height: auto;
 }
@@ -154,16 +154,21 @@
 }
     /* 右侧 */
 .content .right {
-    position: absolute;
-    top: 40px;
+    position: sticky;
+    float: right;
+    top: 70px;
     right: 0;
     width: 24%;
+    margin-top: 40px;
 }
 .content .right>div {
     position: relative;
     margin-bottom: 10px;
     border-radius: 5px 5px 0 0;
     box-shadow: 0 0 5px 2px rgba(0, 0, 0, .1);
+}
+.content .right>div:last-child {
+    margin-bottom: 15px;
 }
 .hd {
     width: 100%;
