@@ -1,8 +1,3 @@
-from django.template import Library
-
-register = Library()
-
-@register.filter
 def parse(num):
     res = ""
     while num>=1000:

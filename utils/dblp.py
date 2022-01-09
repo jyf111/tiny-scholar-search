@@ -7,9 +7,8 @@ DBLP_PERSON_URL = DBLP_BASE_URL + 'pid/{pid}.xml'
 
 headers = {'User-Agent': 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36'}
 
-lazy_db = {}
-rank_db = {}
-dir_db = {}
+lazy_db, rank_db, dir_db = {}, {}, {}
+
 def gen_author(pid):
     if pid in lazy_db:
         return lazy_db[pid]
@@ -131,6 +130,3 @@ def search(author_str):
         else:
             likely_authors.append({'pid': author.attrib['pid'], 'name': name, 'id': id})
     return exact_authors, likely_authors
-
-if __name__ == '__main__':
-    Author('l/XuelongLi')

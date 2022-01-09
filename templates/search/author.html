@@ -13,6 +13,14 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Search for:"{{ key }}"</title>
     <script>
+        function rparse(s) {
+            let ss = "";
+            for (let i=0; i<s.length; i++) {
+                if(s[i]==',') continue;
+                ss += s[i];
+            }
+            return ss;
+        }
         function update() {
             urls = document.querySelectorAll(".info h4 a");
             infos = document.querySelectorAll(".info .body");
@@ -20,7 +28,7 @@
             for (let i=0; i<urls.length; i++) {
                 let xmlhttp = new XMLHttpRequest();
                 xmlhttp.onreadystatechange = function() {
-                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    if (xmlhttp.readyState===4 && xmlhttp.status===200) {
                         let info = xmlhttp.responseText.split("<!-- begin -->")[1];
                         info = info.split("<!-- end -->")[0];
                         infos[i].innerHTML = info;
@@ -38,8 +46,7 @@
             if (s2!=0) url += '&start2=' + s2.toString();
             return url;
         }
-        function next1() {
-            start1 += USERS_PER_PAGE;
+        function redirectUrl(start1, start2) {
             url = window.location.href;
             let id = url.indexOf("&start");
             let redirect = url;
@@ -47,44 +54,32 @@
                 redirect = url.substr(0, id);
             }
             window.location = merge(redirect, start1, start2);
+        }
+        function next1() {
+            start1 += USERS_PER_PAGE;
+            redirectUrl(start1, start2);
         }
         function prev1() {
             start1 -= USERS_PER_PAGE;
-            url = window.location.href;
-            let id = url.indexOf("&start");
-            let redirect = url;
-            if (id!==-1) {
-                redirect = url.substr(0, id);
-            }
-            window.location = merge(redirect, start1, start2);
+            redirectUrl(start1, start2);
         }
         function next2() {
             start2 += USERS_PER_PAGE;
-            url = window.location.href;
-            let id = url.indexOf("&start");
-            let redirect = url;
-            if (id!==-1) {
-                redirect = url.substr(0, id);
-            }
-            window.location = merge(redirect, start1, start2);
+            redirectUrl(start1, start2);
         }
         function prev2() {
             start2 -= USERS_PER_PAGE;
-            url = window.location.href;
-            let id = url.indexOf("&start");
-            let redirect = url;
-            if (id!==-1) {
-                redirect = url.substr(0, id);
-            }
-            window.location = merge(redirect, start1, start2);
+            redirectUrl(start1, start2);
         }
         document.addEventListener("DOMContentLoaded", function() {
+
             let pictures = document.querySelectorAll(".pic");
             for (let i=0; i<pictures.length; i++) {
                 let img = pictures[i].children[0];
-                let d = Math.round(Math.random()*3 + 1);
+                let d = Math.round(Math.random()*4 + 1);
                 img.src = "/static/images/avatar" + d.toString() + ".svg";
             }
+
             let loc = window.location.search;
             if (loc.indexOf("start1=")!==-1) {
                 let id = loc.indexOf("start1=") + 7;
@@ -100,28 +95,26 @@
                     ++id;
                 }
             }
-            if (start1-USERS_PER_PAGE<0) {
-                document.querySelector('#prev1').disabled = true;
-            } else {
-                document.querySelector('#prev1').disabled = false;
+            
+            let tot1 = 0;
+            if (document.querySelector('.tips')) 
+                tot1 = Number(rparse(document.querySelector('.tips').innerHTML.split(" ")[0]));
+            let tot2 = 0;
+            if (document.querySelector('.tips2')) 
+                tot2 = Number(rparse(document.querySelector('.tips2').innerHTML.split(" ")[0]));
+            if (tot1) {
+                if (start1-USERS_PER_PAGE<0) document.querySelector('#prev1').disabled = true;
+                else document.querySelector('#prev1').disabled = false;
+                if (start1+USERS_PER_PAGE>=tot1) document.querySelector('#next1').disabled = true;
+                else document.querySelector('#next1').disabled = false;
             }
-            let tot1 = Number(document.querySelector('.tips').innerHTML.split(" ")[0]);
-            if (start1+USERS_PER_PAGE>=tot1) {
-                document.querySelector('#next1').disabled = true;
-            } else {
-                document.querySelector('#next1').disabled = false;
+            if (tot2) {
+                if (start2-USERS_PER_PAGE<0) document.querySelector('#prev2').disabled = true;
+                else document.querySelector('#prev2').disabled = false;
+                if (start2+USERS_PER_PAGE>=tot2) document.querySelector('#next2').disabled = true;
+                else document.querySelector('#next2').disabled = false;
             }
-            if (start2-USERS_PER_PAGE<0) {
-                document.querySelector('#prev2').disabled = true;
-            } else {
-                document.querySelector('#prev2').disabled = false;
-            }
-            let tot2 = Number(document.querySelector('.tips2').innerHTML.split(" ")[0]);
-            if (start2+USERS_PER_PAGE>=tot2) {
-                document.querySelector('#next2').disabled = true;
-            } else {
-                document.querySelector('#next2').disabled = false;
-            }
+    
             infos = document.querySelectorAll(".info .body");
             loads = document.querySelectorAll(".info .load");
             for (let i=0; i<loads.length; i++) {
@@ -150,6 +143,7 @@
         </div>
     </div>
     <div class="search">
+        <img src="{% static '/images/scholar.svg' %}" width="35px" height="35px" style="margin: auto;float: left;" alt="scholar search/>
         <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
             <input type="text" name='name' id="search-bar" value="{{ key }}">
             <button type="submit">Search</button>
@@ -159,13 +153,13 @@
     <div class="content w">
         <h2><p class="msg">search results for "{{ key }}":</p></h2>
         {% if exact_len %}
-        <h3 class="tips">{{ exact_len|work }} Exact matches</h3>
+        <h3 class="tips">{{ exact_len|parse }} Exact matches</h3>
         <div class="match-list clearfix" id="exact_match">
             <ul>
                 {% for author in exact_authors %}
                 <li>
                     <div class="pic">
-                        <img src="" alt="">
+                        <img src="/static/images/avatar1.svg" alt="">
                     </div>
                     <div class="info">
                         <h4>
@@ -194,13 +188,13 @@
         </div>
         {% endif %}
         {% if likely_len %}
-        <h3 class="tips2">{{ likely_len|work }} Likely matches</h3>
+        <h3 class="tips2">{{ likely_len|parse }} Likely matches</h3>
         <div class="match-list clearfix" id="likely_match">
             <ul>
                 {% for author in likely_authors %}
                 <li>
                     <div class="pic">
-                        <img src="" alt="">
+                        <img src="/static/images/avatar1.svg" alt="">
                     </div>
                     <div class="info">
                         <h4><a href="{% url 'author' author.pid %}">{{ author.name }}</a></h4>

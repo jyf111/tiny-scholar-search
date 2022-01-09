@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from pyecharts import options as opts
 from pyecharts.charts import Bar
 from random import randint
+
 import utils.dblp
 import utils.semantic
 import time

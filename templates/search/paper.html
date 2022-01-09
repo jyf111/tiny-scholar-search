@@ -15,7 +15,7 @@
     <script>
         var start = 0, tot = 0;
         const PAPERS_PER_PAGE = 10;
-        function rwork(s) {
+        function rparse(s) {
             let ss = "";
             for (let i=0; i<s.length; i++) {
                 if(s[i]==',') continue;
@@ -78,7 +78,8 @@
                 }
             }
             let idx = Math.floor(start/PAPERS_PER_PAGE) + 1;
-            tot = Number(rwork(document.querySelector('#total').innerHTML));
+            tot = Number(rparse(document.querySelector('#total').innerHTML));
+            if (tot==0) return;
             let totpages = Math.floor((tot-1)/PAPERS_PER_PAGE) + 1;
             let pages = document.querySelector('.page');
             if (totpages<5) {
@@ -103,15 +104,10 @@
             } else {
                 for (let i=0; i<=8; i++) pages.children[i].style.display = "inline";
                 let select_id = 4; // mid by default
-                if (idx==1) {
-                    select_id = 2;
-                } else if(idx==2) {
-                    select_id = 3;
-                } else if(idx==totpages) {
-                    select_id = 6;
-                } else if(idx==totpages-1) {
-                    select_id = 5;
-                }
+                if (idx==1) select_id = 2;
+                else if(idx==2) select_id = 3;
+                else if(idx==totpages) select_id = 6;
+                else if(idx==totpages-1) select_id = 5;
                 if (idx<=3) pages.children[1].style.display = "none";
                 if (idx+2>=totpages) pages.children[7].style.display = "none";
                 for (let i=0; i<=8; i++) {
@@ -166,7 +162,7 @@
             }
             let citations = document.querySelectorAll(".citation");
             for (let i=0; i<citations.length; i++) {
-                cites.push(rwork(citations[i].innerHTML.split(" ")[1]));
+                cites.push(Number(rparse(citations[i].innerHTML.split(" ")[1])));
             }
             let domyears = document.querySelectorAll(".year");
             for (let i=0; i<domyears.length; i++) years.push(Number(domyears[i].innerHTML));
@@ -224,7 +220,7 @@
     </div>
     <!-- 内容区域 -->
     <div class="content w clearfix">
-        <p class="msg">About <span id="total">{{ total|work }}</span> results for "{{ key }}"</p>
+        <p class="msg">About <span id="total">{{ total|parse }}</span> results for "{{ key }}"</p>
         {% if total %}
         <div class="clearfix">
             <select class="selecter">
@@ -276,7 +272,7 @@
                     <div class="other clearfix">
                         <!-- <button>detail</button> -->
                         <img src="{% static '/images/fire.svg' %}" width="12px" height="12px" style="margin: auto" />
-                        <span class="citation">citation: {{ article.citationCount|work }}</span>
+                        <span class="citation">citation: {{ article.citationCount|parse }}</span>
                     </div>
                 </li>
                 {% endfor %}

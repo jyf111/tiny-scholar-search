@@ -12,25 +12,26 @@
     <link rel="icon" href="{% static 'images/icon.svg' %}"/>
     <title>Tiny Scholar Search</title>
     <script>
-       document.addEventListener("DOMContentLoaded", function() {
+        function maintain() {
+            let author = document.getElementById('author');
+            let paper = document.getElementById('paper');
+            let search_bar = document.getElementById('search-bar');
+            search_bar.focus();
+            if (author.checked) {
+                document.getElementById('trans').action = author.value
+                search_bar.placeholder = "Enter an author's name";
+            } else {
+                document.getElementById('trans').action = paper.value
+                search_bar.placeholder = "Enter a paper's title";
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function() {
             let select = document.getElementById('choices');
             let search_bar = document.getElementById('search-bar');
             document.getElementById('author').checked = true;
             document.getElementById('paper').checked = false;
             search_bar.focus();
-            select.addEventListener('change', function () {
-                let author = document.getElementById('author');
-                let paper = document.getElementById('paper');
-                let search_bar = document.getElementById('search-bar');
-                search_bar.focus();
-                if (author.checked) {
-                    document.getElementById('trans').action = author.value
-                    search_bar.placeholder = "Enter an author's name";
-                } else {
-                    document.getElementById('trans').action = paper.value
-                    search_bar.placeholder = "Enter a paper's title";
-                }
-            });
+            select.addEventListener('change', maintain);
         });
     </script>
 </head>
@@ -39,7 +40,7 @@
     <div class="header">
         <div class="w">
             <h1 class="logo">
-                <a href="/"><img src="../static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
+                <a href="/"><img src="/static/images/logo.png" alt="logo" title="Tiny Scholar Search">Tiny Scholar Search</a>
             </h1>
             <div class="nav">
                 <ul>
@@ -54,7 +55,7 @@
     <!-- 内容区域 -->
     <div class="content w">
         <div class="img">
-            <img src="../static/images/index.png" alt="index">
+            <img src="/static/images/index.png" alt="index">
         </div>
         <div class="search">
             <form id="trans" action="/scholarsearch/" autocomplete="off" method="get">
@@ -64,7 +65,7 @@
         </div>
         <div class="search-opt">
             <ul id="choices">
-                <li><input type="radio" name="options" id="author" checked="checked" value="/scholarsearch/"><label for="author">Author</label></li>
+                <li><input type="radio" name="options" id="author" value="/scholarsearch/"><label for="author">Author</label></li>
                 <li><input type="radio" name="options" id="paper" value="/papersearch/"><label for="paper">Paper</label></li>
             </ul>
         </div>

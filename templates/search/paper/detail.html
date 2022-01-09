@@ -102,7 +102,7 @@
             work(0, reflist);
             let xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
-                if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                if (xmlhttp.readyState===4 && xmlhttp.status===200) {
                     let info = xmlhttp.responseText;
                     result = info.split('<li class=\"papers\">');
                     if (result.length<=2) {
@@ -233,7 +233,7 @@
                 <button class="btn" type="button" id="next" onclick="next()" style="display:none">next</button>
             </div>
             <div class="citations">
-                <h4>{{ article.citations|length|work }} citations</h4>
+                <h4>{{ article.citations|length|parse }} citations</h4>
                 <ul class="cite-list">
                     {% for paper in article.citations %}
                     <li class="clearfix" style="display:none">
@@ -263,7 +263,7 @@
                 <button type="button" class="next_btn btn" onclick="next2(event)">next</button>
             </div>
             <div class="references">
-                <h4>{{ article.references|length|work }} references</h4>
+                <h4>{{ article.references|length|parse }} references</h4>
                 <ul class="ref-list">
                     {% for paper in article.references %}
                     <li class="clearfix" style="display:none">
